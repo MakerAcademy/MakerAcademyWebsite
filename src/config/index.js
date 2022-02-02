@@ -3,18 +3,20 @@ import LogoLight from "@assets/images/logo-light.png";
 
 const config = ({ mode }) => ({
   projectName: "Maker Academy",
-  Logo: mode === "dark" ? LogoDark : LogoLight,
-  LogoLight: LogoLight,
-  LogoDark: LogoDark,
+  logo: mode === "dark" ? LogoDark : LogoLight,
+  logoLight: LogoLight,
+  logoDark: LogoDark,
   locales: ["en", "fr"],
-  menubar: {
+  landingLayoutRoutes: ["/", "/login", "/register"],
+  navbar: {
     themeToggle: true,
-    languages: false,
+    languagePopup: true,
     authButtons: true,
     menuItems: [
-      { name: "Contribute", link: "/" },
-      { name: "Programs", link: "/" },
-      { name: "Content", link: "/" },
+      { name: "Home", link: "/" },
+      { name: "Contribute", link: "/contribute" },
+      { name: "Programs", link: "/programs" },
+      { name: "Content", link: "/content" },
     ],
   },
 });

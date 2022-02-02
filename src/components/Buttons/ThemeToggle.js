@@ -4,13 +4,13 @@ import React, { useContext } from "react";
 import { ThemeContext } from "@contexts/themeContext";
 import { DARK_MODE, LIGHT_MODE } from "@constants/theme";
 
-const ThemeToggleButton = () => {
+const ThemeToggleButton = ({ white }) => {
   const theme = useTheme();
   const setThemeName = useContext(ThemeContext);
 
   return (
     <IconButton
-      // sx={{ color: theme.palette.primary.white }}
+      sx={{ color: white ? theme.palette.primary.white : "inherit" }}
       onClick={() =>
         setThemeName(theme.palette.mode === DARK_MODE ? LIGHT_MODE : DARK_MODE)
       }

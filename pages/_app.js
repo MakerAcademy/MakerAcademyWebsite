@@ -6,6 +6,7 @@ import { Hydrate } from "react-query/hydration";
 import { Provider } from "react-redux";
 import { CssBaseline } from "@mui/material";
 import CustomThemeProvider from "@contexts/themeContext";
+import Layout from "@layouts/Layout";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient();
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps }) {
         <Provider store={store}>
           <CustomThemeProvider>
             <CssBaseline />
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </CustomThemeProvider>
         </Provider>
       </Hydrate>
