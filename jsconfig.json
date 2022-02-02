@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,6 +22,10 @@
       "@config": ["src/config"],
       "@hoc/*": ["src/hoc/*"],
       "@hoc": ["src/hoc"],
+      "@contexts/*": ["src/contexts/*"],
+      "@contexts": ["src/contexts"],
+      "@assets/*": ["src/assets/*"],
+      "@assets": ["src/assets"],
       "@constants/*": ["src/constants/*"],
       "@constants": ["src/constants"],
       "@styles/*": ["src/styles/*"],
@@ -33,6 +38,6 @@
     },
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx"],
+  "include": ["next-env.d.js", "**/*.js", "**/*.jsx"],
   "exclude": ["node_modules"]
 }

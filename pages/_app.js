@@ -4,6 +4,8 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 import { Provider } from "react-redux";
+import { CssBaseline } from "@mui/material";
+import CustomThemeProvider from "@contexts/themeContext";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient();
@@ -12,7 +14,10 @@ function MyApp({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <CustomThemeProvider>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </CustomThemeProvider>
         </Provider>
       </Hydrate>
     </QueryClientProvider>
