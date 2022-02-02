@@ -1,42 +1,32 @@
 {
-    "name": "maker-academy",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "dev": "next dev",
-        "build": "next build",
-        "start": "next start",
-        "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
-        "prettier": "prettier --write '**/*.{js,jsx,ts,tsx}'"
-    },
-    "dependencies": {
-        "@emotion/react": "^11.7.1",
-        "@emotion/styled": "^11.6.0",
-        "@mui/icons-material": "^5.3.1",
-        "@mui/material": "^5.4.0",
-        "@reduxjs/toolkit": "^1.6.0",
-        "next": "12.0.7",
-        "next-compose-plugins": "^2.2.1",
-        "next-images": "^1.8.4",
-        "next-translate": "^1.0.1",
-        "prettier": "^2.2.1",
-        "react": "17.0.2",
-        "react-dom": "17.0.2",
-        "react-query": "^3.5.16",
-        "react-redux": "^7.2.4"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.16.12",
-        "@babel/eslint-parser": "^7.16.5",
-        "@types/node": "^14.14.13",
-        "@types/react": "^17.0.0",
-        "@types/react-dom": "^17.0.0",
-        "@types/react-redux": "^7.1.16",
-        "@typescript-eslint/eslint-plugin": "^4.9.1",
-        "@typescript-eslint/parser": "^4.9.1",
-        "eslint": "^7.32.0",
-        "eslint-config-prettier": "^7.0.0",
-        "eslint-plugin-prettier": "^3.2.0",
-        "typescript": "^4.1.3"
-    }
+  "name": "maker-academy",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.3.1",
+    "@mui/material": "^5.4.0",
+    "@reduxjs/toolkit": "^1.6.0",
+    "next": "12.0.7",
+    "next-compose-plugins": "^2.2.1",
+    "next-images": "^1.8.4",
+    "next-translate": "^1.0.1",
+    "prettier": "^2.2.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-query": "^3.5.16",
+    "react-redux": "^7.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.13",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.16"
+  }
 }

@@ -6,6 +6,7 @@ const config = ({ mode }) => ({
   Logo: mode === "dark" ? LogoDark : LogoLight,
   LogoLight: LogoLight,
   LogoDark: LogoDark,
+  locales: ["en", "fr"],
   menubar: {
     themeToggle: true,
     languages: false,
