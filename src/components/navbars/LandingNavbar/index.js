@@ -6,19 +6,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Box,
-  Button,
   Container,
   Divider,
   Hidden,
   IconButton,
-  Menu,
-  MenuItem,
   Stack,
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
 import DesktopMenuItems from "./DesktopMenuItems";
+import MobileMenuItems from "./MobileMenuItems";
 
 const LandingNavbar = ({ appConfig }) => {
   const [spotlight, setSpotlight] = useState(null);
@@ -40,46 +38,6 @@ const LandingNavbar = ({ appConfig }) => {
         />
       </Box>
     </Link>
-  );
-
-  const MobileMenuItems = () => (
-    <>
-      {themeToggle && <ThemeToggleButton />}
-
-      {languagePopup && <LanguageMenu />}
-
-      {authButtons && <AuthButtons />}
-
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        sx={{ ml: 1 }}
-      >
-        <MenuIcon />
-      </IconButton>
-
-      {/* <Menu
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-      >
-        {menuItems.map((item) => (
-          <MenuItem key={item.name}>{item.name}</MenuItem>
-        ))}
-      </Menu> */}
-    </>
   );
 
   return (
@@ -118,7 +76,12 @@ const LandingNavbar = ({ appConfig }) => {
 
               {/* Mobile Menu */}
               <Hidden mdUp>
-                <MobileMenuItems />
+                <MobileMenuItems
+                  menuItems={menuItems}
+                  themeToggle={themeToggle}
+                  languagePopup={languagePopup}
+                  authButtons={authButtons}
+                />
               </Hidden>
             </Box>
           </Stack>

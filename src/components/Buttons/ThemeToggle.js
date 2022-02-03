@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "@contexts/themeContext";
 import { DARK_MODE, LIGHT_MODE } from "@constants/theme";
 
-const ThemeToggleButton = ({ sx = {} }) => {
+const ThemeToggleButton = ({ sx = {}, ...other }) => {
   const theme = useTheme();
   const setThemeName = useContext(ThemeContext);
 
@@ -15,6 +15,7 @@ const ThemeToggleButton = ({ sx = {} }) => {
       onClick={() =>
         setThemeName(theme.palette.mode === DARK_MODE ? LIGHT_MODE : DARK_MODE)
       }
+      {...other}
     >
       {theme.palette.mode === DARK_MODE ? <Brightness7 /> : <Brightness4 />}
     </IconButton>
