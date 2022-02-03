@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material";
 import makerTheme from "@makerdao/dai-ui-theme-maker-neue";
 import commonColors from "./commonColors";
+import typography from "./typography";
 
 const colors = {
   ...commonColors,
@@ -12,15 +13,17 @@ export const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#fff",
+      ...colors,
     },
     background: {
       default: "#121212",
       ...colors,
     },
   },
+  typography,
 });
 
-/*
+/* makerTheme - console.log
 "text": "#434358",
 "primary": "#1AAB9B",
 "primaryEmphasis": "#008E7B",

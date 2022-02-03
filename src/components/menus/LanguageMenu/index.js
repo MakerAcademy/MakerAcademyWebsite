@@ -7,7 +7,7 @@ import { handleLanguageChange } from "@utils/helperFunctions";
 import setLanguage from "next-translate/setLanguage";
 import useTranslation from "next-translate/useTranslation";
 
-const LanguageMenu = ({ appConfig }) => {
+const LanguageMenu = ({ appConfig, sx = {} }) => {
   const [langAnchor, setLangAnchor] = useState(null);
 
   const { t } = useTranslation();
@@ -23,6 +23,7 @@ const LanguageMenu = ({ appConfig }) => {
         size="large"
         onClick={(e) => setLangAnchor(e.currentTarget)}
         color="inherit"
+        sx={{ ...sx }}
       >
         <TranslateIcon />
       </IconButton>

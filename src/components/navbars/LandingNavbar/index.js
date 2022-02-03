@@ -17,66 +17,76 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
+import DesktopMenuItems from "./DesktopMenuItems";
 
 const LandingNavbar = ({ appConfig }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const theme = useTheme();
+  const [spotlight, setSpotlight] = useState(null);
 
-  const router = useRouter();
-  const { route } = router;
+  const theme = useTheme();
 
   const isLoggedIn = false;
 
   const { logo, projectName, navbar } = appConfig;
   const { themeToggle, menuItems, languagePopup, authButtons } = navbar;
 
-  const AuthButtons = () => {
-    if (!isLoggedIn) {
-      return (
-        <Link href="/account">
-          <Button
-            disableElevation
-            size="large"
-            sx={{
-              textTransform: "inherit",
-              fontSize: 16,
-            }}
-            color="inherit"
-            variant={route === "/account" ? "outlined" : "text"}
-          >
-            Account
-          </Button>
-        </Link>
-      );
-    } else {
-      return (
-        <Button
-          disableElevation
-          size="large"
-          sx={{
-            textTransform: "inherit",
-            fontSize: 16,
-          }}
-          color="inherit"
-        >
-          Log Out
-        </Button>
-      );
-    }
-  };
+  const Logo = () => (
+    <Link href="/">
+      <Box sx={{ height: 35, textTransform: "inherit", cursor: "pointer" }}>
+        <img
+          src={logo}
+          alt={`${projectName} Logo`}
+          style={{ height: "100%", objectFit: "contain" }}
+        />
+      </Box>
+    </Link>
+  );
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const MobileMenuItems = () => (
+    <>
+      {themeToggle && <ThemeToggleButton />}
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+      {languagePopup && <LanguageMenu />}
+
+      {authButtons && <AuthButtons />}
+
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        sx={{ ml: 1 }}
+      >
+        <MenuIcon />
+      </IconButton>
+
+      {/* <Menu
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+      >
+        {menuItems.map((item) => (
+          <MenuItem key={item.name}>{item.name}</MenuItem>
+        ))}
+      </Menu> */}
+    </>
+  );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      sx={{ flexGrow: 1 }}
+      onMouseLeave={() => !!spotlight && setSpotlight(null)}
+    >
       <AppBar position="static" color="transparent" elevation={0}>
         <Container maxWidth="xl">
           <Stack
@@ -92,81 +102,23 @@ const LandingNavbar = ({ appConfig }) => {
             }}
           >
             {/* Logo */}
-            <Box sx={{ height: 45, textTransform: "inherit" }}>
-              <img
-                src={logo}
-                alt={`${projectName} Logo`}
-                style={{ height: "100%", objectFit: "contain" }}
-              />
-            </Box>
+            <Logo />
 
             {/* Menu Items */}
             <Box>
               {/* Desktop Menu */}
               <Hidden mdDown>
-                <Stack direction="row" spacing={2}>
-                  {menuItems.map((item, i) => (
-                    <Link href={item.link} key={i}>
-                      <Button
-                        disableElevation
-                        size="large"
-                        sx={{
-                          textTransform: "inherit",
-                          fontSize: 16,
-                        }}
-                        color="inherit"
-                        variant={route === item.link ? "outlined" : "text"}
-                      >
-                        {item.name}
-                      </Button>
-                    </Link>
-                  ))}
-
-                  {authButtons && <AuthButtons />}
-
-                  {themeToggle && <ThemeToggleButton />}
-
-                  {languagePopup && <LanguageMenu />}
-                </Stack>
+                <DesktopMenuItems
+                  menuItems={menuItems}
+                  themeToggle={themeToggle}
+                  languagePopup={languagePopup}
+                  authButtons={authButtons}
+                />
               </Hidden>
 
               {/* Mobile Menu */}
               <Hidden mdUp>
-                {themeToggle && <ThemeToggleButton />}
-
-                {languagePopup && <LanguageMenu />}
-
-                {authButtons && <AuthButtons />}
-
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  onClick={handleMenu}
-                  sx={{ ml: 1 }}
-                >
-                  <MenuIcon />
-                </IconButton>
-
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  {menuItems.map((item) => (
-                    <MenuItem key={item.name}>{item.name}</MenuItem>
-                  ))}
-                </Menu>
+                <MobileMenuItems />
               </Hidden>
             </Box>
           </Stack>
