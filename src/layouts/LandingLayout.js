@@ -1,6 +1,6 @@
-import { Container } from "@mui/material";
-import React from "react";
 import LandingNavbar from "@components/navbars/LandingNavbar";
+import { Container, Divider } from "@mui/material";
+import React from "react";
 
 const LandingLayout = (props) => {
   return (
@@ -8,6 +8,12 @@ const LandingLayout = (props) => {
       <LandingNavbar />
 
       {props.children}
+
+      <Divider />
+
+      <Container sx={{ py: 5 }}>
+        ----------------------- Footer Here -----------------------
+      </Container>
     </div>
   );
 };

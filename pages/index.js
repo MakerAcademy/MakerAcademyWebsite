@@ -39,7 +39,7 @@ const Home = ({ appConfig }) => {
       <Section2 />
       <Section3 />
 
-      <Container sx={{ p: 2, mt: 10 }}>
+      {/* <Container sx={{ p: 2, mt: 10 }}>
         <Stack spacing={2}>
           <Typography>Project Name: {projectName}</Typography>
 
@@ -65,7 +65,7 @@ const Home = ({ appConfig }) => {
             </Typography>
           ))}
         </Stack>
-      </Container>
+      </Container> */}
     </Box>
   );
 };

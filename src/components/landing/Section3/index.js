@@ -4,9 +4,11 @@ import React from "react";
 
 const Section3 = () => {
   return (
-    <Container sx={{ py: 3 }}>
+    <Container sx={{ py: { xs: 3, md: 6 } }}>
       <Stack alignItems="center" justifyContent="center" spacing={2}>
-        <Typography>Want to learn more about our impact?</Typography>
+        <Typography variant="h6">
+          Want to learn more about our impact?
+        </Typography>
         <RoundedButton>Performance</RoundedButton>
       </Stack>
     </Container>
