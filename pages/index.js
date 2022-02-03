@@ -1,6 +1,6 @@
-import Section1 from "@components/landing/Section1";
-import Section2 from "@components/landing/Section2";
-import Section3 from "@components/landing/Section3";
+import Section1 from "@components/landingSections/Section1";
+import Section2 from "@components/landingSections/Section2";
+import Section3 from "@components/landingSections/Section3";
 import withAppConfig from "@hoc/withAppConfig";
 import {
   Box,

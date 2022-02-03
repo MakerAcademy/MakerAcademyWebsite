@@ -1,5 +1,6 @@
+import LandingFooter from "@components/footers/LandingFooter";
 import LandingNavbar from "@components/navbars/LandingNavbar";
-import { Container, Divider } from "@mui/material";
+import { Divider } from "@mui/material";
 import React from "react";
 
 const LandingLayout = (props) => {
@@ -11,9 +12,7 @@ const LandingLayout = (props) => {
 
       <Divider />
 
-      <Container sx={{ py: 5 }}>
-        ----------------------- Footer Here -----------------------
-      </Container>
+      <LandingFooter />
     </div>
   );
 };

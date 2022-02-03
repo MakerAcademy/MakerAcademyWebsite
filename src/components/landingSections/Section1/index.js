@@ -16,7 +16,6 @@ import React from "react";
 
 const Section1 = () => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
 
   return (
     <Box
@@ -44,7 +43,7 @@ const Section1 = () => {
           },
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ py: 5 }}>
           <Stack alignItems="center" justifyContent="center">
             <ResponsiveText variant="h2" sx={{ mb: 1 }}>
               Maker Academy

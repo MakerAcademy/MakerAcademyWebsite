@@ -47,7 +47,12 @@ const Section2 = () => {
   );
 
   return (
-    <Box sx={{ backgroundColor: theme.palette.background.sectionGrey, py: 5 }}>
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.sectionGrey,
+        py: { xs: 4, md: 6, lg: 8 },
+      }}
+    >
       <Container maxWidth="xl">
         <Grid container spacing={{ xs: 3, md: 6, lg: 10 }}>
           <Grid item xs={12} md={6}>
@@ -57,7 +62,7 @@ const Section2 = () => {
 
             <Stack spacing={2}>
               {learners.map((item, i) => (
-                <CustomCard {...item} />
+                <CustomCard {...item} key={i} />
               ))}
             </Stack>
           </Grid>
@@ -68,7 +73,7 @@ const Section2 = () => {
 
             <Stack spacing={2}>
               {educators.map((item, i) => (
-                <CustomCard {...item} />
+                <CustomCard {...item} key={i} />
               ))}
             </Stack>
           </Grid>

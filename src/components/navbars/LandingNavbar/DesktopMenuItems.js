@@ -109,8 +109,8 @@ const MenuPopupState = ({
           }}
           PaperProps={{ sx: { width: 135 } }}
         >
-          {subMenu.map((item) => (
-            <Link href={item.link || ""}>
+          {subMenu.map((item, i) => (
+            <Link href={item.link || ""} key={i}>
               <MenuItem onClick={handleClosePopup}>{item.name}</MenuItem>
             </Link>
           ))}
