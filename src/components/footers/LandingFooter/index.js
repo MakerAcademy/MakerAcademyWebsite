@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import withAppConfig from "@hoc/withAppConfig";
+import Link from "next/link";
 
 const footerItems = [
   {
@@ -62,11 +63,13 @@ const LandingFooter = ({ appConfig }) => {
 
   const BusinessCard = () => (
     <>
-      <img
-        src={logo}
-        alt={projectName}
-        style={{ height: 45, objectFit: "contain" }}
-      />
+      <a target="_blank" href="http://makerdao.com/" rel="noopener noreferrer">
+        <img
+          src={logo}
+          alt={projectName}
+          style={{ height: 45, objectFit: "contain" }}
+        />
+      </a>
 
       <Typography variant="body2" sx={{ maxWidth: 300, mt: 2 }}>
         Lorem ipsum dolor sit amet,consectetur adipisicing elit. Quis non, fugit
@@ -147,7 +150,7 @@ const LandingFooter = ({ appConfig }) => {
     <Box
       sx={{
         backgroundColor: theme.palette.background.darker,
-        py: { xs: 8, md: 10 },
+        py: { xs: 6, md: 8 },
         px: 4,
       }}
     >

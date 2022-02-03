@@ -45,7 +45,14 @@ const LandingNavbar = ({ appConfig }) => {
       sx={{ flexGrow: 1 }}
       onMouseLeave={() => !!spotlight && setSpotlight(null)}
     >
-      <AppBar position="static" color="transparent" elevation={0}>
+      <AppBar
+        position="static"
+        elevation={0}
+        color="transparent"
+        sx={{
+          backdropFilter: "blur(2px)",
+        }}
+      >
         <Container maxWidth="xl">
           <Stack
             spacing={1}

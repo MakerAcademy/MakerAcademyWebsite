@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { HomeBg } from "@utils/images";
+import Link from "next/link";
 import React from "react";
 
 const Section1 = () => {
@@ -57,7 +58,9 @@ const Section1 = () => {
               The primary source for Maker education
             </Typography>
 
-            <RoundedButton sx={{ px: 4, py: 1.5 }}>About Us</RoundedButton>
+            <Link href="/about-us">
+              <RoundedButton sx={{ px: 4, py: 1.5 }}>About Us</RoundedButton>
+            </Link>
           </Stack>
         </Container>
       </Stack>

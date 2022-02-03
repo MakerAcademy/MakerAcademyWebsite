@@ -35,7 +35,7 @@ const MenuPopupState = ({
     <Box onMouseLeave={() => setSpotlight(null)}>
       <Stack direction="row" spacing={0} alignItems="center">
         {menuItems.map((item, i) => (
-          <Link href={item.href || ""} key={i}>
+          <Link href={item.link || ""} key={i}>
             <Button
               size="large"
               color="inherit"

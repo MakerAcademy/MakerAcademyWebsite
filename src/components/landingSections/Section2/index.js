@@ -31,8 +31,8 @@ const Section2 = () => {
   const theme = useTheme();
 
   const CustomCard = ({ title, buttonText }) => (
-    <Card elevation={1}>
-      <CardContent>
+    <Card elevation={0}>
+      <Box sx={{ p: 2.2 }}>
         <Stack
           spacing={2}
           direction="row"
@@ -40,9 +40,11 @@ const Section2 = () => {
           justifyContent="space-between"
         >
           <Typography>{title}</Typography>
-          <Button variant="outlined">{buttonText}</Button>
+          <Button variant="outlined" size="small">
+            {buttonText}
+          </Button>
         </Stack>
-      </CardContent>
+      </Box>
     </Card>
   );
 
@@ -60,7 +62,7 @@ const Section2 = () => {
               For Learners
             </Typography>
 
-            <Stack spacing={2}>
+            <Stack spacing={3}>
               {learners.map((item, i) => (
                 <CustomCard {...item} key={i} />
               ))}
@@ -71,7 +73,7 @@ const Section2 = () => {
               For Educators
             </Typography>
 
-            <Stack spacing={2}>
+            <Stack spacing={3}>
               {educators.map((item, i) => (
                 <CustomCard {...item} key={i} />
               ))}
