@@ -12,12 +12,13 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#fff",
       ...colors,
+      main: "#fff",
     },
     background: {
-      default: "#121212",
       ...colors,
+      sectionGrey: "#121212",
+      default: "#121212",
     },
   },
   typography,

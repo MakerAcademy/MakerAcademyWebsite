@@ -1,5 +1,4 @@
-import LogoDark from "@assets/images/logo-dark.png";
-import LogoLight from "@assets/images/logo-light.png";
+import { LogoDark, LogoLight } from "@utils/images";
 
 const config = ({ mode }) => ({
   projectName: "Maker Academy",

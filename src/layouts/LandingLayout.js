@@ -6,9 +6,8 @@ const LandingLayout = (props) => {
   return (
     <div>
       <LandingNavbar />
-      <Container maxWidth="lg" sx={{ py: 2 }}>
-        {props.children}
-      </Container>
+
+      {props.children}
     </div>
   );
 };

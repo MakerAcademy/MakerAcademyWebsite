@@ -1,5 +1,15 @@
+import Section1 from "@components/landing/Section1";
+import Section2 from "@components/landing/Section2";
+import Section3 from "@components/landing/Section3";
 import withAppConfig from "@hoc/withAppConfig";
-import { Container, Divider, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 
@@ -24,33 +34,39 @@ const Home = ({ appConfig }) => {
   const { projectName } = appConfig;
 
   return (
-    <Container sx={{ p: 2 }}>
-      <Stack spacing={2}>
-        <Typography>Project Name: {projectName}</Typography>
+    <Box>
+      <Section1 />
+      <Section2 />
+      <Section3 />
 
-        <Divider />
+      <Container sx={{ p: 2, mt: 10 }}>
+        <Stack spacing={2}>
+          <Typography>Project Name: {projectName}</Typography>
 
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography>Theme Mode: {mode}</Typography>
+          <Divider />
+
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography>Theme Mode: {mode}</Typography>
+          </Stack>
+
+          <Divider />
+
+          <div>
+            <Typography>Language: {lang}</Typography>
+            <Typography>Greeting: {t("home:hello")}</Typography>
+          </div>
+
+          <Divider />
+
+          <Typography>Todos:</Typography>
+          {checklists.map((item, i) => (
+            <Typography variant="h6" key={i}>
+              {i + 1}. {item}
+            </Typography>
+          ))}
         </Stack>
-
-        <Divider />
-
-        <div>
-          <Typography>Language: {lang}</Typography>
-          <Typography>Greeting: {t("home:hello")}</Typography>
-        </div>
-
-        <Divider />
-
-        <Typography>Todos:</Typography>
-        {checklists.map((item, i) => (
-          <Typography variant="h6" key={i}>
-            {i + 1}. {item}
-          </Typography>
-        ))}
-      </Stack>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

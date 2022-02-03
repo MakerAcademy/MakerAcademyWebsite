@@ -12,12 +12,13 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#2BB7A7",
       ...colors,
+      main: "#2BB7A7",
     },
     background: {
-      default: "#fff",
       ...colors,
+      sectionGrey: "#F6F9FC",
+      default: "#fff",
     },
     text: {
       primary: "#222222",
