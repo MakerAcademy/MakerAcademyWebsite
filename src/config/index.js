@@ -7,6 +7,7 @@ const config = ({ mode }) => ({
   logoDark: LogoDark,
   locales: ["en", "fr"],
   landingLayoutRoutes: ["/", "/login", "/register"],
+  noLayoutRoutes: ["/sign-in", "/sign-up"],
   navbar: {
     themeToggle: true,
     languagePopup: true,
