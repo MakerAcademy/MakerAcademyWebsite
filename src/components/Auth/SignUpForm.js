@@ -1,22 +1,28 @@
+import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
+import GoogleIcon from "@mui/icons-material/Google";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import {
-  Button,
-  ButtonGroup,
   Divider,
   IconButton,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import RoundedButton from "@components/buttons/RoundedButton";
+import React, { useState } from "react";
 
 const SignUpForm = () => {
   const theme = useTheme();
+
+  const [type, setType] = useState("learner");
+
+  const handleChange = (event, _type) => {
+    setType(_type);
+  };
 
   const SocialButton = ({ color, children }) => (
     <IconButton
@@ -48,11 +54,18 @@ const SignUpForm = () => {
 
       <Typography>Join Maker Academy as a</Typography>
 
-      <ButtonGroup variant="outlined" fullWidth sx={{ maxWidth: 450 }}>
-        <Button>Learner</Button>
-        <Button>Educator</Button>
-        <Button>Contributor</Button>
-      </ButtonGroup>
+      <ToggleButtonGroup
+        color="primary"
+        value={type}
+        exclusive
+        onChange={handleChange}
+        fullWidth
+        sx={{ maxWidth: 450 }}
+      >
+        <ToggleButton value="learner">Learner</ToggleButton>
+        <ToggleButton value="educator">Educator</ToggleButton>
+        <ToggleButton value="contributor">Contributor</ToggleButton>
+      </ToggleButtonGroup>
 
       <TextField
         variant="filled"
