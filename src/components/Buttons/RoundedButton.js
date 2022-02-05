@@ -18,13 +18,12 @@ const RoundedButton = ({ children, sx = {}, icon, variant, ...props }) => {
       case "white":
         return {
           ...commonStyles,
-          border: `2px solid ${theme.palette.primary.main}`,
+          border: `2px solid ${theme.palette.primary.white}`,
+          color: theme.palette.primary.white,
           "&:hover": {
-            border: `2px solid ${theme.palette.primary.main}`,
-            color: isDark
-              ? theme.palette.primary.black
-              : theme.palette.primary.white,
-            backgroundColor: theme.palette.primary.main,
+            border: `2px solid ${theme.palette.primary.white}`,
+            color: theme.palette.primary.black,
+            backgroundColor: theme.palette.primary.white,
           },
         };
 

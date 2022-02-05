@@ -1,23 +1,24 @@
+import { DARK_MODE } from "@constants/theme";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
-import { IconButton, useTheme } from "@mui/material";
-import React, { useContext } from "react";
-import { ThemeContext } from "@contexts/themeContext";
-import { DARK_MODE, LIGHT_MODE } from "@constants/theme";
+import { IconButton } from "@mui/material";
+import { useTheme as useNextTheme } from "next-themes";
+import React from "react";
 
-const ThemeToggleButton = ({ sx = {}, ...other }) => {
-  const theme = useTheme();
-  const setThemeName = useContext(ThemeContext);
+const ThemeToggleButton = ({ sx = {}, iconSx = {}, ...other }) => {
+  const { resolvedTheme, setTheme } = useNextTheme();
 
   return (
     <IconButton
       color="inherit"
       sx={{ ...sx }}
-      onClick={() =>
-        setThemeName(theme.palette.mode === DARK_MODE ? LIGHT_MODE : DARK_MODE)
-      }
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
       {...other}
     >
-      {theme.palette.mode === DARK_MODE ? <Brightness7 /> : <Brightness4 />}
+      {resolvedTheme === DARK_MODE ? (
+        <Brightness7 sx={{ ...iconSx }} />
+      ) : (
+        <Brightness4 sx={{ ...iconSx }} />
+      )}
     </IconButton>
   );
 };

@@ -10,6 +10,8 @@ import HoverMenu from "material-ui-popup-state/HoverMenu";
 import Link from "next/link";
 import React, { useState } from "react";
 
+const AUTH_LINK = "/sign-in";
+
 const MenuPopupState = ({
   themeToggle,
   menuItems,
@@ -64,6 +66,37 @@ const MenuPopupState = ({
             </Button>
           </Link>
         ))}
+
+        {authButtons && (
+          <Link href={AUTH_LINK}>
+            <Button
+              size="large"
+              color="inherit"
+              onMouseEnter={() => {
+                setSpotlight(AUTH_LINK);
+                subMenu && setSubMenu(null);
+              }}
+              sx={{
+                px: { md: 3, lg: 4 },
+                textTransform: "inherit",
+                fontSize: 18,
+                fontWeight: 600,
+                transition: "color 0.1s ease-in-out",
+                color:
+                  spotlight &&
+                  spotlight !== AUTH_LINK &&
+                  theme.palette.text.disabled,
+                "&:hover": {
+                  color: "inherit !important",
+                  backgroundColor: "transparent",
+                },
+              }}
+              {...bindHover(popupState)}
+            >
+              Sign In
+            </Button>
+          </Link>
+        )}
 
         {/* Implement auth buttons with auth ready */}
         {/* {authButtons && <AuthButtons />} */}
