@@ -13,7 +13,6 @@ const config = ({ mode }) => ({
     languagePopup: true,
     authButtons: true,
     menuItems: [
-      { name: "Home", link: "/" },
       {
         name: "Contribute",
         link: "/contribute",
