@@ -1,5 +1,6 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
-import ContentCard from "@components/cards/ContentCard";
+import RoundedButton from "@components/buttons/RoundedButton";
+import CourseCard from "@components/cards/CourseCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import React from "react";
@@ -21,15 +22,18 @@ const ContentPage = (props) => {
         <SearchFilterBar />
 
         {/* Content */}
-        <Grid container sx={{ width: "100%" }}>
+        <Grid container sx={{ width: "100%", pb: 2 }}>
           {courses.map((item, i) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
               <Box sx={{ p: 2 }}>
-                <ContentCard {...item} />
+                <CourseCard {...item} />
               </Box>
             </Grid>
           ))}
         </Grid>
+
+        {/* Load more */}
+        <RoundedButton>Load More</RoundedButton>
       </Stack>
     </Container>
   );
