@@ -10,10 +10,6 @@ export const getCourseDocuments = async (db, ids) => {
     }).toArray()
 }
 
-export const getFilteredDocuments = async (db, filters) => {
-    return db.collection('documents').find(filters).toArray()
-}
-
 export const createDocument = async (db, doc) => {
     return db
         .collection('documents')
