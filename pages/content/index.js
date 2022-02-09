@@ -3,7 +3,7 @@ import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import { connectToDB } from "db/connect";
-import { getFilteredDocuments } from "db/document";
+import { getContent } from "db/content";
 import React from "react";
 
 const ContentPage = (props) => {
@@ -40,7 +40,7 @@ const ContentPage = (props) => {
 export async function getServerSideProps(context) {
 
   const {db} = await connectToDB();
-  const docs = await getFilteredDocuments(db, {});
+  const docs = await getContent(db, {}, null, null);
 
   return {
     props: { courses: docs, test: "HELLO" },

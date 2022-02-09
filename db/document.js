@@ -1,7 +1,7 @@
 import {nanoid } from 'nanoid'
 
 export const getOneDocument = async (db, id) => {
-    return db.collection('documents').findOne({_id: id})
+    return db.collection('content').findOne({_id: id})
 }
 
 export const getCourseDocuments = async (db, ids) => {

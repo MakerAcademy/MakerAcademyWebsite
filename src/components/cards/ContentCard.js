@@ -12,21 +12,24 @@ import React from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const ContentCard = ({
-  image_url,
+  thumbnail_url,
   title,
-  subtitle,
-  tags,
+  description,
+  topic,
+  subtopic,
   duration,
   level,
   timestamp,
 }) => {
   const theme = useTheme();
+  const tags = [topic, subtopic];
+  console.log(new Date());
 
   return (
     <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
       <Box sx={{ position: "relative" }}>
         <img
-          src={image_url}
+          src={thumbnail_url}
           alt={title}
           style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
         />
@@ -59,7 +62,7 @@ const ContentCard = ({
         <Divider sx={{ my: 1.5 }} />
 
         <Typography variant="body2" sx={{ mb: 3 }}>
-          {subtitle}
+          {description}
         </Typography>
 
         <Stack
