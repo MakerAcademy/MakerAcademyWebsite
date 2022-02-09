@@ -27,6 +27,20 @@ const RoundedButton = ({ children, sx = {}, icon, variant, ...props }) => {
           },
         };
 
+      case "outlined":
+        return {
+          ...commonStyles,
+          border: `2px solid ${theme.palette.primary.main}`,
+          color: !isDark
+            ? theme.palette.primary.main
+            : theme.palette.primary.white,
+          "&:hover": {
+            border: `2px solid ${theme.palette.primary.main}`,
+            color: theme.palette.primary.white,
+            backgroundColor: theme.palette.primary.main,
+          },
+        };
+
       default:
         return {
           ...commonStyles,

@@ -16,7 +16,7 @@ export const connectToDB = async () => {
         await global.mongo.client.connect();
         console.log("connected to MongoDB cluster");
     }
-    const db = global.mongo.client.db('educationalplatform')
+    const db = global.mongo.client.db('educationalplatform');
 
     return {db, dbClient: global.mongo.client}
 }

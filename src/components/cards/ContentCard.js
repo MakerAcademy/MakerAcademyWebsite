@@ -18,12 +18,26 @@ const ContentCard = ({
   topic,
   subtopic,
   duration,
+  content_type,
   level,
   timestamp,
+  verification,
+  views,
+  likes
 }) => {
   const theme = useTheme();
-  const tags = [topic, subtopic];
+  const tags = [topic, subtopic, level];
   console.log(new Date());
+
+  const CustomChip = ({ text }) => (
+    <Chip
+      label={text}
+      sx={{
+        backgroundColor: theme.palette.background.black,
+        color: theme.palette.primary.white,
+      }}
+    />
+  );
 
   return (
     <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
@@ -41,15 +55,9 @@ const ContentCard = ({
           sx={{ position: "absolute", top: 8, left: 8 }}
           spacing={0.5}
         >
+
           {tags.map((tag, i) => (
-            <Chip
-              label={tag}
-              key={i}
-              sx={{
-                backgroundColor: theme.palette.background.black,
-                color: theme.palette.primary.white,
-              }}
-            />
+            <CustomChip text={tag} key={i} />
           ))}
         </Stack>
       </Box>
@@ -65,13 +73,8 @@ const ContentCard = ({
           {description}
         </Typography>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Chip label={level} />
-
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Chip label={content_type}/>
           <Stack direction="row" alignItems="center" spacing={0.7}>
             <AccessTimeIcon sx={{ fontSize: 18 }} />
             <Typography>{duration} hrs</Typography>
