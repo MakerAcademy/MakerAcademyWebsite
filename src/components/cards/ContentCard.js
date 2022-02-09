@@ -12,7 +12,7 @@ import React from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const ContentCard = ({
-  image,
+  image_url,
   title,
   subtitle,
   tags,
@@ -26,7 +26,7 @@ const ContentCard = ({
     <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
       <Box sx={{ position: "relative" }}>
         <img
-          src={image}
+          src={image_url}
           alt={title}
           style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
         />
@@ -52,7 +52,7 @@ const ContentCard = ({
       </Box>
 
       <CardContent>
-        <Typography variant="caption">Posted {timestamp}</Typography>
+        <Typography variant="caption">Posted {new Date(timestamp).toDateString()}</Typography>
 
         <Typography variant="h6">{title}</Typography>
 

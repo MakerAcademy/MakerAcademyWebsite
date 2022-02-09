@@ -4,13 +4,23 @@ export const getOneDocument = async (db, id) => {
     return db.collection('documents').findOne({_id: id})
 }
 
+export const getCourseDocuments = async (db, ids) => {
+    return db.collection('documents').find({
+        _id: {$in: ids},
+    }).toArray()
+}
+
+export const getFilteredDocuments = async (db, filters) => {
+    return db.collection('documents').find(filters).toArray()
+}
+
 export const createDocument = async (db, doc) => {
     return db
         .collection('documents')
         .insertOne({
             _id: nanoid(21),
             ...doc,
-            timestamp: new Date().toDateString,
+            timestamp: new Date(),
         })
         .then(({ops}) => ops[0])
 }
@@ -27,6 +37,6 @@ export const updateOneDocument = async (db, id, updates) => {
         console.log("could not update document")
     }
 
-    const updated = await db.collection('documents').findone({ _id: id})
+    const updated = await db.collection('documents').findOne({ _id: id})
     return updated
 }

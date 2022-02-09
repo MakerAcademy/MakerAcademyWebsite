@@ -33,39 +33,13 @@ const Home = ({ appConfig }) => {
 
   const { projectName } = appConfig;
 
+  console.log(new Date());
+
   return (
     <Box>
       <Section1 />
       <Section2 />
       <Section3 />
-
-      {/* <Container sx={{ p: 2, mt: 10 }}>
-        <Stack spacing={2}>
-          <Typography>Project Name: {projectName}</Typography>
-
-          <Divider />
-
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography>Theme Mode: {mode}</Typography>
-          </Stack>
-
-          <Divider />
-
-          <div>
-            <Typography>Language: {lang}</Typography>
-            <Typography>Greeting: {t("home:hello")}</Typography>
-          </div>
-
-          <Divider />
-
-          <Typography>Todos:</Typography>
-          {checklists.map((item, i) => (
-            <Typography variant="h6" key={i}>
-              {i + 1}. {item}
-            </Typography>
-          ))}
-        </Stack>
-      </Container> */}
     </Box>
   );
 };

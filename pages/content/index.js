@@ -2,6 +2,8 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Grid, Stack } from "@mui/material";
+import { connectToDB } from "db/connect";
+import { getFilteredDocuments } from "db/document";
 import React from "react";
 
 const ContentPage = (props) => {
@@ -36,25 +38,12 @@ const ContentPage = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  // Add fetch to utils or api once backend complete
-  const data = [
-    ...Array(12)
-      .fill()
-      .map((i) => ({
-        image:
-          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
-        title: "Lorem Ipsum is simply dummy text",
-        subtitle:
-          "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
-        tags: ["abc", "xyz"],
-        timestamp: "Jan 27 2020",
-        level: "beginner",
-        duration: 8,
-      })),
-  ];
+
+  const {db} = await connectToDB();
+  const docs = await getFilteredDocuments(db, {});
 
   return {
-    props: { courses: data, test: "HELLO" },
+    props: { courses: docs, test: "HELLO" },
   };
 }
 
