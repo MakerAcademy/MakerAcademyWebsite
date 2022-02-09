@@ -1,13 +1,11 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
-import ContentCard from "@components/cards/CourseCard";
 import ProgramsCoursesCarousel from "@components/carousels/ProgramsCoursesCarousel";
 import ResponsiveText from "@components/ResponsiveText";
 import SearchFilterBar from "@components/SearchFilterBar";
 import {
   Box,
   Container,
-  Grid,
   Paper,
   Stack,
   Typography,
@@ -95,7 +93,7 @@ export async function getServerSideProps(context) {
               title: "Lorem Ipsum is simply dummy text",
               tags: ["Maker", "DeFi"],
               timestamp: "Jan 27 2020",
-              level: "beginner",
+              content_type: "beginner",
               duration: 8,
             })),
         ],

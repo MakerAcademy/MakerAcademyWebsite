@@ -1,4 +1,4 @@
-import CourseCardMin from "@components/cards/CourseCardMin";
+import ContentCardMin from "@components/cards/ContentCardMin";
 import { Box, Stack } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
@@ -27,7 +27,7 @@ const ProgramsCoursesCarousel = ({ courses = [] }) => {
           key={i}
           sx={{ display: "flex !important", p: 1 }}
         >
-          <CourseCardMin {...course} />
+          <ContentCardMin {...course} />
           <ArrowForwardIcon sx={{ ml: 1 }} />
         </Stack>
       ))}

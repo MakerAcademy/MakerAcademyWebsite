@@ -1,12 +1,12 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
-import CourseCard from "@components/cards/CourseCard";
+import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import React from "react";
 
 const ContentPage = (props) => {
-  const { courses = [] } = props;
+  const { content = [] } = props;
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
@@ -23,10 +23,10 @@ const ContentPage = (props) => {
 
         {/* Content */}
         <Grid container sx={{ width: "100%", pb: 2 }}>
-          {courses.map((item, i) => (
+          {content.map((item, i) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
               <Box sx={{ p: 2 }}>
-                <CourseCard {...item} />
+                <ContentCard {...item} />
               </Box>
             </Grid>
           ))}
@@ -52,13 +52,13 @@ export async function getServerSideProps(context) {
           "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
         tags: ["abc", "xyz"],
         timestamp: "Jan 27 2020",
-        level: "beginner",
+        content_type: "beginner",
         duration: 8,
       })),
   ];
 
   return {
-    props: { courses: data, test: "HELLO" },
+    props: { content: data, test: "HELLO" },
   };
 }
 
