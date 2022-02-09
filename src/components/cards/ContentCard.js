@@ -17,10 +17,20 @@ const ContentCard = ({
   subtitle,
   tags,
   duration,
-  level,
+  content_type,
   timestamp,
 }) => {
   const theme = useTheme();
+
+  const CustomChip = ({ text }) => (
+    <Chip
+      label={text}
+      sx={{
+        backgroundColor: theme.palette.background.black,
+        color: theme.palette.primary.white,
+      }}
+    />
+  );
 
   return (
     <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
@@ -38,15 +48,10 @@ const ContentCard = ({
           sx={{ position: "absolute", top: 8, left: 8 }}
           spacing={0.5}
         >
+          <CustomChip text={content_type} />
+
           {tags.map((tag, i) => (
-            <Chip
-              label={tag}
-              key={i}
-              sx={{
-                backgroundColor: theme.palette.background.black,
-                color: theme.palette.primary.white,
-              }}
-            />
+            <CustomChip text={tag} key={i} />
           ))}
         </Stack>
       </Box>
@@ -62,13 +67,7 @@ const ContentCard = ({
           {subtitle}
         </Typography>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Chip label={level} />
-
+        <Stack direction="row" alignItems="center" justifyContent="flex-end">
           <Stack direction="row" alignItems="center" spacing={0.7}>
             <AccessTimeIcon sx={{ fontSize: 18 }} />
             <Typography>{duration} hrs</Typography>
