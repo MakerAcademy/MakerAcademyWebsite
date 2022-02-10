@@ -4,6 +4,8 @@
     "target": "es6",
     "baseUrl": ".",
     "paths": {
+      "@pages/*": ["pages/*"],
+      "@pages": ["pages"],
       "@components/*": ["src/components/*"],
       "@components": ["src/components"],
       "@config/*": ["src/config/*"],

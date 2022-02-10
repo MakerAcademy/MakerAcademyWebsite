@@ -19,7 +19,7 @@ const DUMMY_PROGRAM = {
         title: "Lorem Ipsum is simply dummy text",
         tags: ["Onboarding", "Maker"],
         timestamp: "Jan 27 2020",
-        content_type: "beginner",
+        level: "beginner",
         duration: 8,
       })),
   ],

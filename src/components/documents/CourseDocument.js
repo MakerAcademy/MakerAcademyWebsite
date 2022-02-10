@@ -5,15 +5,8 @@ import React, { useState } from "react";
 
 // TODO: Left side navigation on text scroll
 
-const DUMMY_DOCUMENT = {
-  title: "Document Title",
-  description: "A long HTML formatted description here",
-  author: "John doe",
-  timestamp: "Jan 31, 2022",
-};
-
-const Document = () => {
-  const [document, setDocument] = useState(DUMMY_DOCUMENT);
+const CourseDocument = ({ data = {} }) => {
+  const [document, setDocument] = useState(data);
 
   return (
     <Container sx={{ py: 8 }}>
@@ -53,4 +46,4 @@ const Document = () => {
   );
 };
 
-export default Document;
+export default CourseDocument;

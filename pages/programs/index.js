@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 const ProgramsPage = ({ programs = [] }) => {
@@ -68,7 +69,10 @@ const ProgramsPage = ({ programs = [] }) => {
                 title={program.title}
                 subtitle={program.subtitle}
               >
-                <ProgramsCoursesCarousel courses={program.courses} />
+                <ProgramsCoursesCarousel
+                  courses={program.courses}
+                  _programId={program._id}
+                />
               </ProgramContainer>
             </Box>
           ))}
@@ -99,8 +103,9 @@ export async function getServerSideProps(context) {
               title: "Lorem Ipsum is simply dummy text",
               tags: ["Maker", "DeFi"],
               timestamp: "Jan 27 2020",
-              content_type: "beginner",
+              level: "beginner",
               duration: 8,
+              content_type: "course",
             })),
         ],
       })),

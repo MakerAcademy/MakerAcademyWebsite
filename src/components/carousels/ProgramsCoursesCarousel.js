@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const ProgramsCoursesCarousel = ({ courses = [] }) => {
+const ProgramsCoursesCarousel = ({ courses = [], _programId }) => {
   const settings = {
     arrows: false,
     dots: false,
@@ -27,7 +27,7 @@ const ProgramsCoursesCarousel = ({ courses = [] }) => {
           key={i}
           sx={{ display: "flex !important", p: 1 }}
         >
-          <ContentCardMin {...course} />
+          <ContentCardMin _programId={_programId} {...course} />
           <ArrowForwardIcon sx={{ ml: 1 }} />
         </Stack>
       ))}

@@ -19,8 +19,9 @@ const ContentCard = ({
   subtitle,
   tags,
   duration,
-  content_type,
+  level,
   timestamp,
+  content_type,
 }) => {
   const theme = useTheme();
 
@@ -35,7 +36,9 @@ const ContentCard = ({
   );
 
   return (
-    <Link href={`/content/${_id}`}>
+    <Link
+      href={content_type === "document" ? `/document/${_id}` : `/course/${_id}`}
+    >
       <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
         <Box sx={{ position: "relative" }}>
           <img
@@ -51,7 +54,7 @@ const ContentCard = ({
             sx={{ position: "absolute", top: 8, left: 8 }}
             spacing={0.5}
           >
-            <CustomChip text={content_type} />
+            {level && <CustomChip text={level} />}
 
             {tags.map((tag, i) => (
               <CustomChip text={tag} key={i} />
@@ -70,7 +73,13 @@ const ContentCard = ({
             {subtitle}
           </Typography>
 
-          <Stack direction="row" alignItems="center" justifyContent="flex-end">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Chip label={content_type} />
+
             <Stack direction="row" alignItems="center" spacing={0.7}>
               <AccessTimeIcon sx={{ fontSize: 18 }} />
               <Typography>{duration} hrs</Typography>

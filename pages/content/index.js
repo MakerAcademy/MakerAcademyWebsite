@@ -53,13 +53,14 @@ export async function getServerSideProps(context) {
           "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
         tags: ["abc", "xyz"],
         timestamp: "Jan 27 2020",
-        content_type: "beginner",
+        level: "beginner",
         duration: 8,
+        content_type: i % 2 === 0 ? "document" : "course",
       })),
   ];
 
   return {
-    props: { content: data, test: "HELLO" },
+    props: { content: data },
   };
 }
 

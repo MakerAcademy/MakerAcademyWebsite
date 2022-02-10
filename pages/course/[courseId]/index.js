@@ -23,7 +23,7 @@ const DUMMY_CONTENT = {
     "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
   tags: ["abc", "xyz"],
   timestamp: "Jan 27 2020",
-  content_type: "beginner",
+  level: "beginner",
   duration: 8,
   documents: [
     ...Array(12)
@@ -42,11 +42,11 @@ const DUMMY_CONTENT = {
   ],
 };
 
-const Content = () => {
+const CoursePage = () => {
   const [content, setContent] = useState(DUMMY_CONTENT);
 
   const { query } = useRouter();
-  const contentId = query.contentId;
+  const courseId = query.courseId;
 
   const breadcrumbs = [
     { label: "Content", href: "/content" },
@@ -62,7 +62,7 @@ const Content = () => {
     description,
     duration,
   }) => (
-    <Link href={`/content/${contentId}/document/${_id}`}>
+    <Link href={`/course/${courseId}/documents/${_id}`}>
       <Card elevation={3} sx={{ cursor: "pointer" }}>
         <Box sx={{ p: 2 }}>
           <Grid container spacing={{ xs: 2, md: 3 }}>
@@ -111,6 +111,7 @@ const Content = () => {
 
   return (
     <Container maxWidth="xl" sx={{ py: 8 }}>
+      {/* TODO - build breadcrumbs from util function based on route */}
       <BreadcrumbsSection breadcrumbs={breadcrumbs} align="flex-start" />
 
       <Paper sx={{ p: 4, pb: { md: 6 }, mt: 4 }}>
@@ -138,4 +139,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default CoursePage;
