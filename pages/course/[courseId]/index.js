@@ -46,7 +46,7 @@ const CoursePage = () => {
   const [content, setContent] = useState(DUMMY_CONTENT);
 
   const { query } = useRouter();
-  const courseId = query.courseId;
+  const { courseId, programId } = query;
 
   const breadcrumbs = [
     { label: "Content", href: "/content" },
@@ -61,53 +61,62 @@ const CoursePage = () => {
     author,
     description,
     duration,
-  }) => (
-    <Link href={`/course/${courseId}/documents/${_id}`}>
-      <Card elevation={3} sx={{ cursor: "pointer" }}>
-        <Box sx={{ p: 2 }}>
-          <Grid container spacing={{ xs: 2, md: 3 }}>
-            <Grid item xs={12} sm={4} md={3} lg={2}>
-              <img
-                src={image}
-                alt={title}
-                style={{
-                  maxHeight: 200,
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            </Grid>
+  }) => {
+    const buildRedirect = () => {
+      if (programId)
+        return `/programs/${programId}/course/${courseId}/document/${_id}`;
 
-            <Grid item xs={12} sm={8} md={9} lg={10}>
-              <Stack spacing={2}>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  {title}
-                </Typography>
+      return `/course/${courseId}/documents/${_id}`;
+    };
 
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Brightness1Icon sx={{ fontSize: 18 }} />
-                  <Typography>{author}</Typography>
+    return (
+      <Link href={buildRedirect(query)}>
+        <Card elevation={3} sx={{ cursor: "pointer" }}>
+          <Box sx={{ p: 2 }}>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
+              <Grid item xs={12} sm={4} md={3} lg={2}>
+                <img
+                  src={image}
+                  alt={title}
+                  style={{
+                    maxHeight: 200,
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={8} md={9} lg={10}>
+                <Stack spacing={2}>
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    {title}
+                  </Typography>
+
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Brightness1Icon sx={{ fontSize: 18 }} />
+                    <Typography>{author}</Typography>
+                  </Stack>
+
+                  <Typography>{description}</Typography>
+
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                    spacing={0.7}
+                  >
+                    <AccessTimeIcon sx={{ fontSize: 18 }} />
+                    <Typography>{duration} mins</Typography>
+                  </Stack>
                 </Stack>
-
-                <Typography>{description}</Typography>
-
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                  spacing={0.7}
-                >
-                  <AccessTimeIcon sx={{ fontSize: 18 }} />
-                  <Typography>{duration} mins</Typography>
-                </Stack>
-              </Stack>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Card>
-    </Link>
-  );
+          </Box>
+        </Card>
+      </Link>
+    );
+  };
 
   return (
     <Container maxWidth="xl" sx={{ py: 8 }}>

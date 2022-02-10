@@ -3,10 +3,13 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import ProgramsCoursesCarousel from "@components/carousels/ProgramsCoursesCarousel";
 import ResponsiveText from "@components/ResponsiveText";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
 
 const DUMMY_PROGRAM = {
+  _id: 0,
   title: "Facilitator Onboarding Program",
   subtitle:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat elit in nulla porttitor tempus. Donec suscipit velit sit amet purus cursus dictum. ",
@@ -15,18 +18,25 @@ const DUMMY_PROGRAM = {
   courses: [
     ...Array(12)
       .fill()
-      .map((i) => ({
+      .map((_, i) => ({
+        _id: i,
         title: "Lorem Ipsum is simply dummy text",
         tags: ["Onboarding", "Maker"],
         timestamp: "Jan 27 2020",
         level: "beginner",
         duration: 8,
+        content_type: "course",
       })),
   ],
 };
 
 const Program = () => {
   const [program, setProgram] = useState(DUMMY_PROGRAM);
+
+  const { query } = useRouter();
+  const { programId } = query;
+
+  const firstCourseId = program?.courses?.[0]?._id;
 
   const breadcrumbs = [
     { label: "Programs", href: "/programs" },
@@ -50,13 +60,20 @@ const Program = () => {
             Facilitator Onboarding Program
           </ResponsiveText>
 
-          <RoundedButton variant="outlined" sx={{ height: 40 }}>
-            Begin
-          </RoundedButton>
+          <Link
+            href={`/programs/${programId}/course/${firstCourseId}/document/0`}
+          >
+            <RoundedButton variant="outlined" sx={{ height: 40 }}>
+              Begin
+            </RoundedButton>
+          </Link>
         </Stack>
 
         <Box sx={{ pb: { xs: 3, md: 5 } }}>
-          <ProgramsCoursesCarousel courses={program.courses} />
+          <ProgramsCoursesCarousel
+            courses={program.courses}
+            _programId={program._id}
+          />
         </Box>
 
         <Container>

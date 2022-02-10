@@ -37,7 +37,7 @@ const ContentCardMin = ({
 
   return (
     // TODO - Use util function to build the url depending on the route
-    <Link href={`programs/${_programId}/course/${_id}`}>
+    <Link href={`/programs/${_programId}/course/${_id}`}>
       <Card
         elevation={3}
         sx={{
