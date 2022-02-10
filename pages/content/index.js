@@ -7,10 +7,16 @@ import { connectToDB } from "db/connect";
 import { getContent, getContentSearchTags } from "db/content";
 import React from "react";
 import {TAGS} from "src/constants/tags";
+import { nanoid } from "nanoid";
 
 const ContentPage = (props) => {
-  const { content = [] } = props;
+  let { content = [] } = props;
+  console.log('hi',content[0]._id);
   const tags = props.tags;
+
+  const handleLoadMore = async () => {
+    console.log(nanoid(21));
+  }
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
@@ -37,18 +43,16 @@ const ContentPage = (props) => {
         </Grid>
 
         {/* Load more */}
-        <RoundedButton>Load More</RoundedButton>
+        <RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>
       </Stack>
     </Container>
   );
 };
 
 export async function getServerSideProps(context) {
-
   const {db} = await connectToDB();
   const docs = await getContent(db, {}, null, null);
   const tags = await getContentSearchTags(db, TAGS);
-  console.log(tags);
 
   return {
     props: {

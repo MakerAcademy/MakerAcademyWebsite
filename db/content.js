@@ -5,7 +5,7 @@ export const getContent = async (db, filters, lastItemId, lastItemTime) => {
                 children: 0,
             })
             .sort({timestamp: 1})
-            .limit(20)
+            .limit(1)
             .toArray();
     }
     return db.collection('content').find({ 
@@ -17,16 +17,12 @@ export const getContent = async (db, filters, lastItemId, lastItemTime) => {
             children: 0,
         })
         .sort({timestamp : 1})
-        .limit(20)
+        .limit(1)
         .toArray();
 }
 
 export const getContentSearchTags = async (db, categories) => {
-
-
-    const tags = await Promise.all(categories.map(category => fetchDistinctTagValues(db,category)));
-    console.log(tags)
-    return tags
+    return await Promise.all(categories.map(category => fetchDistinctTagValues(db, category)))
 }
 
 const fetchDistinctTagValues = async (db, category) => {

@@ -1,4 +1,4 @@
-import {nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 
 export const getOneDocument = async (db, id) => {
     return db.collection('content').findOne({_id: id})
@@ -33,6 +33,5 @@ export const updateOneDocument = async (db, id, updates) => {
         console.log("could not update document")
     }
 
-    const updated = await db.collection('documents').findOne({ _id: id})
-    return updated
+  return await db.collection('documents').findOne({ _id: id })
 }
