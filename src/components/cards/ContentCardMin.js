@@ -16,9 +16,7 @@ const ContentCardMin = ({ title, tags, duration, content_type, timestamp }) => {
   const CustomChip = ({ text }) => (
     <Chip
       label={
-        <Typography variant="body2" sx={{ fontWeight: 400 }}>
-          {text}
-        </Typography>
+        <Typography sx={{ fontSize: 13, fontWeight: 400 }}>{text}</Typography>
       }
       sx={{
         backgroundColor: theme.palette.background.black,

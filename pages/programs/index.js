@@ -11,12 +11,13 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const ProgramsPage = ({ programs = [] }) => {
   const theme = useTheme();
 
-  const ProgramContainer = ({ title, subtitle, children }) => (
+  const ProgramContainer = ({ _id, title, subtitle, children }) => (
     <Paper sx={{ p: 3, borderRadius: "10px" }}>
       <Stack
         direction="row"
@@ -31,12 +32,14 @@ const ProgramsPage = ({ programs = [] }) => {
           <Typography>{subtitle}</Typography>
         </Box>
 
-        <RoundedButton
-          variant="outlined"
-          sx={{ height: 40, px: 2, minWidth: 115 }}
-        >
-          View More
-        </RoundedButton>
+        <Link href={`/programs/${_id}`}>
+          <RoundedButton
+            variant="outlined"
+            sx={{ height: 40, px: 2, minWidth: 115 }}
+          >
+            View More
+          </RoundedButton>
+        </Link>
       </Stack>
 
       <Box sx={{ py: 2 }}>{children}</Box>
@@ -44,7 +47,7 @@ const ProgramsPage = ({ programs = [] }) => {
   );
 
   return (
-    <Container sx={{ py: 10 }} maxWidth="xl">
+    <Container sx={{ py: 8 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
         {/* Breadcrumbds */}
         <BreadcrumbsSection
@@ -61,6 +64,7 @@ const ProgramsPage = ({ programs = [] }) => {
           {programs.map((program, i) => (
             <Box key={i}>
               <ProgramContainer
+                _id={program._id}
                 title={program.title}
                 subtitle={program.subtitle}
               >
@@ -82,14 +86,16 @@ export async function getServerSideProps(context) {
   const data = [
     ...Array(5)
       .fill()
-      .map((o) => ({
+      .map((_, i) => ({
+        _id: i,
         title: "Facilitator Onboarding Program",
         subtitle:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat elit in nulla porttitor tempus. Donec suscipit velit sit amet purus cursus dictum. ",
         courses: [
           ...Array(12)
             .fill()
-            .map((i) => ({
+            .map((_, j) => ({
+              _id: j,
               title: "Lorem Ipsum is simply dummy text",
               tags: ["Maker", "DeFi"],
               timestamp: "Jan 27 2020",

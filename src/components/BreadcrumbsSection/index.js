@@ -9,13 +9,19 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const BreadcrumbsSection = ({ title, subtitle, breadcrumbs = [], sx = {} }) => {
+const BreadcrumbsSection = ({
+  title,
+  subtitle,
+  breadcrumbs = [],
+  sx = {},
+  align = "center",
+}) => {
   const theme = useTheme();
 
   return (
     <Box sx={{ ...sx }}>
       <Stack
-        alignItems="center"
+        alignItems={align}
         justifyContent="center"
         spacing={2}
         sx={{
@@ -23,9 +29,11 @@ const BreadcrumbsSection = ({ title, subtitle, breadcrumbs = [], sx = {} }) => {
           textAlign: "center",
         }}
       >
-        <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
-          {title}
-        </ResponsiveText>
+        {title && (
+          <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
+            {title}
+          </ResponsiveText>
+        )}
 
         {subtitle && (
           <ResponsiveText variant="h6" sx={{ fontWeight: 300, maxWidth: 900 }}>
