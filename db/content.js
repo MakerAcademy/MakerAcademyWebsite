@@ -1,5 +1,7 @@
 export const getContent = async (db, filters, lastItemTime) => {
     if (!lastItemTime) {
+        console.log("fetching content");
+        console.log(filters)
         return db.collection('content').find(filters)
             .project({
                 children: 0,
@@ -8,8 +10,10 @@ export const getContent = async (db, filters, lastItemTime) => {
             .limit(20)
             .toArray();
     }
+    console.log("fetching content");
     return db.collection('content').find({
         timestamp: {$gt : lastItemTime},
+        filters,
         })
         .project({
             children: 0,
@@ -26,7 +30,7 @@ export const getContentSearchTags = async (db, categories) => {
 const fetchDistinctTagValues = async (db, category) => {
     let mappings = await db.collection('content').distinct(category, {});
     mappings = mappings.map(subcategory => {
-        return {value: subcategory, label: subcategory}
+        return {value: {[category]: subcategory}, label: subcategory}
     })
     return {
         category: category,

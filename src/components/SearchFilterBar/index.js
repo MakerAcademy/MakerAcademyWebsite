@@ -86,6 +86,10 @@ const SearchFilterBar = (props) => {
     }
   };
 
+  const triggerSearch = () => {
+    props.parentCallback(searchTerm, selectedFilters);
+  }
+
   return (
     <React.Fragment>
       <Paper
@@ -158,7 +162,9 @@ const SearchFilterBar = (props) => {
             borderBottomRightRadius: "10px",
           }}
         >
-          <IconButton sx={{ p: "10px", color: theme.palette.primary.white }}>
+          <IconButton
+            sx={{ p: "10px", color: theme.palette.primary.white }}
+            onClick={triggerSearch}>
             <SearchIcon />
           </IconButton>
         </Box>

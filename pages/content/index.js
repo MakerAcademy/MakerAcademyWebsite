@@ -5,28 +5,43 @@ import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Divider, Grid, Stack } from "@mui/material";
 import { connectToDB } from "db/connect";
 import { getContent, getContentSearchTags, getCountEstimate } from "db/content";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {TAGS} from "src/constants/tags";
 
 const ContentPage = (props) => {
   const limit = props.limit;
-  const { content = [] } = props;
-  const {cards, setCards} = useState(content);
+  const {content = [] } = props
+  const [cards, setCards] = useState(content);
   const tags = props.tags;
+  const [searchQuery, setSearchQuery ] = useState("");
+  const [searchFilters, setSearchFilters] = useState([])
 
-  const handleLoadMore = async () => {
+
+  const handleCallback = (q, f) => {
+    setSearchQuery(q);
+    setSearchFilters(f);
+  }
+
+  useEffect(() => {
+    console.log(searchFilters)
+    fetchFreshDocs(searchFilters, null).then(() => {
+      console.log('fetched ', cards.length, ' cards');
+    })
+  }, [searchQuery, searchFilters])
+
+  const fetchFreshDocs = async (filters, lastItemTime) => {
     const response = fetch('api/content', {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+          "Content-Type": 'application/json',
       },
       body: JSON.stringify({
-        filters: JSON.stringify({}),
-        lastItemTime: cards[cards.length -1].timestamp,
+        filters: filters,
+        lastItemTime: lastItemTime
       })
     }).then((response) => response.json())
       .then((body) => {
-        setCards(cards.concat(body.message));
+        setCards(body.message)
       });
   }
 
@@ -41,17 +56,23 @@ const ContentPage = (props) => {
         />
 
         {/* Search */}
-        <SearchFilterBar tags={tags}/>
+        <SearchFilterBar tags={tags} parentCallback={handleCallback}/>
 
         {/* Content */}
         <Grid container sx={{ width: "100%", pb: 2 }}>
-          {content.map((item, i) => (
+          {cards.length > 0 ? (cards.map((item, i) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
               <Box sx={{ p: 2 }}>
                 <ContentCard {...item} />
               </Box>
             </Grid>
-          ))}
+          ))) : (content.map((item, i) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+              <Box sx={{ p: 2 }}>
+                <ContentCard {...item} />
+              </Box>
+            </Grid>
+          )))}
         </Grid>
 
         {/* Load more */}
