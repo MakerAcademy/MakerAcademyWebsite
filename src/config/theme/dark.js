@@ -6,6 +6,7 @@ import typography from "./typography";
 const colors = {
   ...commonColors,
   ...makerTheme.colors,
+  inverse: "#fff",
 };
 
 export const darkTheme = createTheme({

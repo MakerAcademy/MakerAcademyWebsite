@@ -6,6 +6,7 @@ import typography from "./typography";
 const colors = {
   ...commonColors,
   ...makerTheme.colors,
+  inverse: "#000",
 };
 
 export const lightTheme = createTheme({

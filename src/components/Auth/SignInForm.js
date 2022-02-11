@@ -12,6 +12,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import RoundedButton from "@components/buttons/RoundedButton";
+import Link from "next/link";
 
 const SignInForm = () => {
   const theme = useTheme();
@@ -62,9 +63,11 @@ const SignInForm = () => {
         sx={{ maxWidth: 450 }}
       />
 
-      <RoundedButton fullWidth sx={{ maxWidth: 200 }}>
-        Sign in
-      </RoundedButton>
+      <Link href="/account">
+        <RoundedButton fullWidth sx={{ maxWidth: 200 }}>
+          Sign in
+        </RoundedButton>
+      </Link>
 
       <Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>
         Or
