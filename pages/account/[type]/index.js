@@ -16,7 +16,7 @@ const AccountPage = () => {
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
       <Stack direction="row" spacing={{ md: 6, lg: 10 }}>
-        <Box sx={{ minWidth: 272 }}>
+        <Box>
           <AccountSidebar />
         </Box>
 
@@ -30,7 +30,7 @@ const AccountPage = () => {
 
 const FormRenderer = {
   profile: ProfileForm,
-  account: AccountForm,
+  auth: AccountForm,
 };
 
 export default AccountPage;
