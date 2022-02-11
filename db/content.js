@@ -1,23 +1,21 @@
-export const getContent = async (db, filters, lastItemId, lastItemTime) => {
-    if (!lastItemId) {
+export const getContent = async (db, filters, lastItemTime) => {
+    if (!lastItemTime) {
         return db.collection('content').find(filters)
             .project({
                 children: 0,
             })
             .sort({timestamp: 1})
-            .limit(1)
+            .limit(20)
             .toArray();
     }
-    return db.collection('content').find({ 
-        _id: lastItemId,
+    return db.collection('content').find({
         timestamp: {$gt : lastItemTime},
-        ...filters,
         })
         .project({
             children: 0,
         })
         .sort({timestamp : 1})
-        .limit(1)
+        .limit(20)
         .toArray();
 }
 
@@ -34,4 +32,8 @@ const fetchDistinctTagValues = async (db, category) => {
         category: category,
         subCategories: mappings
     }
+}
+
+export const getCountEstimate = async (db, collection) => {
+    return db.collection(collection).estimatedDocumentCount();
 }

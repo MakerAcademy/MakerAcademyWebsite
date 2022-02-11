@@ -27,7 +27,6 @@ const ContentCard = ({
 }) => {
   const theme = useTheme();
   const tags = [topic, subtopic, level];
-  console.log(new Date());
 
   const CustomChip = ({ text }) => (
     <Chip

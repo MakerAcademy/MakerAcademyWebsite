@@ -6,7 +6,6 @@ global.mongo = global.mongo || {}
 export const connectToDB = async () => {
     console.log("begin connection");
     if (!global.mongo.client) {
-        console.log("test");
         const options = {
             useUnifiedTopology: true,
             useNewUrlParser: true,

@@ -2,26 +2,38 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
-import { Box, Container, Grid, Stack } from "@mui/material";
+import { Box, Container, Divider, Grid, Stack } from "@mui/material";
 import { connectToDB } from "db/connect";
-import { getContent, getContentSearchTags } from "db/content";
-import React from "react";
+import { getContent, getContentSearchTags, getCountEstimate } from "db/content";
+import React, { useState } from "react";
 import {TAGS} from "src/constants/tags";
-import { nanoid } from "nanoid";
 
 const ContentPage = (props) => {
-  let { content = [] } = props;
-  console.log('hi',content[0]._id);
+  const limit = props.limit;
+  const { content = [] } = props;
+  const {cards, setCards} = useState(content);
   const tags = props.tags;
 
   const handleLoadMore = async () => {
-    console.log(nanoid(21));
+    const response = fetch('api/content', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        filters: JSON.stringify({}),
+        lastItemTime: cards[cards.length -1].timestamp,
+      })
+    }).then((response) => response.json())
+      .then((body) => {
+        setCards(cards.concat(body.message));
+      });
   }
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
-        {/* Breadcrumbds */}
+        {/* Breadcrumbs */}
         <BreadcrumbsSection
           title="Content"
           subtitle="This page hosts all of Maker Academy's educational content, ranging from articles to courses to videos. To aid your search for content, consider using our filters and search bar below!"
@@ -43,7 +55,9 @@ const ContentPage = (props) => {
         </Grid>
 
         {/* Load more */}
-        <RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>
+        { (limit > content.length) ? (<RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>) :
+          (<></>)}
+
       </Stack>
     </Container>
   );
@@ -51,14 +65,15 @@ const ContentPage = (props) => {
 
 export async function getServerSideProps(context) {
   const {db} = await connectToDB();
-  const docs = await getContent(db, {}, null, null);
+  const docs = await getContent(db, {},  null);
   const tags = await getContentSearchTags(db, TAGS);
+  const count = await getCountEstimate(db, 'content');
 
   return {
     props: {
       content: docs,
       tags: tags,
-      test: "HELLO",
+      limit: count,
     },
   };
 }

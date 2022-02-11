@@ -33,7 +33,6 @@ const Home = ({ appConfig }) => {
 
   const { projectName } = appConfig;
 
-  console.log(new Date());
 
   return (
     <Box>
