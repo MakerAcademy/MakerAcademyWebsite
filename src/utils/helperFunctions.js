@@ -12,3 +12,9 @@ export const handleLanguageChange = async (
 
   return null;
 };
+
+export const flattenChildren = (text, child) => {
+  return typeof child === "string"
+    ? text + child
+    : React.Children.toArray(child.props.children).reduce(flatten, text);
+};
