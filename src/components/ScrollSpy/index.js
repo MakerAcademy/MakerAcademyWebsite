@@ -18,6 +18,7 @@ const ScrollSpy = ({ title, data }) => {
   return (
     <Box
       sx={{
+        height: "100%",
         minWidth: 10,
         "& ul": { paddingLeft: 0 },
         [theme.breakpoints.up("md")]: {
@@ -28,7 +29,7 @@ const ScrollSpy = ({ title, data }) => {
         // },
       }}
     >
-      <Box sx={{ position: "fixed", width: "inherit" }}>
+      <Box sx={{ position: "sticky", top: 10, width: "inherit" }}>
         <Hidden mdDown>
           {title && (
             <Typography variant="h5" sx={{ mb: 3 }}>
@@ -69,10 +70,14 @@ const ScrollSpy = ({ title, data }) => {
                     }}
                   >
                     <Stack direction="row" spacing={1}>
-                      <Typography>{item.chapter}</Typography>
+                      <Typography variant={ml ? "body2" : "body1"}>
+                        {item.chapter}
+                      </Typography>
 
                       <Hidden mdDown>
-                        <Typography>{item.title}</Typography>
+                        <Typography variant={ml ? "body2" : "body1"}>
+                          {item.title}
+                        </Typography>
                       </Hidden>
                     </Stack>
                   </ListItem>
