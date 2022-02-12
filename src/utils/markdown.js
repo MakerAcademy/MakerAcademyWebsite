@@ -11,6 +11,82 @@ export const extractHeadingsFromMd = (
   return markdownText.match(headingRegex);
 };
 
+// Get the level of header
+export const getLevel = (string) => {
+  const level = string.split("#").length - 1;
+  return level;
+};
+
+// Parse depths (header levels) to start from 0
+export const parseDepths = (data) => {
+  const lowestHeader = Math.min.apply(
+    Math,
+    data.map((o) => o.level)
+  );
+
+  const parsed = data.map((item) => {
+    const depth = item.level - lowestHeader;
+
+    return {
+      ...item,
+      depth,
+    };
+  });
+
+  return parsed;
+};
+
+// Add chapter numbers to the array
+export const addChapters = (data) => {
+  const same = (str) => {
+    if (str === "") {
+      return (1).toString();
+    } else {
+      let arr = str.split(".");
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = parseInt(arr[i]);
+      }
+
+      arr[arr.length - 1] += 1;
+      str = arr.join(".");
+      return str;
+    }
+  };
+
+  const low = (str, depth) => {
+    let arr = str.split(".").slice(0, depth + 1);
+
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = parseInt(arr[i]);
+    }
+
+    arr[depth] += 1;
+    str = arr.join(".");
+    return str;
+  };
+
+  let latest = "";
+  let last = 0;
+
+  const parsed = data.map((item) => {
+    const { depth } = item;
+
+    if (depth == last) {
+      latest = same(latest);
+    } else if (depth > last) {
+      latest += ".1";
+    } else {
+      latest = low(latest, depth);
+    }
+
+    last = depth;
+
+    return { ...item, chapter: latest };
+  });
+
+  return parsed;
+};
+
 // It removes # from the given string. And it shortens the string if its longer than "stringLimit".
 export const createTitle = (string, stringLimit) => {
   const rawTitle = string.replace(/^#+\s/g, "").replaceAll("\n", "");
@@ -37,7 +113,19 @@ Maker is a financial service created for the Ethereum Blockchain in 2015. Specif
 
 ## MakerDAO Summary
 
-MakerDAO is the organization that governs Maker. It uses a novel business structure, called a DAO. They are a DAO to take advantage of blockchain’s decentralization.
+MakerDAO is the organization that governs Maker. It uses a novel business structure, called a DAO. They are a DAO to take advantage of blockchain's decentralization.
+
+#### Another Summary 1
+
+This is a subheader which is part of MakerDAO Summary, try and navigate to this and it will work perfectly.
+
+###### Another Sub Summary
+
+This is a subheader which is part of Another Summary which is part of MakerDAO Summary, try and navigate to this and it will work perfectly.
+
+#### Another Summary 2
+
+This is a subheader which is part of MakerDAO Summary, try and navigate to this and it will work perfectly.
 
 ## Reasons to Learn
 
