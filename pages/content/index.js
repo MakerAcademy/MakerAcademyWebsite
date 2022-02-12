@@ -23,7 +23,6 @@ const ContentPage = (props) => {
   }
 
   useEffect(() => {
-    console.log(searchFilters)
     fetchFreshDocs(searchFilters, null).then(() => {
       console.log('fetched ', cards.length, ' cards');
     })

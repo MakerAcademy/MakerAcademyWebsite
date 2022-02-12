@@ -13,6 +13,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Link from "next/link";
 
 const ContentCard = ({
+  _id,
   thumbnail_url,
   title,
   description,
@@ -74,7 +75,7 @@ const ContentCard = ({
           <Divider sx={{ my: 1.5 }} />
 
           <Typography variant="body2" sx={{ mb: 3 }}>
-            {subtitle}
+            {description}
           </Typography>
 
           <Stack

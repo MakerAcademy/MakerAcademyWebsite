@@ -19,8 +19,12 @@ async function getMoreDocuments(req, res, db) {
     return res.status(400).end();
   }
   const f = body.filters
-  const filters = {
-    $and: f.map((f) => f.value)
+  if (f.length > 0) {
+    const filters = {
+      $and: f.map((f) => f.value)
+    }
+  } else {
+    const filters = null
   }
   try {
     const content = await getContent(db, filters, body.lastItemTime);
@@ -32,7 +36,4 @@ async function getMoreDocuments(req, res, db) {
     console.log(err);
     return res.status(500).end();
   }
-
-
 }
-

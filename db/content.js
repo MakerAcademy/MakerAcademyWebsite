@@ -1,7 +1,7 @@
 export const getContent = async (db, filters, lastItemTime) => {
+    console.log("fetching content");
     if (!lastItemTime) {
-        console.log("fetching content");
-        console.log(filters)
+
         return db.collection('content').find(filters)
             .project({
                 children: 0,
@@ -10,7 +10,6 @@ export const getContent = async (db, filters, lastItemTime) => {
             .limit(20)
             .toArray();
     }
-    console.log("fetching content");
     return db.collection('content').find({
         timestamp: {$gt : lastItemTime},
         filters,
