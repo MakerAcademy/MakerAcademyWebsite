@@ -1,0 +1,178 @@
+import RoundedButton from "@components/buttons/RoundedButton";
+import PreviewProfileCard from "@components/cards/PreviewProfileCard";
+import FormDropzone from "@components/FormComponents/FormDropzone";
+import FormTextField from "@components/FormComponents/FormTextField";
+import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
+
+const ProfileForm = () => {
+  const theme = useTheme();
+
+  const hookForm = useForm();
+  const { handleSubmit, reset, control, getValues } = hookForm;
+
+  const SectionTitle = ({ children }) => (
+    <Typography sx={{ fontSize: 20, fontWeight: 500, mb: 2.5 }}>
+      {children}
+    </Typography>
+  );
+
+  const FieldLabel = ({ children }) => (
+    <Typography sx={{ fontSize: 14, fontWeight: 300, mb: 1 }}>
+      {children}
+    </Typography>
+  );
+
+  const onSubmit = (data, e) => {
+    reset(); // reset after form submit
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={5}>
+        {/* Form */}
+        <Grid item xs={12} lg={8} xl={9}>
+          {/* Upload File */}
+          <Box>
+            <SectionTitle>Upload a Profile Picture</SectionTitle>
+            <FormDropzone name="image" control={control}>
+              <Stack
+                spacing={2}
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{
+                  width: "100%",
+                  [theme.breakpoints.up("md")]: { px: 6 },
+                }}
+              >
+                <Typography>Only types PNG or JPG under 5mb</Typography>
+                <RoundedButton variant="outlined">Upload file</RoundedButton>
+              </Stack>
+            </FormDropzone>
+          </Box>
+
+          {/* Form */}
+          <Grid
+            container
+            spacing={{ xs: 2, md: 4, lg: 6 }}
+            sx={{ pt: { xs: 3, lg: 4 } }}
+          >
+            {/* Account Left side */}
+            <Grid item xs={12} md={6}>
+              <Stack spacing={3}>
+                <SectionTitle disableMargin>Account Info</SectionTitle>
+
+                <Box>
+                  <FieldLabel>Display name</FieldLabel>
+                  <FormTextField
+                    name="name"
+                    control={control}
+                    placeholder="Colby Anderson"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Title</FieldLabel>
+                  <FormTextField
+                    name="title"
+                    control={control}
+                    placeholder="Educator"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Email</FieldLabel>
+                  <FormTextField
+                    disabled
+                    name="email"
+                    control={control}
+                    placeholder="abc@gmail.com"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Bio</FieldLabel>
+                  <FormTextField
+                    name="bio"
+                    control={control}
+                    multiline
+                    rows={3}
+                  />
+                </Box>
+              </Stack>
+            </Grid>
+
+            {/* Socials Right side */}
+            <Grid item xs={12} md={6}>
+              <Stack spacing={3}>
+                <SectionTitle disableMargin>Your Social Media</SectionTitle>
+
+                <Box>
+                  <FieldLabel>Facebook</FieldLabel>
+                  <FormTextField
+                    name="facebook"
+                    control={control}
+                    placeholder="@colby_anderson"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Twitter</FieldLabel>
+                  <FormTextField
+                    name="url"
+                    control={control}
+                    placeholder="@colby_anderson"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Discord</FieldLabel>
+                  <FormTextField
+                    name="discord"
+                    control={control}
+                    placeholder="Discord Link"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Other</FieldLabel>
+                  <FormTextField
+                    name="other_link"
+                    control={control}
+                    placeholder="Any other link you have"
+                  />
+                </Box>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Stack alignItems="flex-end" spacing={2}>
+                <RoundedButton
+                  variant="navbar"
+                  type="submit"
+                  sx={{
+                    minWidth: 200,
+                  }}
+                >
+                  Update Profile
+                </RoundedButton>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* Profile Card */}
+        <Grid item xs={12} lg={4} xl={3}>
+          <Stack alignItems="center">
+            <PreviewProfileCard control={control} />
+          </Stack>
+        </Grid>
+      </Grid>
+    </form>
+  );
+};
+
+export default ProfileForm;
