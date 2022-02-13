@@ -1,5 +1,7 @@
 import CourseDocument from "@components/documents/CourseDocument";
 import React from "react";
+import { connectToDB } from "../../../../db/connect";
+import { getOneDocument } from "../../../../db/document";
 
 const DUMMY_DOCUMENT = {
   title: "Document Title",
@@ -11,5 +13,8 @@ const DUMMY_DOCUMENT = {
 const DocumentPage = () => {
   return <CourseDocument data={DUMMY_DOCUMENT} />;
 };
+
+
+
 
 export default DocumentPage;

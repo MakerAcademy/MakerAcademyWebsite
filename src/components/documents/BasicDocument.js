@@ -22,19 +22,22 @@ const BasicDocument = ({ data = {} }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
 
-  const { title, author, content, timestamp } = document;
+  console.log(data);
+
+  const { title, author_id, body, timestamp } = document;
 
   function HeadingRenderer(props) {
     var children = React.Children.toArray(props.children);
     var text = children.reduce(flattenChildren, "");
     var slug = createSlug(text);
+    console.log("test", children, text, slug);
     return React.createElement("h" + props.level, { id: slug }, props.children);
   }
 
   // Generate all Ids from headers
   useEffect(() => {
-    if (content) {
-      const headers = extractHeadingsFromMd(content);
+    if (body) {
+      const headers = extractHeadingsFromMd(body);
       const _ids = headers?.reduce((acc, header) => {
         const title = createTitle(header);
         const slug = createSlug(title);
@@ -43,7 +46,7 @@ const BasicDocument = ({ data = {} }) => {
 
       setIds(_ids || []);
     }
-  }, [content]);
+  }, [body]);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
@@ -68,7 +71,7 @@ const BasicDocument = ({ data = {} }) => {
             >
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Brightness1Icon sx={{ fontSize: 18 }} />
-                <Typography>{author}</Typography>
+                <Typography>{author_id}</Typography>
               </Stack>
 
               <Stack
@@ -77,7 +80,7 @@ const BasicDocument = ({ data = {} }) => {
                 justifyContent="flex-end"
                 spacing={0.7}
               >
-                <Typography>Posted {timestamp}</Typography>
+                <Typography>Posted {new Date(timestamp).toDateString()}</Typography>
               </Stack>
             </Stack>
 
@@ -85,7 +88,7 @@ const BasicDocument = ({ data = {} }) => {
 
             <Box sx={{ minHeight: "50vh" }}>
               <ReactMarkdown components={{ h2: HeadingRenderer }}>
-                {content}
+                {body}
               </ReactMarkdown>
             </Box>
           </Stack>
