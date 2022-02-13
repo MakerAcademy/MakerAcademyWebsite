@@ -6,25 +6,25 @@ export default async function handler(req, res) {
   const {db} = await connectToDB();
   switch (req.method) {
     case "GET":
-      return await getMoreDocuments(req, res, db);
+      return await fetchMoreContent(req, res, db);
     case "POST":
-      return await getMoreDocuments(req, res, db);
+      return await fetchMoreContent(req, res, db);
   }
 }
 
-async function getMoreDocuments(req, res, db) {
+async function fetchMoreContent(req, res, db) {
   const body = req.body
   const expectedFields = ['filters','lastItemTime']
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
   }
+  let filters = {}
   const f = body.filters
   if (f.length > 0) {
-    const filters = {
+    filters = {
       $and: f.map((f) => f.value)
     }
-  } else {
-    const filters = null
+    console.log(filters);
   }
   try {
     const content = await getContent(db, filters, body.lastItemTime);

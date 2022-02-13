@@ -4,12 +4,6 @@ export const getOneDocument = async (db, id) => {
     return db.collection('content').findOne({_id: id})
 }
 
-export const getCourseDocuments = async (db, ids) => {
-    return db.collection('documents').find({
-        _id: {$in: ids},
-    }).toArray()
-}
-
 export const createDocument = async (db, doc) => {
     return db
         .collection('documents')

@@ -21,7 +21,7 @@ const SignInContent = ({ handleSignUp }) => {
       <ResponsiveText variant="h5">Good to see you again!</ResponsiveText>
 
       <ResponsiveText variant="h6" sx={{ fontWeight: 400, pb: 3 }}>
-        By logging in for Maker Academy, you agree to our Terms of Use and our
+        By siging in for Maker Academy, you agree to our Terms of Use and our
         Privacy Policy.
       </ResponsiveText>
 

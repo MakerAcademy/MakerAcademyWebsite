@@ -50,7 +50,7 @@ const ContentPage = (props) => {
         {/* Breadcrumbs */}
         <BreadcrumbsSection
           title="Content"
-          subtitle="This page hosts all of Maker Academy's educational content, ranging from articles to courses to videos. To aid your search for content, consider using our filters and search bar below!"
+          subtitle="This page hosts all of Maker Academy's educational content, ranging from articles to videos to entire courses. To aid your search for content, consider using our filters and search bar below!"
           sx={{ mb: 3 }}
         />
 
