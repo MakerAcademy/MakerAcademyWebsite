@@ -13,6 +13,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import RoundedButton from "@components/buttons/RoundedButton";
 import Link from "next/link";
+import { grey } from "@mui/material/colors";
 
 const SignInForm = () => {
   const theme = useTheme();
@@ -51,7 +52,11 @@ const SignInForm = () => {
         placeholder="Email / username"
         fullWidth
         sx={{ maxWidth: 450 }}
-        // InputProps={{ sx: { borderRadius: 20 } }}
+        InputLabelProps={{
+          sx: {
+            color: theme.palette.mode === "dark" ? grey[100] : grey[600],
+          },
+        }}
       />
 
       <TextField
@@ -60,7 +65,14 @@ const SignInForm = () => {
         placeholder="Password"
         type="password"
         fullWidth
-        sx={{ maxWidth: 450 }}
+        sx={{
+          maxWidth: 450,
+        }}
+        InputLabelProps={{
+          sx: {
+            color: theme.palette.mode === "dark" ? grey[100] : grey[600],
+          },
+        }}
       />
 
       <Link href="/account">

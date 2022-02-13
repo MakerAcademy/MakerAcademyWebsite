@@ -70,16 +70,17 @@ export const addChapters = (data) => {
 
   const parsed = data.map((item) => {
     const { depth } = item;
+    let dp = depth / 2;
 
-    if (depth == last) {
+    if (dp == last) {
       latest = same(latest);
-    } else if (depth > last) {
+    } else if (dp > last) {
       latest += ".1";
     } else {
-      latest = low(latest, depth);
+      // last = dp + 1
+      latest = low(latest, dp);
     }
-
-    last = depth;
+    last = dp;
 
     return { ...item, chapter: latest };
   });
