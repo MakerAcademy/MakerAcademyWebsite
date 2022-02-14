@@ -50,7 +50,8 @@ const LandingNavbar = ({ appConfig }) => {
         elevation={0}
         color="transparent"
         sx={{
-          backdropFilter: "blur(2px)",
+          // Decrease the blur for a transparency-blurred effect
+          backdropFilter: "blur(50px)",
         }}
       >
         <Container maxWidth="xl">

@@ -2,7 +2,14 @@ import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
 import styled from "@emotion/styled";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
 import {
   addChapters,
@@ -10,10 +17,12 @@ import {
   createTitle,
   extractHeadingsFromMd,
   getLevel,
-  parseDepths
+  parseDepths,
 } from "@utils/markdown";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import BackButton from "@components/buttons/BackButton";
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & > h2 {
@@ -58,7 +67,8 @@ const BasicDocument = ({ data = {} }) => {
       <Stack direction="row" spacing={5}>
         {ids.length > 0 && (
           <Box>
-            <ScrollSpy title="Content" data={ids} />
+            <BackButton sx={{ mb: { xs: 1, md: 2 } }} />
+            <ScrollSpy title="Table of Content" data={ids} />
           </Box>
         )}
 
