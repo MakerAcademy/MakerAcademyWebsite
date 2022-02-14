@@ -16,6 +16,7 @@ const ContentCard = ({
   _id,
   thumbnail_url,
   title,
+  subtitle,
   description,
   topic,
   subtopic,
@@ -70,7 +71,7 @@ const ContentCard = ({
           <Typography variant="h6">{title}</Typography>
           <Divider sx={{ my: 1.5 }} />
           <Typography variant="body2" sx={{ mb: 3 }}>
-            {description}
+            {subtitle}
           </Typography>
           <Stack
             direction="row"

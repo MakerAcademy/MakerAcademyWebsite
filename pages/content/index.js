@@ -8,11 +8,8 @@ import { getContent, getContentSearchTags, getCountEstimate } from "db/content";
 import React, { useCallback, useEffect, useState } from "react";
 import {TAGS} from "src/constants/tags";
 
-const ContentPage = (props) => {
-  const limit = props.limit;
-  const {content = [] } = props
+const ContentPage = ({ limit, content, tags }) => {
   const [cards, setCards] = useState(content);
-  const tags = props.tags;
   const [searchQuery, setSearchQuery ] = useState("");
   const [searchFilters, setSearchFilters] = useState([])
 

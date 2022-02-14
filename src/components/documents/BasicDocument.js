@@ -34,15 +34,12 @@ const BasicDocument = ({ data = {} }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
 
-  console.log(data);
-
   const { title, author_id, body, timestamp } = document;
 
   function HeadingRenderer(props) {
     var children = React.Children.toArray(props.children);
     var text = children.reduce(flattenChildren, "");
     var slug = createSlug(text);
-    console.log("test", children, text, slug);
     return React.createElement("h" + props.level, { id: slug }, props.children);
   }
 
@@ -57,7 +54,7 @@ const BasicDocument = ({ data = {} }) => {
         return [...acc, { title, slug, level }];
       }, []);
 
-      const _temp2 = parseDepths(_temp || []);
+      const _temp2 = parseDepths(_ids || []);
       const _temp3 = addChapters(_temp2 || []);
 
       setIds(_temp3 || []);

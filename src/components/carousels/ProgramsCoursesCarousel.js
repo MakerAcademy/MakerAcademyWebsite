@@ -28,7 +28,8 @@ const ProgramsCoursesCarousel = ({ courses = [], _programId }) => {
           sx={{ display: "flex !important", p: 1 }}
         >
           <ContentCardMin _programId={_programId} {...course} />
-          <ArrowForwardIcon sx={{ ml: 1 }} />
+          {(i < courses.length-1) && <ArrowForwardIcon sx={{ ml: 1 }} />}
+
         </Stack>
       ))}
     </Slider>

@@ -24,7 +24,6 @@ async function fetchMoreContent(req, res, db) {
     filters = {
       $and: f.map((f) => f.value)
     }
-    console.log(filters);
   }
   try {
     const content = await getContent(db, filters, body.lastItemTime);

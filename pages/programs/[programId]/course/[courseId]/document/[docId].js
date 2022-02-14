@@ -1,15 +1,21 @@
 import BasicDocument from "@components/documents/BasicDocument";
 import React from "react";
+import { connectToDB } from "../../../../../../db/connect";
+import { getOneDocument } from "../../../../../../db/document";
 
-const DUMMY_DOCUMENT = {
-  title: "Document Title",
-  description: "A long HTML formatted description here",
-  author: "John doe",
-  timestamp: "Jan 31, 2022",
+
+const DocumentPage = ({doc}) => {
+  return <BasicDocument data={doc} />;
 };
 
-const DocumentPage = () => {
-  return <BasicDocument data={DUMMY_DOCUMENT} />;
-};
+export async function getServerSideProps(context) {
+  const {db} = await connectToDB();
+  const doc = await getOneDocument(db, context.params.docId);
+  return {
+    props: {
+      doc: doc
+    }
+  }
+}
 
 export default DocumentPage;

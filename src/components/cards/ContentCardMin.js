@@ -14,14 +14,21 @@ import React from "react";
 const ContentCardMin = ({
   _programId,
   _id,
+  thumbnail_url,
   title,
-  tags,
+  description,
+  topic,
+  subtopic,
   duration,
+  content_type,
   level,
   timestamp,
-  content_type,
+  verification,
+  views,
+  likes,
 }) => {
   const theme = useTheme();
+  const tags = [topic, subtopic, level]
 
   const CustomChip = ({ text }) => (
     <Chip
@@ -51,13 +58,12 @@ const ContentCardMin = ({
           <Stack spacing={1.5}>
             {/* Tags */}
             <Stack direction="row" alignItems="center" spacing={0.5}>
-              <CustomChip text={level} />
               {tags.map((tag, i) => (
                 <CustomChip text={tag} key={i} />
               ))}
             </Stack>
 
-            <Typography variant="caption">Posted {timestamp}</Typography>
+            <Typography variant="caption">Posted {new Date(timestamp).toDateString()}</Typography>
 
             <Typography variant="h6">{title}</Typography>
 

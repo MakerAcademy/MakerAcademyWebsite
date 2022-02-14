@@ -4,6 +4,12 @@ export const getOneDocument = async (db, id) => {
     return db.collection('content').findOne({_id: id})
 }
 
+
+export const getCourseDocuments = async (db, doc_ids) => {
+  return db.collection('content').find({_id: {$in: doc_ids}})
+}
+
+
 export const createDocument = async (db, doc) => {
     return db
         .collection('documents')

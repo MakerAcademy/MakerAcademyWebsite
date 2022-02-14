@@ -5,10 +5,11 @@ import withAppConfig from "@hoc/withAppConfig";
 import { Box } from "@mui/material";
 // import useTranslation from "next-translate/useTranslation";
 import React from "react";
+import { nanoid } from "nanoid";
 
 const Home = ({ appConfig }) => {
   // const { t, lang } = useTranslation();
-
+  console.log(nanoid(21));
 
   return (
     <Box>
