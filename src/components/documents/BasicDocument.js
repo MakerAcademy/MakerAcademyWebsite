@@ -2,15 +2,27 @@ import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
 import styled from "@emotion/styled";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
 import {
+  addChapters,
   createSlug,
   createTitle,
   extractHeadingsFromMd,
+  getLevel,
+  parseDepths,
 } from "@utils/markdown";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import BackButton from "@components/buttons/BackButton";
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & > h2 {
@@ -41,10 +53,14 @@ const BasicDocument = ({ data = {} }) => {
       const _ids = headers?.reduce((acc, header) => {
         const title = createTitle(header);
         const slug = createSlug(title);
-        return [...acc, { title, slug }];
+        const level = getLevel(header);
+        return [...acc, { title, slug, level }];
       }, []);
 
-      setIds(_ids || []);
+      const _temp2 = parseDepths(_temp || []);
+      const _temp3 = addChapters(_temp2 || []);
+
+      setIds(_temp3 || []);
     }
   }, [body]);
 
@@ -53,7 +69,8 @@ const BasicDocument = ({ data = {} }) => {
       <Stack direction="row" spacing={5}>
         {ids.length > 0 && (
           <Box>
-            <ScrollSpy title="Content" data={ids} />
+            <BackButton sx={{ mb: { xs: 1, md: 2 } }} />
+            <ScrollSpy title="Table of Content" data={ids} />
           </Box>
         )}
 
@@ -87,7 +104,16 @@ const BasicDocument = ({ data = {} }) => {
             <Divider sx={{ mb: 3 }} />
 
             <Box sx={{ minHeight: "50vh" }}>
-              <ReactMarkdown components={{ h2: HeadingRenderer }}>
+              <ReactMarkdown
+                components={{
+                  h1: HeadingRenderer,
+                  h2: HeadingRenderer,
+                  h3: HeadingRenderer,
+                  h4: HeadingRenderer,
+                  h5: HeadingRenderer,
+                  h6: HeadingRenderer,
+                }}
+              >
                 {body}
               </ReactMarkdown>
             </Box>

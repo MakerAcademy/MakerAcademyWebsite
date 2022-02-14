@@ -9,6 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import React from "react";
 
 const learners = [
@@ -29,18 +30,29 @@ const educators = [
 
 const Section2 = () => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   const CustomCard = ({ title, buttonText }) => (
     <Card elevation={0}>
-      <Box sx={{ p: 2.2 }}>
+      <Box sx={{ py: 3, p: 2.2 }}>
         <Stack
           spacing={2}
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography>{title}</Typography>
-          <Button variant="outlined" size="small">
+          <Typography sx={{ fontWeight: 500 }}>{title}</Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderWidth: "2px",
+              fontWeight: 500,
+              "&:hover": {
+                borderWidth: "2px",
+              },
+            }}
+          >
             {buttonText}
           </Button>
         </Stack>
@@ -51,14 +63,14 @@ const Section2 = () => {
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.background.sectionGrey,
+        backgroundColor: isDark ? grey[900] : grey[200],
         py: { xs: 4, md: 6, lg: 8 },
       }}
     >
       <Container maxWidth="xl">
         <Grid container spacing={{ xs: 3, md: 6, lg: 10 }}>
           <Grid item xs={12} md={6}>
-            <Typography variant="h6" sx={{ mb: 3 }}>
+            <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
               For Learners
             </Typography>
 
@@ -69,7 +81,7 @@ const Section2 = () => {
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h6" sx={{ mb: 3 }}>
+            <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
               For Educators
             </Typography>
 

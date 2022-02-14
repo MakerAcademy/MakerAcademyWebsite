@@ -12,15 +12,24 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { DUMMY_FILTER_OPTIONS } from "@components/SearchFilterBar/dummyData";
 
 const ProgramsPage = ({ programs = [] }) => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   const ProgramContainer = ({ _id, title, subtitle, children }) => (
-    <Paper sx={{ p: 3, borderRadius: "10px" }}>
+    <Paper
+      elevation={isDark ? 2 : 0}
+      sx={{
+        p: 3,
+        borderRadius: "10px",
+        boxShadow:
+          !isDark &&
+          "rgba(0, 0, 0, 0.16) 0px 6px 16px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+      }}
+    >
       <Stack
         direction="row"
         spacing={2}

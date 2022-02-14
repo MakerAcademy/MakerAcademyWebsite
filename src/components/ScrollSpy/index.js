@@ -7,37 +7,29 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useRouter } from "next/router";
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 import { default as ReactScrollSpy } from "react-scrollspy";
 
 const ScrollSpy = ({ title, data }) => {
-  const [currentId, setCurrentId] = useState(null);
-
   const theme = useTheme();
-  const { asPath } = useRouter();
 
-  const slugs = data?.map((item) => item.slugs);
-
-  useLayoutEffect(() => {
-    const _currentId = asPath.split("#")[1] || slugs[0];
-    setCurrentId(_currentId);
-  }, []);
+  const slugs = data?.map((item) => item.slug) || [];
 
   return (
     <Box
       sx={{
+        height: "100%",
         minWidth: 10,
         "& ul": { paddingLeft: 0 },
         [theme.breakpoints.up("md")]: {
-          minWidth: 200,
+          width: 240,
         },
         // [theme.breakpoints.up("xl")]: {
         //   minWidth: 272,
         // },
       }}
     >
-      <Box sx={{ position: "fixed" }}>
+      <Box sx={{ position: "sticky", top: 10, width: "inherit" }}>
         <Hidden mdDown>
           {title && (
             <Typography variant="h5" sx={{ mb: 3 }}>
@@ -46,49 +38,60 @@ const ScrollSpy = ({ title, data }) => {
           )}
         </Hidden>
 
-        <ReactScrollSpy
-          items={[...(slugs || [])]}
-          currentClassName="is-actives"
+        <Box
+          id="xyz"
+          sx={{
+            color: theme.palette.text.disabled,
+            "& .isCurrent > div": {
+              borderLeft: `3px solid ${theme.palette.primary.main}`,
+              color: theme.palette.text.default,
+            },
+          }}
         >
-          {data?.map((item, i) => {
-            const isCurrent = currentId === item.slug;
+          <ReactScrollSpy items={[...slugs]} currentClassName="isCurrent">
+            {data?.map((item, i) => {
+              const ml = item.depth;
 
-            return (
-              <Link
-                href={`#${item.slug}`}
-                color="inherit"
-                underline="none"
-                key={i}
-                onClick={() => setCurrentId(item.slug)}
-              >
-                <ListItem
-                  button
-                  sx={{
-                    py: 1.5,
-                    borderLeft:
-                      isCurrent && `3px solid ${theme.palette.primary.main}`,
-                  }}
+              return (
+                <Link
+                  id="abc"
+                  href={`#${item.slug}`}
+                  color="inherit"
+                  underline="none"
+                  key={i}
                 >
-                  <Stack
-                    direction="row"
-                    spacing={1}
+                  <ListItem
+                    button
                     sx={{
-                      color: isCurrent
-                        ? theme.palette.text.main
-                        : theme.palette.text.disabled,
+                      py: 1.5,
+                      [theme.breakpoints.up("md")]: {
+                        ml,
+                      },
                     }}
                   >
-                    <Typography>{i + 1}</Typography>
+                    <Stack direction="row" spacing={1}>
+                      <Typography
+                        variant={ml ? "body2" : "body1"}
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {item.chapter}
+                      </Typography>
 
-                    <Hidden mdDown>
-                      <Typography>{item.title}</Typography>
-                    </Hidden>
-                  </Stack>
-                </ListItem>
-              </Link>
-            );
-          })}
-        </ReactScrollSpy>
+                      <Hidden mdDown>
+                        <Typography
+                          variant={ml ? "body2" : "body1"}
+                          sx={{ fontWeight: 500 }}
+                        >
+                          {item.title}
+                        </Typography>
+                      </Hidden>
+                    </Stack>
+                  </ListItem>
+                </Link>
+              );
+            })}
+          </ReactScrollSpy>
+        </Box>
       </Box>
     </Box>
   );
