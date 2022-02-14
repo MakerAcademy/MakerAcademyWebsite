@@ -16,7 +16,7 @@ const learners = [
   { title: "New to Maker?", buttonText: "Maker Overview" },
   {
     title: "Wish to acquire the skills to contribute to Maker?",
-    buttonText: "Contributor Pathways",
+    buttonText: "Contributor Overview",
   },
   {
     title: "Want in-depth knowledge of an aspect of Maker?",

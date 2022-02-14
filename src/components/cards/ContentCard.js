@@ -14,16 +14,22 @@ import Link from "next/link";
 
 const ContentCard = ({
   _id,
-  image,
+  thumbnail_url,
   title,
   subtitle,
-  tags,
+  description,
+  topic,
+  subtopic,
   duration,
+  content_type,
   level,
   timestamp,
-  content_type,
+  verification,
+  views,
+  likes,
 }) => {
   const theme = useTheme();
+  const tags = [topic, subtopic, level];
 
   const CustomChip = ({ text }) => (
     <Chip
@@ -42,7 +48,7 @@ const ContentCard = ({
       <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
         <Box sx={{ position: "relative" }}>
           <img
-            src={image}
+            src={thumbnail_url}
             alt={title}
             style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
           />
@@ -54,25 +60,19 @@ const ContentCard = ({
             sx={{ position: "absolute", top: 8, left: 8 }}
             spacing={0.5}
           >
-            {level && <CustomChip text={level} />}
 
             {tags.map((tag, i) => (
               <CustomChip text={tag} key={i} />
             ))}
           </Stack>
         </Box>
-
-        <CardContent>
-          <Typography variant="caption">Posted {timestamp}</Typography>
-
+      <CardContent>
+        <Typography variant="caption">Posted {new Date(timestamp).toDateString()}</Typography>
           <Typography variant="h6">{title}</Typography>
-
           <Divider sx={{ my: 1.5 }} />
-
           <Typography variant="body2" sx={{ mb: 3 }}>
             {subtitle}
           </Typography>
-
           <Stack
             direction="row"
             alignItems="center"

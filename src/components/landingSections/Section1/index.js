@@ -51,7 +51,7 @@ const Section1 = () => {
             </ResponsiveText>
 
             <ResponsiveText variant="h4" sx={{ mb: 2 }}>
-              Learn. Contribute. Innovate
+              Learn. Contribute. Innovate.
             </ResponsiveText>
 
             <Typography variant="h6" sx={{ mb: 3 }}>

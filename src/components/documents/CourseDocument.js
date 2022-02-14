@@ -23,7 +23,7 @@ const CourseDocument = ({ data = {} }) => {
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <Brightness1Icon sx={{ fontSize: 18 }} />
-            <Typography>{document.author}</Typography>
+            <Typography>{document.author_id}</Typography>
           </Stack>
 
           <Stack
@@ -32,7 +32,7 @@ const CourseDocument = ({ data = {} }) => {
             justifyContent="flex-end"
             spacing={0.7}
           >
-            <Typography>Posted {document.timestamp}</Typography>
+            <Typography>Posted {new Date(document.timestamp).toDateString()}</Typography>
           </Stack>
         </Stack>
 

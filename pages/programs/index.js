@@ -13,8 +13,12 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { DUMMY_FILTER_OPTIONS } from "@components/SearchFilterBar/dummyData";
+import { connectToDB } from "../../db/connect";
+import { getCountEstimate, getPrograms, getProgramSearchTags } from "../../db/program";
+import { TAGS } from "@constants/tags";
 
-const ProgramsPage = ({ programs = [] }) => {
+const ProgramsPage = ({ programs, tags, count }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -59,7 +63,7 @@ const ProgramsPage = ({ programs = [] }) => {
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
-        {/* Breadcrumbds */}
+        {/* Breadcrumbs */}
         <BreadcrumbsSection
           title="Programs"
           subtitle="If you have a specific goal in mind with your education, please check out some of our programs! These programs are sequential orderings of different pieces of content that build upon each other, culminating in a mastery of a specific goal."
@@ -67,7 +71,7 @@ const ProgramsPage = ({ programs = [] }) => {
         />
 
         {/* Search */}
-        <SearchFilterBar />
+        <SearchFilterBar tags={tags}/>
 
         {/* Content */}
         <Stack sx={{ width: "100%", py: 2 }} spacing={{ xs: 2, md: 4 }}>
@@ -88,7 +92,7 @@ const ProgramsPage = ({ programs = [] }) => {
         </Stack>
 
         {/* Load more */}
-        <RoundedButton>Load More</RoundedButton>
+        { (count > programs.length) && (<RoundedButton>Load More</RoundedButton>)}
       </Stack>
     </Container>
   );
@@ -96,32 +100,17 @@ const ProgramsPage = ({ programs = [] }) => {
 
 export async function getServerSideProps(context) {
   // Add fetch to utils or api once backend complete
-  const data = [
-    ...Array(5)
-      .fill()
-      .map((_, i) => ({
-        _id: i,
-        title: "Facilitator Onboarding Program",
-        subtitle:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat elit in nulla porttitor tempus. Donec suscipit velit sit amet purus cursus dictum. ",
-        courses: [
-          ...Array(12)
-            .fill()
-            .map((_, j) => ({
-              _id: j,
-              title: "Lorem Ipsum is simply dummy text",
-              tags: ["Maker", "DeFi"],
-              timestamp: "Jan 27 2020",
-              level: "beginner",
-              duration: 8,
-              content_type: "course",
-            })),
-        ],
-      })),
-  ];
+  const {db} = await connectToDB();
+  const programs = await getPrograms(db, {}, null);
+  const tags = await getProgramSearchTags(db, TAGS);
+  const count = await getCountEstimate(db, 'programs');
 
   return {
-    props: { programs: data },
+    props: {
+      programs: programs,
+      tags: tags,
+      count: count
+    },
   };
 }
 

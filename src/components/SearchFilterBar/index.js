@@ -27,13 +27,12 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useDebounce from "@hooks/useDebounce";
-import { DUMMY_FILTER_OPTIONS } from "./dummyData";
 
 const SearchFilterBar = (props) => {
   const { inputPlaceholder = "Search Content" } = props;
-
+  const {tags} = props;
   const theme = useTheme();
-  const [filters, setFilters] = useState(DUMMY_FILTER_OPTIONS);
+  const [filters, setFilters] = useState(tags);
   const [filteredFilters, setFilteredFilters] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filterSearchTerm, setFilterSearchTerm] = useState("");
@@ -86,6 +85,10 @@ const SearchFilterBar = (props) => {
       setSelectedFilters((old) => [...old, item]);
     }
   };
+
+  const triggerSearch = () => {
+    props.parentCallback(searchTerm, selectedFilters);
+  }
 
   return (
     <React.Fragment>
@@ -159,7 +162,9 @@ const SearchFilterBar = (props) => {
             borderBottomRightRadius: "10px",
           }}
         >
-          <IconButton sx={{ p: "10px", color: theme.palette.primary.white }}>
+          <IconButton
+            sx={{ p: "10px", color: theme.palette.primary.white }}
+            onClick={triggerSearch}>
             <SearchIcon />
           </IconButton>
         </Box>

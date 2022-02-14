@@ -14,52 +14,32 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connectToDB } from "../../../db/connect";
+import { getOneCourse } from "../../../db/course";
 
-const DUMMY_CONTENT = {
-  _id: "231435345",
-  title: "Facilitator Onboarding Program",
-  description:
-    "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
-  tags: ["abc", "xyz"],
-  timestamp: "Jan 27 2020",
-  level: "beginner",
-  duration: 8,
-  documents: [
-    ...Array(12)
-      .fill()
-      .map((_, i) => ({
-        _id: i,
-        image:
-          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
-        title: "Lorem Ipsum is simply dummy text",
-        description:
-          "This will teach you what a DAO is and why Maker protocol is governed by a DAO instead of a corporation.",
-        author: "Colby Anderson",
-        timestamp: "Jan 27 2020",
-        duration: 90,
-      })),
-  ],
-};
-
-const CoursePage = () => {
-  const [content, setContent] = useState(DUMMY_CONTENT);
-
+const CoursePage = ({ course, topic, subtopic, title } ) => {
   const { query } = useRouter();
+  const documents = course.documents;
+  const [c,setC] = useState(course.documents)
   const { courseId, programId } = query;
 
   const breadcrumbs = [
     { label: "Content", href: "/content" },
-    { label: "Onboarding", href: "/content" },
-    { label: content.title, active: true },
+    { label: topic, href: "/content" },
+    { label: subtopic, href: "/content"},
+    { label: title, active: true },
   ];
+
+  useEffect(() => {
+  }, [c])
 
   const DocumentCard = ({
     _id,
-    image,
+    thumbnail_url,
     title,
-    author,
     description,
+    author_id,
     duration,
   }) => {
     const buildRedirect = () => {
@@ -76,7 +56,7 @@ const CoursePage = () => {
             <Grid container spacing={{ xs: 2, md: 3 }}>
               <Grid item xs={12} sm={4} md={3} lg={2}>
                 <img
-                  src={image}
+                  src={thumbnail_url}
                   alt={title}
                   style={{
                     maxHeight: 200,
@@ -95,7 +75,7 @@ const CoursePage = () => {
 
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <Brightness1Icon sx={{ fontSize: 18 }} />
-                    <Typography>{author}</Typography>
+                    <Typography>{author_id}</Typography>
                   </Stack>
 
                   <Typography>{description}</Typography>
@@ -131,7 +111,7 @@ const CoursePage = () => {
           spacing={2}
           sx={{ pb: 4 }}
         >
-          <ResponsiveText variant="h5">{content.title}</ResponsiveText>
+          <ResponsiveText variant="h5">{course.title}</ResponsiveText>
 
           <RoundedButton variant="outlined" sx={{ height: 40 }}>
             Begin
@@ -139,13 +119,31 @@ const CoursePage = () => {
         </Stack>
 
         <Stack sx={{ pb: { xs: 3, md: 5 } }} spacing={3}>
-          {content.documents.map((doc, i) => (
+          {c.length > 0 ? (c.map((doc, i) => (
             <DocumentCard key={i} {...doc} />
-          ))}
+          ))) : (documents.map((doc, i) => (
+              <DocumentCard key={i} {...doc} />
+            )))}
         </Stack>
       </Paper>
     </Container>
   );
 };
+
+
+export async function getServerSideProps(context) {
+  const {db} = await connectToDB();
+  const course = await getOneCourse(db, context.params.courseId);
+  const c = course[0];
+  console.log(course);
+  return {
+    props: {
+      course: c,
+      topic: c.topic,
+      subtopic: c.subtopic,
+      title: c.title,
+    }
+  }
+}
 
 export default CoursePage;

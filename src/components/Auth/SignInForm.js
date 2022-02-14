@@ -43,7 +43,7 @@ const SignInForm = () => {
       }}
     >
       <ResponsiveText variant="h2" sx={{ mb: 2 }}>
-        Login to Your Account
+        Sign In to Your Account
       </ResponsiveText>
 
       <TextField
@@ -85,7 +85,7 @@ const SignInForm = () => {
         Or
       </Divider>
 
-      <Typography>Login using social networks</Typography>
+      <Typography>Sign in using social networks</Typography>
 
       <Stack
         direction="row"
