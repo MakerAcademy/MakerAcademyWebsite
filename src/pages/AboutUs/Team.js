@@ -1,39 +1,7 @@
 import TeamCard from "@components/cards/TeamCard";
 import { Grid, Stack, Typography } from "@mui/material";
 import React from "react";
-
-const TEAM = [
-  {
-    image:
-      "https://en.cryptonomist.ch/wp-content/uploads/2021/07/maker-a2z-crypto-1.jpg",
-    name: "Colby Anderson",
-    title: "Facilitator",
-    description: "A few lines description here",
-    linkedIn: "",
-    twitter: "",
-    website: "",
-  },
-  {
-    image:
-      "https://en.cryptonomist.ch/wp-content/uploads/2021/07/maker-a2z-crypto-1.jpg",
-    name: "Zach Huang",
-    title: "Project Manager",
-    description: "A few lines description here",
-    linkedIn: "",
-    twitter: "",
-    website: "",
-  },
-  {
-    image:
-      "https://en.cryptonomist.ch/wp-content/uploads/2021/07/maker-a2z-crypto-1.jpg",
-    name: "Salman Fazal",
-    title: "Frontend Engineer",
-    description: "A few lines description here",
-    linkedIn: "",
-    twitter: "",
-    website: "",
-  },
-];
+import { TEAM } from "./dummyData";
 
 const Team = () => {
   return (

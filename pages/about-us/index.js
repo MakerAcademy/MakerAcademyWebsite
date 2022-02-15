@@ -1,5 +1,6 @@
 import AboutSidebar from "@components/sidebars/AboutSidebar";
 import {
+  Box,
   Container,
   Divider,
   Hidden,
@@ -40,7 +41,7 @@ const PageRenderer = ({ type, ...other }) => {
     "/about-us/mission-vision-strategy": dynamic(() =>
       import("@pages/AboutUs/MissionVisionStrategy")
     ),
-    "/about-us/budget": dynamic(() => import("@pages/AboutUs/AboutUs")),
+    "/about-us/budget": dynamic(() => import("@pages/AboutUs/Budget")),
     "/about-us/imrovement-proposals": dynamic(() =>
       import("@pages/AboutUs/ImprovementProposals")
     ),
@@ -116,7 +117,9 @@ const AboutUsPage = () => {
 
         <Divider />
 
-        <PageRenderer type={page} />
+        <Box sx={{ minHeight: "50vh" }}>
+          <PageRenderer type={page} />
+        </Box>
       </Stack>
     </Container>
   );

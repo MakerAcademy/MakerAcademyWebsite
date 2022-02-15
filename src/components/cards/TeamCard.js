@@ -31,6 +31,7 @@ const TeamCard = ({
       elevation={0}
       sx={{
         maxWidth: 345,
+        width: "100%",
         border: `1px solid ${isDark ? grey[800] : grey[300]}`,
         "&:hover": {
           boxShadow: isDark
@@ -39,7 +40,20 @@ const TeamCard = ({
         },
       }}
     >
-      <CardMedia component="img" height={190} image={image} alt={name} />
+      <CardMedia
+        component="img"
+        image={image}
+        alt={name}
+        sx={{
+          height: 190,
+          [theme.breakpoints.up("md")]: {
+            height: 230,
+          },
+          [theme.breakpoints.up("lg")]: {
+            height: 250,
+          },
+        }}
+      />
       <CardContent>
         <Stack spacing={1.5}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
