@@ -4,7 +4,7 @@ export default {
   fontSize: 16,
   body2: {
     fontSize: "0.875rem",
-    fontWeight: 300,
+    fontWeight: 400,
   },
   body1: {
     fontSize: "1rem",

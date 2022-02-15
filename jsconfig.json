@@ -4,8 +4,6 @@
     "target": "es6",
     "baseUrl": ".",
     "paths": {
-      "@pages/*": ["pages/*"],
-      "@pages": ["pages"],
       "@components/*": ["src/components/*"],
       "@components": ["src/components"],
       "@config/*": ["src/config/*"],
@@ -16,6 +14,8 @@
       "@hooks": ["src/hooks"],
       "@contexts/*": ["src/contexts/*"],
       "@contexts": ["src/contexts"],
+      "@pages/*": ["src/pages/*"],
+      "@pages": ["src/pages"],
       "@assets/*": ["src/assets/*"],
       "@assets": ["src/assets"],
       "@layouts/*": ["src/layouts/*"],

@@ -10,7 +10,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html style={{ scrollBehavior: "smooth" }}>
+      <Html style={{ scrollBehavior: "smooth", maxWidth: "100vw" }}>
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
