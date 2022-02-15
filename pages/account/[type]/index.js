@@ -1,4 +1,4 @@
-import AccountSidebar from "@components/AccountSidebar";
+import AccountSidebar from "@components/sidebars/AccountSidebar";
 import AccountForm from "@components/forms/AccountForm";
 import ProfileForm from "@components/forms/ProfileForm";
 import { Box, Container, Stack, Typography } from "@mui/material";

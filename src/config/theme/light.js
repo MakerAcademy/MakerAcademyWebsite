@@ -2,11 +2,12 @@ import { createTheme } from "@mui/material";
 import makerTheme from "@makerdao/dai-ui-theme-maker-neue";
 import commonColors from "./commonColors";
 import typography from "./typography";
+import { grey } from "@mui/material/colors";
 
 const colors = {
   ...commonColors,
   ...makerTheme.colors,
-  inverse: "#000",
+  inverse: grey[800],
 };
 
 export const lightTheme = createTheme({
