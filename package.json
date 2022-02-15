@@ -37,6 +37,7 @@
     "react-redux": "^7.2.4",
     "react-scrollspy": "^3.4.3",
     "react-slick": "^0.28.1",
+    "react-swipeable-views": "^0.14.0",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {

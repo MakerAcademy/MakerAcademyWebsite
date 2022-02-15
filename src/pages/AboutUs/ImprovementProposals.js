@@ -1,6 +1,15 @@
-import { Stack, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import React, { useState } from "react";
+import SwipeableViews from "react-swipeable-views";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -35,7 +44,37 @@ const rows = [
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
 const improvementProposals = () => {
+  const theme = useTheme();
+  const [tabValue, setTabValue] = useState();
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleSelectedRows = (rowIds = []) => {
+    // const selectedIDs = new Set(rowIds);
+    if (!selectedRows?.length) setTabValue(0);
+    setSelectedRows(rowIds);
+  };
+
   return (
     <Stack alignItems="center" spacing={4}>
       <Typography sx={{ fontWeight: 600 }}>Improvement Proposals</Typography>
@@ -47,12 +86,42 @@ const improvementProposals = () => {
           pageSize={5}
           rowsPerPageOptions={[5, 10, 20, 50]}
           checkboxSelection
-          onSelectionModelChange={(ids) => {
-            const selectedIDs = new Set(ids);
-            console.log(ids);
-          }}
+          onSelectionModelChange={handleSelectedRows}
         />
       </div>
+
+      {selectedRows?.length > 0 && (
+        <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
+          <AppBar position="static">
+            <Tabs
+              value={tabValue}
+              onChange={(e, v) => setTabValue(v)}
+              indicatorColor="secondary"
+              textColor="inherit"
+            >
+              {selectedRows?.map((row, i) => (
+                <Tab label={row} value={i} />
+              ))}
+            </Tabs>
+          </AppBar>
+
+          <SwipeableViews
+            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+            index={tabValue}
+            onChangeIndex={(i) => setTabValue(i)}
+          >
+            <TabPanel value={tabValue} index={0} dir={theme.direction}>
+              Item One
+            </TabPanel>
+            <TabPanel value={tabValue} index={1} dir={theme.direction}>
+              Item Two
+            </TabPanel>
+            <TabPanel value={tabValue} index={2} dir={theme.direction}>
+              Item Three
+            </TabPanel>
+          </SwipeableViews>
+        </Box>
+      )}
     </Stack>
   );
 };
