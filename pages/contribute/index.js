@@ -1,12 +1,16 @@
-import ResponsiveText from "@components/ResponsiveText";
 import Sidebar from "@components/sidebars/Sidebar";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SIDEBAR_ITEMS = [
+  {
+    name: "contributor_dashboard",
+    link: "/contribute",
+    shallow: true,
+  },
   {
     name: "contributor_directory",
     link: "/contribute/directory",
@@ -14,8 +18,8 @@ const SIDEBAR_ITEMS = [
   },
   {
     name: "contributor_pipelines",
-    // link: "/contribute/pipeline",
-    shallow: true,
+    link: "/contribute/pipeline",
+    disableButton: true,
     nestedItems: [
       {
         name: "grants_research",
@@ -51,10 +55,25 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
+const getTitle = (type, subType, asPath) => {
+  const _default = "contributor_dashboard";
+
+  if (subType) {
+    const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
+    const subItem = item?.nestedItems?.find((i) => i.link === asPath);
+    return subItem.name || _default;
+  } else if (type && !subType) {
+    const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
+    return item.name || _default;
+  }
+  return _default;
+};
+
 const PageRenderer = ({ type, ...other }) => {
   const page = {
+    "/contribute": dynamic(() => import("@pages/Contribute/Dashboard")),
     "/contribute/directory": dynamic(() =>
-      import("@pages/Contribute/ContributeDirectory")
+      import("@pages/Contribute/Directory")
     ),
     "/contribute/pipeline/grants-research": dynamic(() =>
       import("@pages/Contribute/GrantsResearch")
@@ -85,26 +104,35 @@ const PageRenderer = ({ type, ...other }) => {
 };
 
 const ContributePage = () => {
-  const { asPath } = useRouter();
+  const { asPath, query } = useRouter();
   const [url, setUrl] = useState(asPath);
+  const [title, setTitle] = useState("contributor_dashboard");
+
+  const { type, subType } = query;
+
+  const { t } = useTranslation("contribute");
 
   useEffect(() => {
+    setTitle(getTitle(type, subType, asPath));
     setUrl(asPath);
   }, [asPath]);
 
   return (
     <Box>
-      <Stack sx={{ py: 5, px: { xs: 3, md: 5 } }} spacing={1}>
-        <ResponsiveText variant="h3">Contribute</ResponsiveText>
+      <Stack sx={{ py: 5, px: { xs: 2, md: 5 } }} spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Sidebar title="contributor" intlNames items={SIDEBAR_ITEMS} />
+          <Typography variant="h4">Contribute</Typography>
+        </Stack>
 
-        <Sidebar title="Contributor" intlNames items={SIDEBAR_ITEMS} />
+        <Typography variant="h6">{t(title)}</Typography>
       </Stack>
 
       <Divider />
 
-      <Container maxWidth="xl" sx={{ minHeight: "50vh", py: 5 }}>
+      <Box sx={{ minHeight: "50vh", py: 3, px: { xs: 3, md: 5 } }}>
         <PageRenderer type={url} />
-      </Container>
+      </Box>
     </Box>
   );
 };

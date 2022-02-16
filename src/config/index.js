@@ -31,8 +31,8 @@ const config = ({ mode }) => ({
           { name: "3", link: "/" },
         ],
       },
-      { name: "about_us", link: "/about-us" },
       { name: "content", link: "/content" },
+      { name: "about_us", link: "/about-us" },
     ],
   },
 });

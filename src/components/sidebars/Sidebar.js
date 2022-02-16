@@ -19,15 +19,14 @@ import React, { useEffect, useState } from "react";
 
 const drawerWidth = 240;
 
-const Sidebar = ({ title: _title, intlNames, items = [] }) => {
-  const [title, setTitle] = useState(_title);
+const Sidebar = ({ intlNames, items = [] }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
-  const { asPath, query } = router;
+  const { asPath } = router;
 
-  const { t } = useTranslation();
+  const { t } = useTranslation("contribute");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -37,14 +36,9 @@ const Sidebar = ({ title: _title, intlNames, items = [] }) => {
     setOpen(false);
   };
 
-  const handleRedirect = (url, shallow, name) => {
-    name && setTitle(name);
+  const handleRedirect = (url, shallow) => {
     url && router.push(url, undefined, { shallow });
   };
-
-  useEffect(() => {
-    setTitle(_title || null);
-  }, [query.type]);
 
   useEffect(() => {
     open && setOpen(false);
@@ -58,12 +52,9 @@ const Sidebar = ({ title: _title, intlNames, items = [] }) => {
 
   return (
     <>
-      <Stack direction="row" alignItems="center">
-        <IconButton color="inherit" size="small" onClick={handleDrawerOpen}>
-          <MenuIcon />
-        </IconButton>
-        {title && <Typography variant="h6">{title}</Typography>}
-      </Stack>
+      <IconButton color="inherit" size="small" onClick={handleDrawerOpen}>
+        <MenuIcon />
+      </IconButton>
 
       {open && (
         <Drawer
@@ -95,10 +86,12 @@ const Sidebar = ({ title: _title, intlNames, items = [] }) => {
             {items.map((item, i) => (
               <React.Fragment key={i}>
                 <ListItem
-                  button={!!item.link}
+                  button={!!item.link && !item.disableButton}
                   selected={item.link === asPath}
                   onClick={() =>
-                    handleRedirect(item.link, item.shallow, item.name)
+                    !!item.link &&
+                    !item.disableButton &&
+                    handleRedirect(item.link, item.shallow)
                   }
                   sx={{
                     borderLeft:
@@ -113,15 +106,13 @@ const Sidebar = ({ title: _title, intlNames, items = [] }) => {
 
                 {item.nestedItems?.map((subItem, j) => (
                   <ListItem
-                    button={!!subItem.link}
+                    button={!!subItem.link && !subItem.disableButton}
                     key={`${i}${j}`}
                     selected={subItem.link === asPath}
                     onClick={() =>
-                      handleRedirect(
-                        subItem.link,
-                        subItem.shallow,
-                        subItem.name
-                      )
+                      !!subItem.link &&
+                      !subItem.disableButton &&
+                      handleRedirect(subItem.link, subItem.shallow)
                     }
                     sx={{
                       borderLeft:
