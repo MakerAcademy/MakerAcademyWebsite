@@ -10,17 +10,18 @@ import {
   useTheme,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 
 const learners = [
-  { title: "New to Maker?", buttonText: "Maker Overview" },
+  { title: "new_to_maker", buttonText: "maker_overview" },
   {
-    title: "Wish to acquire the skills to contribute to Maker?",
-    buttonText: "Contributor Overview",
+    title: "acquire_skills",
+    buttonText: "contributor_overview",
   },
   {
-    title: "Want in-depth knowledge of an aspect of Maker?",
-    buttonText: "Expert Overview",
+    title: "in_depth_knowledge",
+    buttonText: "expert_overview",
   },
 ];
 
@@ -32,6 +33,8 @@ const Section2 = () => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const { t } = useTranslation("home");
+
   const CustomCard = ({ title, buttonText }) => (
     <Card elevation={0}>
       <Box sx={{ py: 3, p: 2.2 }}>
@@ -41,7 +44,7 @@ const Section2 = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography sx={{ fontWeight: 500 }}>{title}</Typography>
+          <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
           <Button
             variant="outlined"
             size="small"
@@ -53,7 +56,7 @@ const Section2 = () => {
               },
             }}
           >
-            {buttonText}
+            {t(buttonText)}
           </Button>
         </Stack>
       </Box>
@@ -71,7 +74,7 @@ const Section2 = () => {
         <Grid container spacing={{ xs: 3, md: 6, lg: 10 }}>
           <Grid item xs={12} md={6}>
             <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
-              For Learners
+              {t("for_learners")}
             </Typography>
 
             <Stack spacing={3}>
@@ -82,7 +85,7 @@ const Section2 = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
-              For Educators
+              {t("for_educators")}
             </Typography>
 
             <Stack spacing={3}>

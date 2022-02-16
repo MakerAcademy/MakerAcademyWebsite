@@ -4,7 +4,6 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { handleLanguageChange } from "@utils/helperFunctions";
-import setLanguage from "next-translate/setLanguage";
 import useTranslation from "next-translate/useTranslation";
 
 const LanguageMenu = ({ appConfig, sx = {}, ...other }) => {
@@ -45,10 +44,7 @@ const LanguageMenu = ({ appConfig, sx = {}, ...other }) => {
         PaperProps={{ sx: { width: 135 } }}
       >
         {locales.map((lang) => (
-          <MenuItem
-            onClick={() => handleLanguageChange(lang, setLanguage)}
-            key={lang}
-          >
+          <MenuItem onClick={() => handleLanguageChange(lang)} key={lang}>
             {t(`common:${lang}`)}
           </MenuItem>
         ))}

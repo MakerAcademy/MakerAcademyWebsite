@@ -14,7 +14,7 @@ const config = ({ mode }) => ({
     authButtons: true,
     menuItems: [
       {
-        name: "Contribute",
+        name: "contribute",
         link: "/contribute",
         nestedItems: [
           { name: "1", link: "/" },
@@ -23,7 +23,7 @@ const config = ({ mode }) => ({
         ],
       },
       {
-        name: "Programs",
+        name: "programs",
         link: "/programs",
         nestedItems: [
           { name: "1", link: "/" },
@@ -31,7 +31,8 @@ const config = ({ mode }) => ({
           { name: "3", link: "/" },
         ],
       },
-      { name: "Content", link: "/content" },
+      { name: "about_us", link: "/about-us" },
+      { name: "content", link: "/content" },
     ],
   },
 });

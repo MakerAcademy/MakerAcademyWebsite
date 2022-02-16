@@ -1,11 +1,8 @@
+import setLanguage from "next-translate/setLanguage";
+
 //Change App Language
-export const handleLanguageChange = async (
-  lang,
-  setLanguage,
-  router,
-  pathname
-) => {
-  await setLanguage?.(lang);
+export const handleLanguageChange = async (lang, router, pathname) => {
+  await setLanguage(lang);
   if (router && pathname) {
     await router.replace(pathname, pathname, { locale: lang });
   }

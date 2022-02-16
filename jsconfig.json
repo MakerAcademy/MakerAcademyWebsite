@@ -30,7 +30,7 @@
       "@public": ["public"],
       "@redux/*": ["src/redux/*"],
       "@redux": ["src/redux"],
-      "@i18n": ["./i18n.json"]
+      "@i18n": ["./i18n.js"]
     },
     "incremental": true
   },

@@ -67,19 +67,19 @@ const TeamCard = ({
           </Typography>
 
           <Stack spacing={1} direction="row">
-            <Link>
+            <Link href="#">
               <IconButton size="small">
                 <LinkedInIcon fontSize="small" sx={{ color: "#0072B1" }} />
               </IconButton>
             </Link>
 
-            <Link>
+            <Link href="#">
               <IconButton size="small">
                 <TwitterIcon fontSize="small" sx={{ color: "#1DA1F2" }} />
               </IconButton>
             </Link>
 
-            <Link>
+            <Link href="#">
               <IconButton size="small">
                 <LanguageIcon
                   fontSize="small"

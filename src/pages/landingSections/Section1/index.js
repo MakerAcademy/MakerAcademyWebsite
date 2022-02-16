@@ -12,11 +12,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { HomeBg } from "@utils/images";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
 
 const Section1 = () => {
   const theme = useTheme();
+
+  const { t } = useTranslation("home");
 
   return (
     <Box
@@ -47,19 +50,21 @@ const Section1 = () => {
         <Container maxWidth="xl" sx={{ py: 5 }}>
           <Stack alignItems="center" justifyContent="center">
             <ResponsiveText variant="h2" sx={{ mb: 1 }}>
-              Maker Academy
+              {t("maker_academy")}
             </ResponsiveText>
 
             <ResponsiveText variant="h4" sx={{ mb: 2 }}>
-              Learn. Contribute. Innovate.
+              {t("learn")}. {t("contribute")}. {t("innovate")}.
             </ResponsiveText>
 
             <Typography variant="h6" sx={{ mb: 3 }}>
-              The primary source for Maker education
+              {t("source_for_education")}
             </Typography>
 
             <Link href="/about-us">
-              <RoundedButton sx={{ px: 4, py: 1.5 }}>About Us</RoundedButton>
+              <RoundedButton sx={{ px: 4, py: 1.5 }}>
+                {t("about_us")}
+              </RoundedButton>
             </Link>
           </Stack>
         </Container>
