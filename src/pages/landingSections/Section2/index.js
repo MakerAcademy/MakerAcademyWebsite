@@ -25,9 +25,7 @@ const learners = [
   },
 ];
 
-const educators = [
-  { title: "Want to add your own content?", buttonText: "Creator Studio" },
-];
+const educators = [{ title: "add_your_content", buttonText: "creator_studio" }];
 
 const Section2 = () => {
   const theme = useTheme();
