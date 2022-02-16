@@ -4,6 +4,7 @@ import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 const MobileMenuItems = ({
   themeToggle,
@@ -13,6 +14,8 @@ const MobileMenuItems = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState();
   const theme = useTheme();
+
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -51,12 +54,12 @@ const MobileMenuItems = ({
         {menuItems.map((item, i) => (
           <Box key={i}>
             <Link href={item.link || ""}>
-              <MenuItem>{item.name}</MenuItem>
+              <MenuItem>{t(item.name)}</MenuItem>
             </Link>
 
-            {item.nestedItems?.map((item2, j) => (
-              <Link href={item.link || ""} key={`${i}${j}`}>
-                <MenuItem sx={{ ml: 2 }}>{item2.name}</MenuItem>
+            {item.nestedItems?.map((subItem, j) => (
+              <Link href={subItem.link || ""} key={`${i}${j}`}>
+                <MenuItem sx={{ ml: 2 }}>{t(subItem.name)}</MenuItem>
               </Link>
             ))}
           </Box>

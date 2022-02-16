@@ -1,6 +1,6 @@
-import Section1 from "@components/landingSections/Section1";
-import Section2 from "@components/landingSections/Section2";
-import Section3 from "@components/landingSections/Section3";
+import Section1 from "@pages/landingSections/Section1";
+import Section2 from "@pages/landingSections/Section2";
+import Section3 from "@pages/landingSections/Section3";
 import withAppConfig from "@hoc/withAppConfig";
 import { Box } from "@mui/material";
 // import useTranslation from "next-translate/useTranslation";
@@ -9,7 +9,7 @@ import { nanoid } from "nanoid";
 
 const Home = ({ appConfig }) => {
   // const { t, lang } = useTranslation();
-  console.log(nanoid(21));
+  // console.log(nanoid(21));
 
   return (
     <Box>

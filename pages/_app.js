@@ -4,10 +4,14 @@ import Layout from "@layouts/Layout";
 import { CssBaseline } from "@mui/material";
 import store from "@redux/store";
 import "@styles/global.css";
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
+import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 import { Provider } from "react-redux";
+import { handleLanguageChange } from "@utils/helperFunctions";
+import appWithI18n from "next-translate/appWithI18n";
+import i18nConfig from "@i18n";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -18,6 +22,15 @@ function MyApp({
   emotionCache = clientSideEmotionCache,
 }) {
   const queryClient = new QueryClient();
+
+  const { lang } = useTranslation();
+
+  // useEffect(() => {
+  //   if (!lang) {
+  //     console.log("IN");
+  //     handleLanguageChange("fr");
+  //   }
+  // }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -35,4 +48,4 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default appWithI18n(MyApp, { ...i18nConfig });

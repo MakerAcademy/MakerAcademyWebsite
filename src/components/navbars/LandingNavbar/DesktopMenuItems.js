@@ -7,6 +7,7 @@ import {
   usePopupState,
 } from "material-ui-popup-state/hooks";
 import HoverMenu from "material-ui-popup-state/HoverMenu";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -21,6 +22,8 @@ const MenuPopupState = ({
   const theme = useTheme();
   const [spotlight, setSpotlight] = useState(null);
   const [subMenu, setSubMenu] = useState(null);
+
+  const { t } = useTranslation("common");
 
   const popupState = usePopupState({
     variant: "popover",
@@ -62,7 +65,7 @@ const MenuPopupState = ({
               }}
               {...bindHover(popupState)}
             >
-              {item.name}
+              {t(item.name)}
             </Button>
           </Link>
         ))}
@@ -93,7 +96,7 @@ const MenuPopupState = ({
               }}
               {...bindHover(popupState)}
             >
-              Sign In
+              {t("sign_in")}
             </Button>
           </Link>
         )}
@@ -144,7 +147,7 @@ const MenuPopupState = ({
         >
           {subMenu.map((item, i) => (
             <Link href={item.link || ""} key={i}>
-              <MenuItem onClick={handleClosePopup}>{item.name}</MenuItem>
+              <MenuItem onClick={handleClosePopup}>{t(item.name)}</MenuItem>
             </Link>
           ))}
         </HoverMenu>

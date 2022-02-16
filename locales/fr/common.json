@@ -1,8 +1,11 @@
 {
-  "hello": "Merhaba",
-  "greet": "Merhaba, {{name}}!",
-  "world": "Dünya",
-  "documentation": "Dökümantasyona Git",
+  "greet": "Bonjour, {{name}}!",
   "en": "EN",
-  "fr": "FR"
+  "fr": "FR",
+  "contribute": "Contribuer",
+  "about_us": "À propos de nous",
+  "programs": "Programmes",
+  "content": "Contenu",
+  "sign_in": "Connexion",
+  "performance": "Performance"
 }

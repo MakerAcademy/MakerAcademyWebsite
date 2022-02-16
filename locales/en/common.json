@@ -1,8 +1,11 @@
 {
-  "hello": "Hello",
   "greet": "Hello, {{name}}!",
-  "world": "World",
-  "documentation": "Go To Documentation",
   "en": "EN",
-  "fr": "FR"
+  "fr": "FR",
+  "contribute": "Contribute",
+  "about_us": "About Us",
+  "programs": "Programs",
+  "content": "Content",
+  "sign_in": "Sign In",
+  "performance": "Performance"
 }

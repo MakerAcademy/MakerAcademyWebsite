@@ -1,3 +1,20 @@
 {
-  "hello": "Hello FR"
+  "maker_academy": "Académie Maker",
+  "learn": "Apprendre",
+  "contribute": "Contribuer",
+  "innovate": "Innover",
+  "source_for_education": "La principale source d'éducation Maker",
+  "for_learners": "Pour les apprenants",
+  "for_educators": "Pour les enseignants",
+  "learn_about_impact": "Vous voulez en savoir plus sur notre impact?",
+  "new_to_maker": "Nouveau sur Maker?",
+  "acquire_skills": "Vous souhaitez acquérir les compétences pour contribuer à Maker?",
+  "in_depth_knowledge": "Vous voulez une connaissance approfondie d'un aspect de Maker?",
+  "add_your_content": "Vous voulez ajouter votre propre contenu?",
+  "maker_overview": "Aperçu de Maker",
+  "contributor_overview": "Aperçu du contributeur",
+  "expert_overview": "Vue d'ensemble de l'expert",
+  "creator_studio": "Creator Studio",
+  "performance": "Performance",
+  "about_us": "À propos de nous"
 }
