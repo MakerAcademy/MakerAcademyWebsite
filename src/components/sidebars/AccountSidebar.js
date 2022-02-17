@@ -39,7 +39,7 @@ const sidebarItems = [
     name: "Creator Studio",
     icon: MovieOutlinedIcon,
     rightIcon: OpenInNewIcon,
-    href: "/",
+    href: "/creator-studio",
     differentPage: true,
   },
 ];

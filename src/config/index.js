@@ -6,8 +6,12 @@ const config = ({ mode }) => ({
   logoLight: LogoLight,
   logoDark: LogoDark,
   locales: ["en", "fr"],
-  landingLayoutRoutes: ["/", "/login", "/register"],
-  noLayoutRoutes: ["/sign-in", "/sign-up"],
+  noLayoutRoutes: [
+    "/sign-in",
+    "/sign-up",
+    "/creator-studio",
+    "/creator-studio/[page]",
+  ],
   navbar: {
     themeToggle: true,
     languagePopup: true,
@@ -31,8 +35,8 @@ const config = ({ mode }) => ({
           { name: "3", link: "/" },
         ],
       },
-      { name: "about_us", link: "/about-us" },
       { name: "content", link: "/content" },
+      { name: "about_us", link: "/about-us" },
     ],
   },
 });
