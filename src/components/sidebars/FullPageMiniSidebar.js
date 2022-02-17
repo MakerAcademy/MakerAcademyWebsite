@@ -1,88 +1,88 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { NAVBAR_HEIGHT_DESKTOP, SIDE_NAV_BAR_DRAWER_WIDTH } from "@constants/";
+import { CommonContext } from "@context/commonContext";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
+  Box,
   Divider,
   Drawer,
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Stack,
+  Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 
-const drawerWidth = 240;
-
-const Sidebar = ({ intlNames, items = [] }) => {
+const FullPageMiniSidebar = ({
+  name,
+  intlNames,
+  items = [],
+  RenderHeader,
+  withMenuButton,
+  intlFile = "common",
+}) => {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const { commonState, handleDrawerToggle } = useContext(CommonContext);
+  const open = commonState[name];
 
   const router = useRouter();
   const { asPath } = router;
 
-  const { t } = useTranslation("contribute");
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const { t } = useTranslation(intlFile);
 
   const handleRedirect = (url, shallow) => {
     url && router.push(url, undefined, { shallow });
   };
 
-  useEffect(() => {
-    open && setOpen(false);
-  }, [asPath]);
-
-  const DrawerHeader = ({ children }) => (
-    <Stack alignItems="flex-end" sx={{ p: 2 }}>
-      {children}
-    </Stack>
-  );
+  //   useEffect(() => {
+  //     open && handleDrawerToggle(name);
+  //   }, [asPath]);
 
   return (
     <>
-      <IconButton color="inherit" size="small" onClick={handleDrawerOpen}>
-        <MenuIcon />
-      </IconButton>
+      {withMenuButton && (
+        <IconButton color="inherit" onClick={() => handleDrawerToggle(name)}>
+          <MenuIcon />
+        </IconButton>
+      )}
 
-      {open && (
-        <Drawer
-          sx={{
-            flexShrink: 0,
-          }}
-          //   variant="persistent"
-          anchor="left"
-          open={open}
-          PaperProps={{
-            sx: {
-              width: drawerWidth,
-              bgcolor: "background.default",
-            },
-          }}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
+      <Drawer
+        open={open}
+        onClose={() => handleDrawerToggle(name)}
+        variant={isDesktop ? "persistent" : "temporary"}
+        PaperProps={{
+          sx: {
+            width: SIDE_NAV_BAR_DRAWER_WIDTH,
+            bgcolor: "background.default",
+          },
+        }}
+      >
+        {/* Header */}
+        {RenderHeader && (
+          <>
+            <Box sx={{ p: 2, minHeight: NAVBAR_HEIGHT_DESKTOP }}>
+              <RenderHeader />
+            </Box>
 
-          <Divider />
+            <Divider />
+          </>
+        )}
 
-          <List>
-            {items.map((item, i) => (
+        <List>
+          {items.map((item, i) => {
+            if (item.type === "divider") {
+              return <Divider sx={{ my: 1 }} />;
+            }
+
+            return (
               <React.Fragment key={i}>
                 <ListItem
                   button={!!item.link && !item.disableButton}
@@ -93,14 +93,18 @@ const Sidebar = ({ intlNames, items = [] }) => {
                     handleRedirect(item.link, item.shallow)
                   }
                   sx={{
+                    py: 1.5,
                     borderLeft:
                       item.link === asPath &&
                       `3px solid ${theme.palette.primary.main}`,
                   }}
                 >
-                  <ListItemText
-                    primary={intlNames ? t(item.name) : item.name}
-                  />
+                  <Stack spacing={1.5} alignItems="center" direction="row">
+                    {item.icon && <item.icon sx={{ fontSize: 20 }} />}
+                    <Typography>
+                      {intlNames ? t(item.name) : item.name}
+                    </Typography>
+                  </Stack>
                 </ListItem>
 
                 {item.nestedItems?.map((subItem, j) => (
@@ -126,12 +130,12 @@ const Sidebar = ({ intlNames, items = [] }) => {
                   </ListItem>
                 ))}
               </React.Fragment>
-            ))}
-          </List>
-        </Drawer>
-      )}
+            );
+          })}
+        </List>
+      </Drawer>
     </>
   );
 };
 
-export default Sidebar;
+export default FullPageMiniSidebar;

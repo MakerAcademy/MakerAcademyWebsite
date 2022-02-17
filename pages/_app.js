@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { handleLanguageChange } from "@utils/helperFunctions";
 import appWithI18n from "next-translate/appWithI18n";
 import i18nConfig from "@i18n";
+import { CommonContextProvider } from "@context/commonContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -37,10 +38,12 @@ function MyApp({
       <Hydrate state={pageProps.dehydratedState}>
         <Provider store={store}>
           <PageProvider emotionCache={emotionCache}>
-            <CssBaseline />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <CommonContextProvider>
+              <CssBaseline />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </CommonContextProvider>
           </PageProvider>
         </Provider>
       </Hydrate>

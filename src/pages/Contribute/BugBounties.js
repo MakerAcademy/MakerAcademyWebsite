@@ -1,5 +1,13 @@
 import ContentCardMin from "@components/cards/ContentCardMin";
-import { Box, Card, CardContent, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import { columns, rows } from "./dummyData";
@@ -9,9 +17,9 @@ const BugBounties = () => {
 
   return (
     <Box>
-      <Grid container spacing={{ xs: 3, md: 5 }}>
+      <Grid container spacing={{ xs: 3, md: 5 }} sx={{ mb: { xs: 3, md: 5 } }}>
         {/* Bug Bounty Description */}
-        <Grid item xs={12} md={5} lg={6}>
+        <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 3 }}>
@@ -30,24 +38,8 @@ const BugBounties = () => {
           </Card>
         </Grid>
 
-        {/* Relevant Coursework */}
-        <Grid item xs={12} md={3} lg={2}>
-          <Card sx={{ height: "100%" }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 3 }}>
-                Relevant Coursework
-              </Typography>
-
-              <Stack spacing={3}>
-                <ContentCardMin />
-                <ContentCardMin />
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-
         {/* DAI Bounty Payout History */}
-        <Grid item xs={12} md={4} lg={4}>
+        <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 3 }}>
@@ -69,6 +61,20 @@ const BugBounties = () => {
           </Card>
         </Grid>
       </Grid>
+
+      {/* Relevant Coursework */}
+      <Paper sx={{ height: "100%" }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 3 }}>
+            Relevant Coursework
+          </Typography>
+
+          <Stack direction="row" spacing={3}>
+            <ContentCardMin />
+            <ContentCardMin />
+          </Stack>
+        </CardContent>
+      </Paper>
     </Box>
   );
 };

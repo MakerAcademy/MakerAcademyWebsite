@@ -1,15 +1,11 @@
-import ThemeToggleButton from "@components/buttons/ThemeToggle";
-import LanguageMenu from "@components/menus/LanguageMenu";
 import { NAVBAR_HEIGHT_DESKTOP, NAVBAR_HEIGHT_MOBILE } from "@constants/";
 import withAppConfig from "@hoc/withAppConfig";
-import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Box,
   Container,
   Divider,
   Hidden,
-  IconButton,
   Stack,
   useTheme,
 } from "@mui/material";
@@ -18,7 +14,7 @@ import React, { useState } from "react";
 import DesktopMenuItems from "./DesktopMenuItems";
 import MobileMenuItems from "./MobileMenuItems";
 
-const LandingNavbar = ({ appConfig }) => {
+const LandingNavbar = ({ appConfig, LeftComponent }) => {
   const [spotlight, setSpotlight] = useState(null);
 
   const theme = useTheme();
@@ -48,10 +44,10 @@ const LandingNavbar = ({ appConfig }) => {
       <AppBar
         position="static"
         elevation={0}
-        color="transparent"
         sx={{
+          backgroundColor: theme.palette.background.main,
           // Decrease the blur for a transparency-blurred effect
-          backdropFilter: "blur(50px)",
+          // backdropFilter: "blur(50px)",
         }}
       >
         <Container maxWidth="xl">
@@ -68,12 +64,15 @@ const LandingNavbar = ({ appConfig }) => {
             }}
           >
             {/* Logo */}
-            <Logo />
+            <Stack direction="row" spacing={2} alignItems="center">
+              {LeftComponent && <LeftComponent />}
+              <Logo />
+            </Stack>
 
             {/* Menu Items */}
             <Box>
               {/* Desktop Menu */}
-              <Hidden mdDown>
+              <Hidden lgDown>
                 <DesktopMenuItems
                   menuItems={menuItems}
                   themeToggle={themeToggle}
@@ -83,7 +82,7 @@ const LandingNavbar = ({ appConfig }) => {
               </Hidden>
 
               {/* Mobile Menu */}
-              <Hidden mdUp>
+              <Hidden lgUp>
                 <MobileMenuItems
                   menuItems={menuItems}
                   themeToggle={themeToggle}

@@ -31,6 +31,7 @@ export const lightTheme = createTheme({
     },
     background: {
       ...colors,
+      main: "#fff",
       default: "#F4F6F8",
       alt: "#FFFFFF",
       onBackground: "#F5F5F5",
