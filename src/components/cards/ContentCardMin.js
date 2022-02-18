@@ -26,9 +26,10 @@ const ContentCardMin = ({
   verification,
   views,
   likes,
+  disableLink,
 }) => {
   const theme = useTheme();
-  const tags = [topic, subtopic, level]
+  const tags = [topic, subtopic, level];
 
   const CustomChip = ({ text }) => (
     <Chip
@@ -43,8 +44,7 @@ const ContentCardMin = ({
   );
 
   return (
-    // TODO - Use util function to build the url depending on the route
-    <Link href={`/programs/${_programId}/course/${_id}`}>
+    <Link href={disableLink ? "#" : `/programs/${_programId}/course/${_id}`}>
       <Card
         elevation={3}
         sx={{
@@ -63,7 +63,9 @@ const ContentCardMin = ({
               ))}
             </Stack>
 
-            <Typography variant="caption">Posted {new Date(timestamp).toDateString()}</Typography>
+            <Typography variant="caption">
+              Posted {new Date(timestamp).toDateString()}
+            </Typography>
 
             <Typography variant="h6">{title}</Typography>
 
