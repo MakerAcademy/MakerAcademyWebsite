@@ -78,6 +78,10 @@ const MakerOverviewPage = ({ content = [] }) => {
           </Typography>
 
           <Paper sx={{ px: 2, py: 3 }}>
+            <Typography sx={{ mb: 2, fontWeight: 600 }}>
+              Beginner Content
+            </Typography>
+
             <OverviewCarousel contents={content} />
           </Paper>
         </Grid>
