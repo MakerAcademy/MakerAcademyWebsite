@@ -2,6 +2,7 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const Section = ({ title, description }) => (
@@ -51,11 +52,17 @@ const ContributorPathways = () => {
         spacing={2}
         sx={{ mb: { xs: 3, md: 5 } }}
       >
-        <RoundedButton variant="outlined">Bug Bounties</RoundedButton>
+        <Link href={"/contribute/pipeline/bug-bounties"}>
+          <RoundedButton variant="outlined">Bug Bounties</RoundedButton>
+        </Link>
 
-        <RoundedButton variant="outlined">Grants</RoundedButton>
+        <Link href={"/contribute/pipeline/grants"}>
+          <RoundedButton variant="outlined">Grants</RoundedButton>
+        </Link>
 
-        <RoundedButton variant="outlined">Core Unit Incubation</RoundedButton>
+        <Link href={"/contribute/pipeline/core-unit-incubation"}>
+          <RoundedButton variant="outlined">Core Unit Incubation</RoundedButton>
+        </Link>
       </Stack>
 
       <Section
@@ -63,7 +70,9 @@ const ContributorPathways = () => {
         description="Experience. Money. "
       />
 
-      <RoundedButton>Start Contributing</RoundedButton>
+      <Link href="/contribute">
+        <RoundedButton>Start Contributing</RoundedButton>
+      </Link>
     </Container>
   );
 };

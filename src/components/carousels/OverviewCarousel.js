@@ -27,7 +27,7 @@ const OverviewCarousel = ({ contents = [] }) => {
           key={i}
           sx={{ display: "flex !important", p: 1 }}
         >
-          <ContentCardMin {...content} />
+          <ContentCardMin disableLink {...content} />
           {i < contents.length - 1 && <ArrowForwardIcon sx={{ ml: 1 }} />}
         </Stack>
       ))}

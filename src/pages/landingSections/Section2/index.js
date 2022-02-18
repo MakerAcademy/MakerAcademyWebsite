@@ -11,21 +11,34 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import React from "react";
 
 const learners = [
-  { title: "new_to_maker", buttonText: "maker_overview" },
+  {
+    title: "new_to_maker",
+    buttonText: "maker_overview",
+    link: "/maker-overview",
+  },
   {
     title: "acquire_skills",
     buttonText: "contributor_overview",
+    link: "/contributor-pathways",
   },
   {
     title: "in_depth_knowledge",
     buttonText: "expert_overview",
+    link: "/expert-overview",
   },
 ];
 
-const educators = [{ title: "add_your_content", buttonText: "creator_studio" }];
+const educators = [
+  {
+    title: "add_your_content",
+    buttonText: "creator_studio",
+    link: "/creator-studio",
+  },
+];
 
 const Section2 = () => {
   const theme = useTheme();
@@ -33,32 +46,34 @@ const Section2 = () => {
 
   const { t } = useTranslation("home");
 
-  const CustomCard = ({ title, buttonText }) => (
-    <Card elevation={0}>
-      <Box sx={{ py: 3, p: 2.2 }}>
-        <Stack
-          spacing={2}
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{
-              borderWidth: "2px",
-              fontWeight: 500,
-              "&:hover": {
-                borderWidth: "2px",
-              },
-            }}
+  const CustomCard = ({ title, buttonText, link }) => (
+    <Link href={link}>
+      <Card elevation={0}>
+        <Box sx={{ py: 3, p: 2.2 }}>
+          <Stack
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {t(buttonText)}
-          </Button>
-        </Stack>
-      </Box>
-    </Card>
+            <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                borderWidth: "2px",
+                fontWeight: 500,
+                "&:hover": {
+                  borderWidth: "2px",
+                },
+              }}
+            >
+              {t(buttonText)}
+            </Button>
+          </Stack>
+        </Box>
+      </Card>
+    </Link>
   );
 
   return (
