@@ -2,6 +2,7 @@ import ResponsiveText from "@components/ResponsiveText";
 import {
   Box,
   Breadcrumbs,
+  Divider,
   Link,
   Stack,
   Typography,
@@ -12,9 +13,11 @@ import React from "react";
 const BreadcrumbsSection = ({
   title,
   subtitle,
+  MiddleComponent,
   breadcrumbs = [],
   sx = {},
   align = "center",
+  withDivider,
 }) => {
   const theme = useTheme();
 
@@ -40,6 +43,8 @@ const BreadcrumbsSection = ({
             {subtitle}
           </ResponsiveText>
         )}
+
+        {MiddleComponent && MiddleComponent}
 
         {breadcrumbs.length > 0 && (
           <Breadcrumbs
@@ -74,6 +79,8 @@ const BreadcrumbsSection = ({
           </Breadcrumbs>
         )}
       </Stack>
+
+      {withDivider && <Divider sx={{ mt: 3 }} />}
     </Box>
   );
 };

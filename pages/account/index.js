@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useLayoutEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 
 const AccountPage = () => {
   const router = useRouter();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     router.push("/account/profile");
   }, []);
 

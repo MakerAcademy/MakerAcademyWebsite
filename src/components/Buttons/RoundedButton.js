@@ -1,7 +1,14 @@
 import { Button, Stack, useTheme } from "@mui/material";
 import React from "react";
 
-const RoundedButton = ({ children, sx = {}, icon, variant, ...props }) => {
+const RoundedButton = ({
+  children,
+  sx = {},
+  icon,
+  variant,
+  size,
+  ...props
+}) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -9,8 +16,8 @@ const RoundedButton = ({ children, sx = {}, icon, variant, ...props }) => {
     const commonStyles = {
       textTransform: "inherit",
       borderRadius: 30,
-      py: 1,
-      px: 3,
+      py: size === "small" ? 0 : size === "large" ? 1.5 : 1,
+      px: size === "small" ? 2 : size === "large" ? 4 : 3,
       fontSize: 16,
     };
 
