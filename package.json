@@ -12,6 +12,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
+    "@hookform/resolvers": "^2.8.8",
     "@makerdao/dai-ui-icons": "0.0.66",
     "@makerdao/dai-ui-icons-branding": "0.0.66",
     "@makerdao/dai-ui-theme-maker-neue": "0.0.66",
@@ -39,7 +40,8 @@
     "react-scrollspy": "^3.4.3",
     "react-slick": "^0.28.1",
     "react-swipeable-views": "^0.14.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "^14.14.13",

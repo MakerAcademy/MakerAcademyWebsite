@@ -1,19 +1,17 @@
+import LoginForm from "@components/forms/SignInForm";
 import ResponsiveText from "@components/ResponsiveText";
+import GoogleIcon from "@mui/icons-material/Google";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import {
+  Box,
   Divider,
   IconButton,
   Stack,
-  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
 import React from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import RoundedButton from "@components/buttons/RoundedButton";
-import Link from "next/link";
-import { grey } from "@mui/material/colors";
 
 const SignInForm = () => {
   const theme = useTheme();
@@ -46,40 +44,9 @@ const SignInForm = () => {
         Sign In to Your Account
       </ResponsiveText>
 
-      <TextField
-        variant="filled"
-        label="Email"
-        placeholder="Email / username"
-        fullWidth
-        sx={{ maxWidth: 450 }}
-        InputLabelProps={{
-          sx: {
-            color: theme.palette.mode === "dark" ? grey[100] : grey[600],
-          },
-        }}
-      />
-
-      <TextField
-        variant="filled"
-        label="Password"
-        placeholder="Password"
-        type="password"
-        fullWidth
-        sx={{
-          maxWidth: 450,
-        }}
-        InputLabelProps={{
-          sx: {
-            color: theme.palette.mode === "dark" ? grey[100] : grey[600],
-          },
-        }}
-      />
-
-      <Link href="/account">
-        <RoundedButton fullWidth sx={{ maxWidth: 200 }}>
-          Sign in
-        </RoundedButton>
-      </Link>
+      <Box sx={{ width: "100%" }}>
+        <LoginForm />
+      </Box>
 
       <Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>
         Or

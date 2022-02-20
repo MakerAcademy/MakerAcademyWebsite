@@ -1,8 +1,18 @@
-import { TextField } from "@mui/material";
+import { TextField, useTheme } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const FormTextField = ({ name, control, multiline, sx = {}, ...other }) => {
+const FormTextField = ({
+  name,
+  control,
+  multiline,
+  sx = {},
+  variant = "outlined",
+  ...other
+}) => {
+  const theme = useTheme();
+
   return (
     <Controller
       name={name}
@@ -18,7 +28,7 @@ const FormTextField = ({ name, control, multiline, sx = {}, ...other }) => {
           error={!!error}
           onChange={onChange}
           fullWidth
-          variant="outlined"
+          variant={variant}
           multiline={multiline}
           InputProps={{
             sx: {
@@ -29,6 +39,15 @@ const FormTextField = ({ name, control, multiline, sx = {}, ...other }) => {
               px: multiline ? 2.5 : 1,
             },
           }}
+          InputLabelProps={{
+            sx: {
+              color:
+                variant === "filled" && theme.palette.mode === "dark"
+                  ? grey[100]
+                  : grey[600],
+            },
+          }}
+          sx={{ ...sx }}
           {...other}
         />
       )}

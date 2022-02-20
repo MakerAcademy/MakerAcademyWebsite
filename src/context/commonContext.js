@@ -1,5 +1,5 @@
 import { COMMON_CONTEXT_STORAGE } from "@constants";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 // Create Context Object
 export const CommonContext = createContext({});
@@ -9,7 +9,7 @@ export const CommonContextProvider = ({ children }) => {
   const [state, setState] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  useMemo(() => {
     if (typeof window !== "undefined") {
       const _data = window.localStorage.getItem(COMMON_CONTEXT_STORAGE);
       const parsed = _data ? JSON.parse(_data) : {};
