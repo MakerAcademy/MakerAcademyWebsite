@@ -36,7 +36,7 @@ const educators = [
   {
     title: "add_your_content",
     buttonText: "creator_studio",
-    link: "/creator-studio",
+    link: "/studio",
   },
 ];
 

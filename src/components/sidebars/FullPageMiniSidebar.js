@@ -79,7 +79,7 @@ const FullPageMiniSidebar = ({
         <List>
           {items.map((item, i) => {
             if (item.type === "divider") {
-              return <Divider sx={{ my: 1 }} />;
+              return <Divider sx={{ my: 1 }} key={i} />;
             }
 
             return (
