@@ -1,7 +1,7 @@
 import RoundedButton from "@components/buttons/RoundedButton";
 import PreviewProfileCard from "@components/cards/PreviewProfileCard";
-import FormDropzone from "@components/FormComponents/FormDropzone";
-import FormTextField from "@components/FormComponents/FormTextField";
+import FormDropzone from "@components/formComponents/FormDropzone";
+import FormTextField from "@components/formComponents/FormTextField";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
