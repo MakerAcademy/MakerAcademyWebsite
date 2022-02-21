@@ -5,7 +5,7 @@ module.exports = {
     "*": ["common"],
     "/": ["home"],
     "rgx:^/contribute": ["contribute"],
-    "rgx:^/creator-studio": ["creator-studio"],
+    "rgx:^/studio": ["creator-studio"],
   },
   loadLocaleFrom: (lang, ns) =>
     import(`./locales/${lang}/${ns}.json`).then((m) => m.default),

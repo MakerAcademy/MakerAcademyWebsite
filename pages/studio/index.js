@@ -3,6 +3,7 @@ import SideNavBarLayout from "@layouts/SideNavBarLayout";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Grid,
   Paper,
@@ -20,41 +21,44 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import CommentIcon from "@mui/icons-material/Comment";
 import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import SettingsIcon from "@mui/icons-material/Settings";
+import RoundedButton from "@components/buttons/RoundedButton";
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 
 const SIDEBAR_ITEMS = [
   {
     name: "creator_studio_dashboard",
-    link: "/creator-studio",
+    link: "/studio",
     shallow: true,
     icon: DashboardIcon,
   },
   {
     name: "creator_studio_content",
-    link: "/creator-studio/content",
+    link: "/studio/content",
     shallow: true,
     icon: VideoLibraryIcon,
   },
   {
     name: "creator_studio_playlists",
-    link: "/creator-studio/playlists",
+    link: "/studio/playlists",
     shallow: true,
     icon: PlaylistPlayIcon,
   },
   {
     name: "creator_studio_analytics",
-    link: "/creator-studio/analytics",
+    link: "/studio/analytics",
     shallow: true,
     icon: AnalyticsIcon,
   },
   {
     name: "creator_studio_comments",
-    link: "/creator-studio/comments",
+    link: "/studio/comments",
     shallow: true,
     icon: CommentIcon,
   },
   {
     name: "creator_studio_subtitles",
-    link: "/creator-studio/subtitles",
+    link: "/studio/subtitles",
     shallow: true,
     icon: SubtitlesIcon,
   },
@@ -63,7 +67,7 @@ const SIDEBAR_ITEMS = [
   },
   {
     name: "creator_studio_settings",
-    link: "/creator-studio/settings",
+    link: "/studio/settings",
     shallow: true,
     icon: SettingsIcon,
   },
@@ -112,7 +116,20 @@ const CreatorStudio = () => {
                 <CreatorCounter count={59} text="DOWNLOADS" />
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
-                <CreatorCounter count={321} text="ANOTHER ONE" />
+                <Stack
+                  sx={{ height: "100%" }}
+                  alignItems="flex-end"
+                  justifyContent="center"
+                >
+                  <Link href="/studio/new">
+                    <RoundedButton
+                      variant="outlined"
+                      icon={<AddIcon fontSize="small" />}
+                    >
+                      Add new Content
+                    </RoundedButton>
+                  </Link>
+                </Stack>
               </Grid>
             </Grid>
           </Box>
