@@ -82,7 +82,14 @@ const FormDraftField = ({
     <div style={{ padding: 5, minHeight: 600 }}>
       <Stack spacing={3} direction={direction}>
         {!hideEditor && (
-          <Paper sx={{ flex: 1.5 }}>
+          <Paper
+            sx={{
+              flex: 1.5,
+              backgroundColor: "#fff",
+              color: "#000",
+              "& .rdw-editor-main": { px: 2 },
+            }}
+          >
             <Editor
               editorState={editorState}
               toolbarClassName="toolbarClassName"
