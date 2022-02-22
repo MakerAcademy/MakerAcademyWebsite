@@ -6,12 +6,7 @@ const config = ({ mode }) => ({
   logoLight: LogoLight,
   logoDark: LogoDark,
   locales: ["en", "fr"],
-  noLayoutRoutes: [
-    "/sign-in",
-    "/sign-up",
-    "/creator-studio",
-    "/creator-studio/[page]",
-  ],
+  noLayoutRoutes: ["/sign-in", "/sign-up", "/studio", "/studio/[page]"],
   navbar: {
     themeToggle: true,
     languagePopup: true,

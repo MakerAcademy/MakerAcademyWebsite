@@ -10,7 +10,6 @@ const Dropzone = ({ onChange, multiple, children, ...rest }) => {
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     console.log({ acceptedFiles });
-
     onChange?.(multiple ? acceptedFiles : acceptedFiles[0]);
   }, []);
 

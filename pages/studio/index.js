@@ -1,61 +1,62 @@
+import RoundedButton from "@components/buttons/RoundedButton";
 import CreatorCounter from "@components/cards/CreatorCounter";
 import SideNavBarLayout from "@layouts/SideNavBarLayout";
+import AddIcon from "@mui/icons-material/Add";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import CommentIcon from "@mui/icons-material/Comment";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SubtitlesIcon from "@mui/icons-material/Subtitles";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import {
   Avatar,
-  Box,
-  Container,
+  Box, Container,
   Grid,
   Paper,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { columns, rows } from "@pages/AboutUs/dummyData";
-import React from "react";
-import { useState } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
-import CommentIcon from "@mui/icons-material/Comment";
-import SubtitlesIcon from "@mui/icons-material/Subtitles";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
+import Link from "next/link";
+import React, { useState } from "react";
 
 const SIDEBAR_ITEMS = [
   {
     name: "creator_studio_dashboard",
-    link: "/creator-studio",
+    link: "/studio",
     shallow: true,
     icon: DashboardIcon,
   },
   {
     name: "creator_studio_content",
-    link: "/creator-studio/content",
+    link: "/studio/content",
     shallow: true,
     icon: VideoLibraryIcon,
   },
   {
     name: "creator_studio_playlists",
-    link: "/creator-studio/playlists",
+    link: "/studio/playlists",
     shallow: true,
     icon: PlaylistPlayIcon,
   },
   {
     name: "creator_studio_analytics",
-    link: "/creator-studio/analytics",
+    link: "/studio/analytics",
     shallow: true,
     icon: AnalyticsIcon,
   },
   {
     name: "creator_studio_comments",
-    link: "/creator-studio/comments",
+    link: "/studio/comments",
     shallow: true,
     icon: CommentIcon,
   },
   {
     name: "creator_studio_subtitles",
-    link: "/creator-studio/subtitles",
+    link: "/studio/subtitles",
     shallow: true,
     icon: SubtitlesIcon,
   },
@@ -64,15 +65,15 @@ const SIDEBAR_ITEMS = [
   },
   {
     name: "creator_studio_settings",
-    link: "/creator-studio/settings",
+    link: "/studio/settings",
     shallow: true,
     icon: SettingsIcon,
   },
 ];
 
-const CreatorStudio = ({session}) => {
+const CreatorStudio = ({ session }) => {
   const [pageSize, setPageSize] = useState(5);
-  const {user} = session;
+  const { user } = session;
 
   const SidebarHeader = () => (
     <Stack
@@ -114,7 +115,20 @@ const CreatorStudio = ({session}) => {
                 <CreatorCounter count={59} text="DOWNLOADS" />
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
-                <CreatorCounter count={321} text="ANOTHER ONE" />
+                <Stack
+                  sx={{ height: "100%" }}
+                  alignItems="flex-end"
+                  justifyContent="center"
+                >
+                  <Link href="/studio/new">
+                    <RoundedButton
+                      variant="outlined"
+                      icon={<AddIcon fontSize="small" />}
+                    >
+                      Add new Content
+                    </RoundedButton>
+                  </Link>
+                </Stack>
               </Grid>
             </Grid>
           </Box>
@@ -155,20 +169,19 @@ const CreatorStudio = ({session}) => {
 
 export default CreatorStudio;
 
-
 export async function getServerSideProps(context) {
-  const {req} = context
+  const { req } = context;
   const data = await getSession({ req });
   console.log(data);
   if (data) {
     return {
       props: {
-        session: data
-      }
-    }
+        session: data,
+      },
+    };
   } else {
     return {
-      redirect: {destination: '/sign-in'}
-    }
+      redirect: { destination: "/sign-in" },
+    };
   }
 }
