@@ -11,12 +11,11 @@ import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import {
   Avatar,
-  Box,
-  Container,
+  Box, Container,
   Grid,
   Paper,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { columns, rows } from "@pages/AboutUs/dummyData";
