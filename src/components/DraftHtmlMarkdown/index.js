@@ -12,6 +12,29 @@ const DraftHtmlMarkdown = ({
 }) => {
   const hasChips = level || topic || subtopic;
 
+  const handleSubmit = async (markdownValue) => {
+    const res = await fetch('/api/documents', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'Application/json'
+      },
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        level: level,
+        topic: topic,
+        subtopic: subtopic,
+        content_type: "document",
+        duration: 30,
+        author_id: "Zach Huang",
+        body: markdownValue,
+      })
+    }).then((response) => {
+      console.log(response);
+      return response;
+    })
+  }
+
   return (
     <Stack spacing={3}>
       {title && <Typography variant="h6">{title}</Typography>}
@@ -28,7 +51,7 @@ const DraftHtmlMarkdown = ({
         </Stack>
       )}
 
-      <FormDraftField onChange={handleChange} hideHtml direction="row" />
+      <FormDraftField onChange={handleChange} handeSubmit={handleSubmit()} hideHtml direction="row" />
     </Stack>
   );
 };

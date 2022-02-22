@@ -9,6 +9,7 @@ import {
   htmlToEditor,
   markdownToEditor,
 } from "./helpers";
+import RoundedButton from "@components/buttons/RoundedButton";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -23,6 +24,7 @@ const FormDraftField = ({
   hideHtml,
   hideMarkdown,
   direction = "column",
+  handeSubmit
 }) => {
   const [loading, setLoading] = useState(true);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -133,6 +135,7 @@ const FormDraftField = ({
           />
         )}
       </Stack>
+      <RoundedButton onClick={(e) => {handeSubmit(markdownValue)}}>Create New Document</RoundedButton>
     </div>
   );
 };
