@@ -11,11 +11,34 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { signIn } from "next-auth/react";
+import {getSession , getCsrfToken, getProviders} from "next-auth/react";
+import { useRouter } from "next/router";
+
+
+async function createUser(email, password, role) {
+  console.log(providers.credentials.id);
+  const response = await fetch('/api/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify({email, password, role}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  const data = await response.json();
+  console.log(data);
+  if (!response.ok) {
+    throw new Error(data.message || 'Something went wrong');
+  }
+  return data;
+}
+
 
 const SignUpForm = () => {
   const [type, setType] = useState("learner");
 
-  // form validation rules
+  const providers = getProviders();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
     password: Yup.string().required("Password is required"),
@@ -24,11 +47,17 @@ const SignUpForm = () => {
 
   const { handleSubmit, reset, control, getValues } = useForm(formOptions);
 
-  const onSubmit = (data, e) => {
-    const { email, password } = data;
+  const router = useRouter();
 
-    console.log(email, password, type);
-    reset(); // reset after form submit
+
+  const onSubmit = async (data, e) => {
+    const { email, password } = data;
+    try {
+      const result = await createUser(email, password, type);
+      await router.replace('/');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleTypeChange = (event, _type) => {
@@ -88,5 +117,6 @@ const SignUpForm = () => {
     </form>
   );
 };
+
 
 export default SignUpForm;

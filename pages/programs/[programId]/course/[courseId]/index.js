@@ -15,8 +15,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { connectToDB } from "../../../../../db/connect";
-import { getOneCourse } from "../../../../../db/course";
+import { connectToDB } from "../../../../../lib/db/connect";
+import { getOneCourse } from "../../../../../lib/db/course";
 
 const CoursePage = ({ course, topic, subtopic, title } ) => {
   const { query } = useRouter();

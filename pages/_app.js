@@ -13,6 +13,7 @@ import { handleLanguageChange } from "@utils/helperFunctions";
 import appWithI18n from "next-translate/appWithI18n";
 import i18nConfig from "@i18n";
 import { CommonContextProvider } from "@context/commonContext";
+import { SessionProvider } from "next-auth/react";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -34,6 +35,7 @@ function MyApp({
   // }, []);
 
   return (
+
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <Provider store={store}>
@@ -41,13 +43,16 @@ function MyApp({
             <CommonContextProvider>
               <CssBaseline />
               <Layout>
-                <Component {...pageProps} />
+                <SessionProvider session={pageProps.session} refetchInterval={0}>
+                  <Component {...pageProps} />
+                </SessionProvider>
               </Layout>
             </CommonContextProvider>
           </PageProvider>
         </Provider>
       </Hydrate>
     </QueryClientProvider>
+
   );
 }
 

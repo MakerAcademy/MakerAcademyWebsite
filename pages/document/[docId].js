@@ -1,7 +1,7 @@
 import BasicDocument from "@components/documents/BasicDocument";
 import React from "react";
-import { connectToDB } from "../../db/connect";
-import { getOneDocument } from "../../db/document";
+import { connectToDB } from "../../lib/db/connect";
+import { getOneDocument } from "../../lib/db/document";
 
 
 const DocumentPage = (props) => {

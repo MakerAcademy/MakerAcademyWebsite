@@ -3,8 +3,8 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { Box, Container, Divider, Grid, Stack } from "@mui/material";
-import { connectToDB } from "db/connect";
-import { getContent, getContentSearchTags, getCountEstimate } from "db/content";
+import { connectToDB } from "lib/db/connect";
+import { getContent, getContentSearchTags, getCountEstimate } from "lib/db/content";
 import React, { useCallback, useEffect, useState } from "react";
 import {TAGS} from "src/constants/tags";
 

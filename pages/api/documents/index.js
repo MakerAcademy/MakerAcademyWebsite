@@ -1,6 +1,6 @@
-import { connectToDB } from "../../../db/connect";
-import {getOneDocument, createDocument, updateOneDocument} from "../../../db/document";
-import validateJSON from "../../../db/utils";
+import { connectToDB } from "../../../lib/db/connect";
+import {getOneDocument, createDocument, updateOneDocument} from "../../../lib/db/document";
+import validateJSON from "../../../lib/db/utils";
 
 export default async function handler(req, res) {
   const {db} = await connectToDB();

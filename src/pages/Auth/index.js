@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Router, { useRouter } from "next/router";
 import { SIGNIN, SIGNUP } from "@constants/routes";
 
-const AuthForm = ({ appConfig }) => {
+const AuthForm = ({ appConfig, providers }) => {
   const theme = useTheme();
   const { pathname } = useRouter();
 
@@ -122,7 +122,7 @@ const AuthForm = ({ appConfig }) => {
               }}
               maxWidth="md"
             >
-              {mode === SIGNIN ? <SignInForm /> : <SignUpForm />}
+              {mode === SIGNIN ? <SignInForm providers={providers}/> : <SignUpForm providers={providers} />}
             </Container>
           </Box>
         </Stack>
