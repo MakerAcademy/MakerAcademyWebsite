@@ -4,6 +4,7 @@ import DraftHtmlMarkdown from "@components/DraftHtmlMarkdown";
 
 const CreatorStudioNew = () => {
   const handleChange = ({ editor, markdown, html }) => {
+    console.log(markdown);
     // console.log(markdown);
   };
 
