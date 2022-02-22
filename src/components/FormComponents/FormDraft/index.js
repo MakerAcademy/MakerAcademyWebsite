@@ -135,7 +135,7 @@ const FormDraftField = ({
           />
         )}
       </Stack>
-      <RoundedButton onClick={(e) => {handeSubmit(markdownValue)}}>Create New Document</RoundedButton>
+      <RoundedButton onClick={() => {handeSubmit(markdownValue)}}>Create New Document</RoundedButton>
     </div>
   );
 };
