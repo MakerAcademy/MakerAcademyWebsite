@@ -16,7 +16,10 @@ const Home = ({ appConfig }) => {
   return (
     <Box>
       <h1>{status}</h1>
-      <Button onClick={() => signIn("google")}>Sign In Test</Button>
+      <Button href={'/api/auth/signin'} onClick={(e) => {
+        e.preventDefault()
+        signIn()
+      }}>Sign In Test</Button>
       <Section1 />
       <Section2 />
       <Section3 />

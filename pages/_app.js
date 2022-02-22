@@ -35,7 +35,7 @@ function MyApp({
   // }, []);
 
   return (
-    <SessionProvider session={pageProps.session}>
+
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <Provider store={store}>
@@ -43,14 +43,16 @@ function MyApp({
             <CommonContextProvider>
               <CssBaseline />
               <Layout>
-                <Component {...pageProps} />
+                <SessionProvider session={pageProps.session} refetchInterval={0}>
+                  <Component {...pageProps} />
+                </SessionProvider>
               </Layout>
             </CommonContextProvider>
           </PageProvider>
         </Provider>
       </Hydrate>
     </QueryClientProvider>
-    </SessionProvider>
+
   );
 }
 
