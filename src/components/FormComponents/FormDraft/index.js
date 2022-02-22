@@ -1,4 +1,5 @@
-import { Paper, Stack, TextField } from "@mui/material";
+import { Paper, Stack, TextField, useTheme } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { EditorState } from "draft-js";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import {
   htmlToEditor,
   markdownToEditor,
 } from "./helpers";
-import RoundedButton from "@components/buttons/RoundedButton";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -17,15 +17,16 @@ const Editor = dynamic(
 );
 
 const FormDraftField = ({
-  value = "# test",
+  value = "markdown",
   valueType = "markdown",
   onChange,
   hideEditor,
   hideHtml,
   hideMarkdown,
   direction = "column",
-  handeSubmit
 }) => {
+  const theme = useTheme();
+
   const [loading, setLoading] = useState(true);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [htmlValue, setHtmlValue] = useState("");
@@ -81,7 +82,7 @@ const FormDraftField = ({
   }, [editorState, htmlValue, markdownValue, loading]);
 
   return (
-    <div style={{ padding: 5, minHeight: 600 }}>
+    <div style={{ padding: 5 }}>
       <Stack spacing={3} direction={direction}>
         {!hideEditor && (
           <Paper
@@ -113,6 +114,11 @@ const FormDraftField = ({
               height: "inherit",
               "& textarea": { height: "100% !important" },
             }}
+            InputLabelProps={{
+              sx: {
+                color: theme.palette.mode === "dark" ? grey[100] : grey[600],
+              },
+            }}
             InputProps={{ sx: { height: "100%" } }}
             value={markdownValue}
             onChange={(e) => handleMarkdownChange(e.target.value)}
@@ -129,13 +135,17 @@ const FormDraftField = ({
               height: "inherit",
               "& textarea": { height: "100% !important" },
             }}
+            InputLabelProps={{
+              sx: {
+                color: theme.palette.mode === "dark" ? grey[100] : grey[600],
+              },
+            }}
             InputProps={{ sx: { height: "100%" } }}
             value={htmlValue}
             onChange={(e) => handleHtmlChange(e.target.value)}
           />
         )}
       </Stack>
-      <RoundedButton onClick={() => {handeSubmit(markdownValue)}}>Create New Document</RoundedButton>
     </div>
   );
 };
