@@ -14,8 +14,8 @@ import {
 import Link from "next/link";
 import React from "react";
 import { DUMMY_FILTER_OPTIONS } from "@components/SearchFilterBar/dummyData";
-import { connectToDB } from "../../db/connect";
-import { getCountEstimate, getPrograms, getProgramSearchTags } from "../../db/program";
+import { connectToDB } from "../../lib/db/connect";
+import { getCountEstimate, getPrograms, getProgramSearchTags } from "../../lib/db/program";
 import { TAGS } from "@constants/tags";
 
 const ProgramsPage = ({ programs, tags, count }) => {

@@ -1,6 +1,6 @@
-import { connectToDB } from "../../../db/connect";
-import { getContent } from "../../../db/content";
-import validateJSON from "../../../db/utils";
+import { connectToDB } from "../../../lib/db/connect";
+import { getContent } from "../../../lib/db/content";
+import validateJSON from "../../../lib/db/utils";
 
 export default async function handler(req, res) {
   const {db} = await connectToDB();

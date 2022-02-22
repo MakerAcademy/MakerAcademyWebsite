@@ -2,9 +2,11 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { getProviders, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const SignInForm = () => {
   // form validation rules
@@ -14,13 +16,28 @@ const SignInForm = () => {
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 
+  const router = useRouter();
+
   const { handleSubmit, reset, control, getValues } = useForm(formOptions);
 
-  const onSubmit = (data, e) => {
-    const { email, password } = data;
 
-    console.log(email, password);
-    reset(); // reset after form submit
+
+  const onSubmit = async (data, e) => {
+    const { email, password } = data;
+    const providers = await getProviders();
+    const res = await signIn(providers.credentials.id, {
+      redirect: false,
+      email: email,
+      password: password,
+      callbackUrl: `$window.location.host`,
+    })
+    console.log("signIn Status: ", res);
+    if (res?.error) {
+      console.log(res.error);
+    }
+    if (res.url) {
+      await router.push(res.url)
+    }
   };
 
   return (

@@ -7,9 +7,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
-import { connectToDB } from "../../../db/connect";
-import { getOneCourse } from "../../../db/course";
-import { getOneProgram } from "../../../db/program";
+import { connectToDB } from "../../../lib/db/connect";
+import { getOneCourse } from "../../../lib/db/course";
+import { getOneProgram } from "../../../lib/db/program";
 
 
 const Program = ({program, topic, subtopic, title}) => {
