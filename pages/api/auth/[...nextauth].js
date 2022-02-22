@@ -36,6 +36,9 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_OAUTH_SECRET,
     }),
   ],
+  pages: {
+    signIn: "/signin",
+  },
   adapter: MongoDBAdapter(connectToDB().then((db) =>
     db.dbClient)),
 })

@@ -20,6 +20,7 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import CommentIcon from "@mui/icons-material/Comment";
 import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { getSession, useSession } from "next-auth/react";
 
 const SIDEBAR_ITEMS = [
   {
@@ -69,8 +70,9 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
-const CreatorStudio = () => {
+const CreatorStudio = ({session}) => {
   const [pageSize, setPageSize] = useState(5);
+  const {user} = session;
 
   const SidebarHeader = () => (
     <Stack
@@ -81,7 +83,7 @@ const CreatorStudio = () => {
         <Avatar />
 
         <Box>
-          <Typography sx={{ fontWeight: 500 }}>Colby Anderson</Typography>
+          <Typography sx={{ fontWeight: 500 }}>{user.name}</Typography>
           <Typography sx={{ fontSize: 14, fontWeight: 300 }}>
             Educator
           </Typography>
@@ -152,3 +154,21 @@ const CreatorStudio = () => {
 };
 
 export default CreatorStudio;
+
+
+export async function getServerSideProps(context) {
+  const {req} = context
+  const data = await getSession({ req });
+  console.log(data);
+  if (data) {
+    return {
+      props: {
+        session: data
+      }
+    }
+  } else {
+    return {
+      redirect: {destination: '/sign-in'}
+    }
+  }
+}

@@ -12,8 +12,9 @@ import {
   useTheme,
 } from "@mui/material";
 import React from "react";
+import { signIn } from "next-auth/react";
 
-const SignInForm = () => {
+const SignInForm = ({providers}) => {
   const theme = useTheme();
 
   const SocialButton = ({ color, children }) => (
@@ -61,15 +62,7 @@ const SignInForm = () => {
         spacing={2.5}
       >
         <SocialButton color="#DF4D3B">
-          <GoogleIcon />
-        </SocialButton>
-
-        <SocialButton color="#1C9CEA">
-          <TwitterIcon />
-        </SocialButton>
-
-        <SocialButton color="#47546D">
-          <LinkedInIcon />
+          <GoogleIcon onClick={() => signIn('google')}/>
         </SocialButton>
       </Stack>
     </Stack>
