@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormTextField from "@components/FormComponents/FormTextField";
+import FormTextField from "@components/formComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Stack,
@@ -11,13 +11,11 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/router";
 
 
 async function createUser(email, password, role) {
-  console.log("creating new user POG");
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     body: JSON.stringify({email, password, role}),
@@ -26,7 +24,6 @@ async function createUser(email, password, role) {
     },
   })
   const data = await response.json();
-  console.log(data);
   if (!response.ok) {
     throw new Error(data.message || 'Something went wrong');
   }
@@ -47,13 +44,17 @@ const SignUpForm = () => {
 
   const router = useRouter();
 
-
   const onSubmit = async (data, e) => {
     const { email, password } = data;
     try {
       const result = await createUser(email, password, type);
       console.log(result);
-      const login = await signIn('credentials', {email: email, password: password});
+      const login = await signIn('credentials', {
+        email: email,
+        password: password,
+        callbackUrl: `${window.location.host}`,
+      }
+      );
       if (login) {
         router.push('/');
       }

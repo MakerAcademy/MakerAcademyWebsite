@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { signIn } from "next-auth/react";
 
-const SignInForm = () => {
+const SignInForm = ({providers}) => {
   const theme = useTheme();
 
   const SocialButton = ({ color, children }) => (

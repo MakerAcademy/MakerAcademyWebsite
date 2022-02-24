@@ -15,11 +15,11 @@ const Home = ({ appConfig }) => {
 
   return (
     <Box>
-      <h1>{status}</h1>
+      {/* <h1>{status}</h1>
       <Button href={'/api/auth/signin'} onClick={(e) => {
         e.preventDefault()
         signIn()
-      }}>Sign In Test</Button>
+      }}>Sign In Test</Button> */}
       <Section1 />
       <Section2 />
       <Section3 />

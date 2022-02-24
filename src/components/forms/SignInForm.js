@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormTextField from "@components/FormComponents/FormTextField";
+import FormTextField from "@components/formComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import React, { useEffect } from "react";
@@ -24,17 +24,11 @@ const SignInForm = () => {
 
   const onSubmit = async (data, e) => {
     const { email, password } = data;
-    console.log(data);
     const res = await signIn('credentials', {
       email: email,
       password: password,
       callbackUrl: `${window.location.host}`,
     });
-    console.log("signIn Status: ", res);
-    if (res?.error) {
-      console.log(res.error);
-    }
-    reset();
   };
 
   return (

@@ -1,15 +1,9 @@
+import BackButton from "@components/buttons/BackButton";
 import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
 import styled from "@emotion/styled";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
 import {
   addChapters,
@@ -21,8 +15,6 @@ import {
 } from "@utils/markdown";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import BackButton from "@components/buttons/BackButton";
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & > h2 {
@@ -94,7 +86,9 @@ const BasicDocument = ({ data = {} }) => {
                 justifyContent="flex-end"
                 spacing={0.7}
               >
-                <Typography>Posted {new Date(timestamp).toDateString()}</Typography>
+                <Typography>
+                  Posted {new Date(timestamp).toDateString()}
+                </Typography>
               </Stack>
             </Stack>
 
