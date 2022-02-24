@@ -19,7 +19,14 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { columns, rows } from "@pages/AboutUs/dummyData";
-import { getSession } from "next-auth/react";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import CommentIcon from "@mui/icons-material/Comment";
+import SubtitlesIcon from "@mui/icons-material/Subtitles";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 
