@@ -1,6 +1,6 @@
-# maker-academy
+# Maker Academy
 
-Maker Academy Website.
+Maker Academy Website. A educational platform for Maker.
 
 This project was generated with [superplate](https://github.com/pankod/superplate).
 
