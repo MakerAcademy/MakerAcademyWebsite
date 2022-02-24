@@ -1,5 +1,7 @@
 # maker-academy
 
+Maker Academy Website.
+
 This project was generated with [superplate](https://github.com/pankod/superplate).
 
 ## Getting Started
