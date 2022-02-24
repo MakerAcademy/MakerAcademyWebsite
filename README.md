@@ -8,6 +8,11 @@ superplate is a Next.js all-in-one project generator. Create your project with t
 
 ## Available Scripts
 
+### Install dependencies
+
+```bash
+   npm i
+```
 ### Running the development server.
 
 ```bash

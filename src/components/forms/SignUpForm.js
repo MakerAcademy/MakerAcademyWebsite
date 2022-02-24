@@ -11,13 +11,10 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { signIn } from "next-auth/react";
-import {getSession , getCsrfToken, getProviders} from "next-auth/react";
 import { useRouter } from "next/router";
 
 
 async function createUser(email, password, role) {
-  console.log(providers.credentials.id);
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     body: JSON.stringify({email, password, role}),
@@ -37,15 +34,13 @@ async function createUser(email, password, role) {
 const SignUpForm = () => {
   const [type, setType] = useState("learner");
 
-  const providers = getProviders();
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const { handleSubmit, reset, control, getValues } = useForm(formOptions);
+  const { handleSubmit, control } = useForm(formOptions);
 
   const router = useRouter();
 
@@ -53,7 +48,7 @@ const SignUpForm = () => {
   const onSubmit = async (data, e) => {
     const { email, password } = data;
     try {
-      const result = await createUser(email, password, type);
+      await createUser(email, password, type);
       await router.replace('/');
     } catch (err) {
       console.log(err);
