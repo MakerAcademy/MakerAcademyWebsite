@@ -1,5 +1,6 @@
 import RoundedButton from "@components/buttons/RoundedButton";
 import CreatorCounter from "@components/cards/CreatorCounter";
+import { withProtectedUser } from "@hoc/routes";
 import SideNavBarLayout from "@layouts/SideNavBarLayout";
 import AddIcon from "@mui/icons-material/Add";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
@@ -11,23 +12,15 @@ import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import {
   Avatar,
-  Box, Container,
+  Box,
+  Container,
   Grid,
   Paper,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { columns, rows } from "@pages/AboutUs/dummyData";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
-import CommentIcon from "@mui/icons-material/Comment";
-import SubtitlesIcon from "@mui/icons-material/Subtitles";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { getSession, useSession } from "next-auth/react";
-import Link from "next/link";
 import React, { useState } from "react";
 
 const SIDEBAR_ITEMS = [
@@ -78,9 +71,8 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
-const CreatorStudio = ({ session }) => {
+const CreatorStudio = ({ user }) => {
   const [pageSize, setPageSize] = useState(5);
-  const { user } = session;
 
   const SidebarHeader = () => (
     <Stack
@@ -108,6 +100,9 @@ const CreatorStudio = ({ session }) => {
       intlFile="creator-studio"
     >
       <Container maxWidth="xl" sx={{ py: 5 }}>
+        <Typography variant="h5" sx={{ mb: 3 }}>
+          Creator Studio
+        </Typography>
         <Stack spacing={{ xs: 3, md: 5, lg: 7 }} sx={{ width: "100%" }}>
           {/* Stats */}
           <Box>
@@ -115,26 +110,28 @@ const CreatorStudio = ({ session }) => {
               <Grid item xs={12} sm={6} lg={3}>
                 <CreatorCounter count={74} text="TOTAL COURSES" />
               </Grid>
+
               <Grid item xs={12} sm={6} lg={3}>
                 <CreatorCounter count={977} text="TOTAL FOLLOWERS" />
               </Grid>
+
               <Grid item xs={12} sm={6} lg={3}>
                 <CreatorCounter count={59} text="DOWNLOADS" />
               </Grid>
+
               <Grid item xs={12} sm={6} lg={3}>
                 <Stack
                   sx={{ height: "100%" }}
                   alignItems="flex-end"
                   justifyContent="center"
                 >
-                  <Link href="/studio/new">
-                    <RoundedButton
-                      variant="outlined"
-                      icon={<AddIcon fontSize="small" />}
-                    >
-                      Add new Content
-                    </RoundedButton>
-                  </Link>
+                  <RoundedButton
+                    href="/studio/new"
+                    variant="outlined"
+                    icon={<AddIcon fontSize="small" />}
+                  >
+                    Add new Content
+                  </RoundedButton>
                 </Stack>
               </Grid>
             </Grid>
@@ -176,19 +173,4 @@ const CreatorStudio = ({ session }) => {
 
 export default CreatorStudio;
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const data = await getSession({ req });
-  console.log(data);
-  if (data) {
-    return {
-      props: {
-        session: data,
-      },
-    };
-  } else {
-    return {
-      redirect: { destination: "/sign-in" },
-    };
-  }
-}
+export const getServerSideProps = withProtectedUser();

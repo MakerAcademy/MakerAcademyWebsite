@@ -17,6 +17,7 @@ import {
 import React from "react";
 import withAppConfig from "@hoc/withAppConfig";
 import Link from "next/link";
+import DaiIcon from "@components/DaiIcon";
 
 const footerItems = [
   {
@@ -59,19 +60,15 @@ const socials = [
 const LandingFooter = ({ appConfig }) => {
   const theme = useTheme();
 
-  const { logo, projectName } = appConfig;
-
   const BusinessCard = () => (
     <>
       <a target="_blank" href="http://makerdao.com/" rel="noopener noreferrer">
-        <img
-          src={logo}
-          alt={projectName}
-          style={{ height: 45, objectFit: "contain" }}
-        />
+        <Box sx={{ height: 75, cursor: "pointer" }}>
+          <DaiIcon name="maker_color" />
+        </Box>
       </a>
 
-      <Typography variant="body2" sx={{ maxWidth: 300, mt: 2 }}>
+      <Typography variant="body2" sx={{ maxWidth: 300 }}>
         Lorem ipsum dolor sit amet,consectetur adipisicing elit. Quis non, fugit
         totam vel laboriosam vitae.
       </Typography>

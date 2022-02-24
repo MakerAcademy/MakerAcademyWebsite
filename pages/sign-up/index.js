@@ -9,4 +9,6 @@ const SignUp = () => {
   );
 };
 
+export const getServerSideProps = withUser(true);
+
 export default SignUp;
