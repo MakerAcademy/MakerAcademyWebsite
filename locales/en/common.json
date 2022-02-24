@@ -1,11 +1,1 @@
-{
-  "greet": "Hello, {{name}}!",
-  "en": "EN",
-  "fr": "FR",
-  "contribute": "Contribute",
-  "about_us": "About Us",
-  "programs": "Programs",
-  "content": "Content",
-  "sign_in": "Sign In",
-  "performance": "Performance"
-}
+{"about_us":"About Us","contribute":"Contribute","sign_in":"Sign In","performance":"Performance","maker":"Maker","content":"Content","programs":"Programs"}

@@ -1,5 +1,5 @@
 import ThemeToggleButton from "@components/buttons/ThemeToggle";
-import LanguageMenu from "@components/menus/LanguageMenu";
+import LanguageMenu from "@components/buttons/LanguageButton";
 import { Box, Button, MenuItem, Stack, useTheme } from "@mui/material";
 import {
   bindHover,

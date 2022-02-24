@@ -9,7 +9,7 @@ import useTranslation from "next-translate/useTranslation";
 const LanguageMenu = ({ appConfig, sx = {}, ...other }) => {
   const [langAnchor, setLangAnchor] = useState(null);
 
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const router = useRouter();
   const { pathname } = router;
@@ -43,9 +43,13 @@ const LanguageMenu = ({ appConfig, sx = {}, ...other }) => {
         onClose={() => setLangAnchor(null)}
         PaperProps={{ sx: { width: 135 } }}
       >
-        {locales.map((lang) => (
-          <MenuItem onClick={() => handleLanguageChange(lang)} key={lang}>
-            {t(`common:${lang}`)}
+        {locales.map(({ code, name }) => (
+          <MenuItem
+            onClick={() => handleLanguageChange(code)}
+            key={code}
+            selected={code === lang}
+          >
+            {name}
           </MenuItem>
         ))}
       </Menu>

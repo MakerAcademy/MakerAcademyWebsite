@@ -61,11 +61,9 @@ const Section1 = () => {
               {t("source_for_education")}
             </Typography>
 
-            <Link href="/about-us">
-              <RoundedButton sx={{ px: 4, py: 1.5 }}>
-                {t("about_us")}
-              </RoundedButton>
-            </Link>
+            <RoundedButton sx={{ px: 4, py: 1.5 }} href="/about-us">
+              {t("about_us")}
+            </RoundedButton>
           </Stack>
         </Container>
       </Stack>

@@ -1,4 +1,5 @@
 import { Button, Stack, useTheme } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
 
 const RoundedButton = ({
@@ -7,10 +8,14 @@ const RoundedButton = ({
   icon,
   variant,
   size,
+  href,
+  onClick,
   ...props
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
+
+  const router = useRouter();
 
   const getStyles = () => {
     const commonStyles = {
@@ -73,6 +78,7 @@ const RoundedButton = ({
         ...getStyles(),
         ...sx,
       }}
+      onClick={() => (href ? router.push(href) : onClick?.())}
       {...props}
     >
       {icon ? (
