@@ -24,20 +24,11 @@ const SignInForm = () => {
 
   const onSubmit = async (data, e) => {
     const { email, password } = data;
-    const providers = await getProviders();
-    const res = await signIn(providers.credentials.id, {
-      redirect: false,
+    const res = await signIn('credentials', {
       email: email,
       password: password,
-      callbackUrl: `$window.location.host`,
-    })
-    console.log("signIn Status: ", res);
-    if (res?.error) {
-      console.log(res.error);
-    }
-    if (res.url) {
-      await router.push(res.url)
-    }
+      callbackUrl: `${window.location.host}`,
+    });
   };
 
   return (

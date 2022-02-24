@@ -1,11 +1,1 @@
-{
-  "contributor_dashboard": "Contributor Dashboard",
-  "contributor_directory": "Contributor Directory",
-  "contributor_pipelines": "Contributor Pipelines",
-  "bug_bounties": "Bug Bounties",
-  "core_unit_incubation": "Core Unit Incubation",
-  "education": "Education",
-  "onboarding": "Onboarding",
-  "enterprise_integration": "Enterprise Integration",
-  "grants_research": "Grants Research"
-}
+{"contributor_directory":"Contributor Directory","contributor_pipelines":"Contributor Pipelines","contributor_dashboard":"Contributor Dashboard","onboarding":"Onboarding","maker":"Maker","core_unit_incubation":"Core Unit Incubation","grants_research":"Grants Research","bug_bounties":"Bug Bounties","enterprise_integration":"Enterprise Integration","education":"Education"}

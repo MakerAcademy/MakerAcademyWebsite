@@ -1,5 +1,5 @@
 import ThemeToggleButton from "@components/buttons/ThemeToggle";
-import LanguageMenu from "@components/menus/LanguageMenu";
+import LanguageMenu from "@components/buttons/LanguageButton";
 import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
