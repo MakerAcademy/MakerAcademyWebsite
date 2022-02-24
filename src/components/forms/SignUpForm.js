@@ -11,13 +11,13 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { signIn } from "next-auth/react";
-import {getSession , getCsrfToken, getProviders} from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 
 
 async function createUser(email, password, role) {
-  console.log(providers.credentials.id);
+  console.log("creating new user POG");
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     body: JSON.stringify({email, password, role}),
@@ -37,8 +37,6 @@ async function createUser(email, password, role) {
 const SignUpForm = () => {
   const [type, setType] = useState("learner");
 
-  const providers = getProviders();
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
     password: Yup.string().required("Password is required"),
@@ -54,7 +52,11 @@ const SignUpForm = () => {
     const { email, password } = data;
     try {
       const result = await createUser(email, password, type);
-      await router.replace('/');
+      console.log(result);
+      const login = await signIn('credentials', {email: email, password: password});
+      if (login) {
+        router.push('/');
+      }
     } catch (err) {
       console.log(err);
     }
