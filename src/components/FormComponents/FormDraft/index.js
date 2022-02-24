@@ -17,7 +17,7 @@ const Editor = dynamic(
 );
 
 const FormDraftField = ({
-  value = "markdown",
+  value = "",
   valueType = "markdown",
   onChange,
   hideEditor,

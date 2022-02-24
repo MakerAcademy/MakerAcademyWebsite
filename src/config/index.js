@@ -40,7 +40,7 @@ const config = ({ mode }) => ({
         ],
       },
       { name: "content", link: "/content" },
-      { name: "about_us", link: "/about-us" },
+      // { name: "about_us", link: "/about-us" },
     ],
   },
 });

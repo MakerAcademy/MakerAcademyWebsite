@@ -1,11 +1,9 @@
 import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
-import { NAVBAR_HEIGHT_DESKTOP } from "@constants/";
-import { NAVBAR_HEIGHT_MOBILE } from "@constants/";
 import {
   Box,
-  Button,
   Container,
+  Dialog,
   Divider,
   Stack,
   Typography,
@@ -13,23 +11,19 @@ import {
 } from "@mui/material";
 import { HomeBg } from "@utils/images";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ReactPlayer from "react-player/lazy";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Section1 = () => {
   const theme = useTheme();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const { t } = useTranslation("home");
 
   return (
-    <Box
-      sx={{
-        marginTop: `-${NAVBAR_HEIGHT_MOBILE}px`,
-        [theme.breakpoints.up("md")]: {
-          marginTop: `-${NAVBAR_HEIGHT_DESKTOP}px`,
-        },
-      }}
-    >
+    <Box>
       <Stack
         alignItems="center"
         justifyContent="center"
@@ -37,13 +31,13 @@ const Section1 = () => {
           p: 3,
           pt: 8,
           [theme.breakpoints.up("md")]: {
-            minHeight: "60vh",
+            minHeight: "50vh",
             backgroundImage: `url(${HomeBg})`,
             // backgroundPosition: "center center",
             backgroundSize: "cover",
           },
           [theme.breakpoints.up("lg")]: {
-            minHeight: "70vh",
+            minHeight: "60vh",
           },
         }}
       >
@@ -61,13 +55,48 @@ const Section1 = () => {
               {t("source_for_education")}
             </Typography>
 
-            <RoundedButton sx={{ px: 4, py: 1.5 }} href="/about-us">
-              {t("about_us")}
+            <RoundedButton
+              sx={{ px: 4, py: 1.5 }}
+              icon={<PlayArrowIcon fontSize="small" />}
+              onClick={() => setDialogOpen(true)}
+            >
+              {t("play_video")}
             </RoundedButton>
           </Stack>
         </Container>
       </Stack>
       <Divider />
+
+      <Dialog
+        fullWidth
+        // maxWidth="md"
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        PaperProps={{
+          sx: { backgroundColor: "transparent", boxShadow: "unset" },
+        }}
+        BackdropProps={{ sx: { backgroundColor: "rgba(0,0,0,0.8)" } }}
+      >
+        <Stack alignItems={"flex-end"}>
+          <CloseIcon
+            fontSize="large"
+            sx={{
+              color: theme.palette.primary.white,
+              cursor: "pointer",
+              "&:hover": {
+                color: theme.palette.primary.main,
+              },
+            }}
+            onClick={() => setDialogOpen(false)}
+          />
+        </Stack>
+        <ReactPlayer
+          url="https://player.vimeo.com/video/411464106?portrait=0&byline=0&autoplay=1&controls=0"
+          controls={true}
+          width="100%"
+          playing
+        />
+      </Dialog>
     </Box>
   );
 };

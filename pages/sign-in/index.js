@@ -1,12 +1,16 @@
-import AuthForm from "src/pages/Auth";
+import { withUser } from "@hoc/routes";
+import { useRouter } from "next/router";
 import React from "react";
+import AuthForm from "src/pages/Auth";
 
 const SignIn = () => {
   return (
     <div>
-      <AuthForm/>
+      <AuthForm />
     </div>
   );
 };
+
+export const getServerSideProps = withUser(true);
 
 export default SignIn;

@@ -6,32 +6,29 @@ import {
   Container,
   Divider,
   Hidden,
+  Icon,
   Stack,
+  SvgIcon,
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
 import DesktopMenuItems from "./DesktopMenuItems";
 import MobileMenuItems from "./MobileMenuItems";
+import DaiIcon from "@components/DaiIcon";
 
 const LandingNavbar = ({ appConfig, LeftComponent }) => {
   const [spotlight, setSpotlight] = useState(null);
 
   const theme = useTheme();
 
-  const isLoggedIn = false;
-
-  const { logo, projectName, navbar } = appConfig;
+  const { navbar } = appConfig;
   const { themeToggle, menuItems, languagePopup, authButtons } = navbar;
 
   const Logo = () => (
-    <Link href="/">
-      <Box sx={{ height: 35, textTransform: "inherit", cursor: "pointer" }}>
-        <img
-          src={logo}
-          alt={`${projectName} Logo`}
-          style={{ height: "100%", objectFit: "contain" }}
-        />
+    <Link href="/" passHref>
+      <Box sx={{ height: 65, cursor: "pointer" }}>
+        <DaiIcon name="maker_color" />
       </Box>
     </Link>
   );
