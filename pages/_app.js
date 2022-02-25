@@ -8,7 +8,6 @@ import store from "@redux/store";
 import "@styles/global.css";
 import { SessionProvider } from "next-auth/react";
 import appWithI18n from "next-translate/appWithI18n";
-import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";

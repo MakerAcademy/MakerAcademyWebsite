@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material";
 import makerTheme from "@makerdao/dai-ui-theme-maker-neue";
 import commonColors from "./commonColors";
 import typography from "./typography";
+import { grey } from "@mui/material/colors";
 
 const colors = {
   ...commonColors,
@@ -79,6 +80,15 @@ export const darkTheme = createTheme({
       ...colors,
       default: "#fff",
       primary: "#fff",
+    },
+  },
+  components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: grey[100],
+        },
+      },
     },
   },
   typography,

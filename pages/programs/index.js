@@ -3,6 +3,8 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import ProgramsCoursesCarousel from "@components/carousels/ProgramsCoursesCarousel";
 import ResponsiveText from "@components/ResponsiveText";
 import SearchFilterBar from "@components/SearchFilterBar";
+import { CONTENT_SORT_ITEMS } from "@constants/";
+import { TAGS } from "@constants/tags";
 import {
   Box,
   Container,
@@ -13,10 +15,12 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import { DUMMY_FILTER_OPTIONS } from "@components/SearchFilterBar/dummyData";
 import { connectToDB } from "../../lib/db/connect";
-import { getCountEstimate, getPrograms, getProgramSearchTags } from "../../lib/db/program";
-import { TAGS } from "@constants/tags";
+import {
+  getCountEstimate,
+  getPrograms,
+  getProgramSearchTags,
+} from "../../lib/db/program";
 
 const ProgramsPage = ({ programs, tags, count }) => {
   const theme = useTheme();
@@ -50,6 +54,7 @@ const ProgramsPage = ({ programs, tags, count }) => {
           <RoundedButton
             variant="outlined"
             sx={{ height: 40, px: 2, minWidth: 115 }}
+            href=""
           >
             View More
           </RoundedButton>
@@ -71,7 +76,13 @@ const ProgramsPage = ({ programs, tags, count }) => {
         />
 
         {/* Search */}
-        <SearchFilterBar tags={tags}/>
+        <SearchFilterBar
+          tags={tags}
+          withSort
+          sortItems={CONTENT_SORT_ITEMS}
+          translateCategories
+          dontTranslateSubCategoriesOf={["author_id"]}
+        />
 
         {/* Content */}
         <Stack sx={{ width: "100%", py: 2 }} spacing={{ xs: 2, md: 4 }}>
@@ -92,7 +103,7 @@ const ProgramsPage = ({ programs, tags, count }) => {
         </Stack>
 
         {/* Load more */}
-        { (count > programs.length) && (<RoundedButton>Load More</RoundedButton>)}
+        {count > programs.length && <RoundedButton>Load More</RoundedButton>}
       </Stack>
     </Container>
   );
@@ -100,16 +111,16 @@ const ProgramsPage = ({ programs, tags, count }) => {
 
 export async function getServerSideProps(context) {
   // Add fetch to utils or api once backend complete
-  const {db} = await connectToDB();
+  const { db } = await connectToDB();
   const programs = await getPrograms(db, {}, null);
   const tags = await getProgramSearchTags(db, TAGS);
-  const count = await getCountEstimate(db, 'programs');
+  const count = await getCountEstimate(db, "programs");
 
   return {
     props: {
       programs: programs,
       tags: tags,
-      count: count
+      count: count,
     },
   };
 }

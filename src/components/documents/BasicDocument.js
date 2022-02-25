@@ -1,7 +1,6 @@
 import BackButton from "@components/buttons/BackButton";
 import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
-import styled from "@emotion/styled";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
@@ -13,29 +12,36 @@ import {
   getLevel,
   parseDepths,
 } from "@utils/markdown";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-const StyledMarkdown = styled(ReactMarkdown)`
-  & > h2 {
-    color: red;
-  }
-`;
+// const StyledMarkdown = styled(ReactMarkdown)`
+//   & > h2 {
+//     color: red;
+//   }
+// `;
+
+function HeadingRenderer(props) {
+  var children = React.Children.toArray(props.children);
+  var text = children.reduce(flattenChildren, "");
+  var slug = createSlug(text);
+  return React.createElement("h" + props.level, { id: slug }, props.children);
+}
 
 const BasicDocument = ({ data = {} }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
 
-  const { title, author_id, body, timestamp } = document;
+  const {
+    title,
+    author_id,
+    body,
+    timestamp,
+    contributors = ["Person 1", "Person 2"],
+  } = document;
 
-  function HeadingRenderer(props) {
-    var children = React.Children.toArray(props.children);
-    var text = children.reduce(flattenChildren, "");
-    var slug = createSlug(text);
-    return React.createElement("h" + props.level, { id: slug }, props.children);
-  }
-
-  // Generate all Ids from headers
+  // Generate all Ids from markdown headings
   useEffect(() => {
     if (body) {
       const headers = extractHeadingsFromMd(body);
@@ -75,9 +81,18 @@ const BasicDocument = ({ data = {} }) => {
               justifyContent="space-between"
               spacing={2}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Brightness1Icon sx={{ fontSize: 18 }} />
-                <Typography>{author_id}</Typography>
+              <Stack direction="row" spacing={1}>
+                <Brightness1Icon sx={{ fontSize: 18, mt: 0.1 }} />
+                <Stack>
+                  <Typography>Author: {author_id}</Typography>
+                  <Typography>
+                    Contributors:{" "}
+                    {contributors.map(
+                      (person, i) =>
+                        `${person}${i < contributors.length - 1 ? ", " : ""}`
+                    )}
+                  </Typography>
+                </Stack>
               </Stack>
 
               <Stack
@@ -86,9 +101,7 @@ const BasicDocument = ({ data = {} }) => {
                 justifyContent="flex-end"
                 spacing={0.7}
               >
-                <Typography>
-                  Posted {new Date(timestamp).toDateString()}
-                </Typography>
+                <Typography>Posted {moment(timestamp).format("LL")}</Typography>
               </Stack>
             </Stack>
 

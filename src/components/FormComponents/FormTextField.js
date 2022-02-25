@@ -1,5 +1,4 @@
 import { TextField, useTheme } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import React from "react";
 import { Controller } from "react-hook-form";
 
@@ -37,14 +36,6 @@ const FormTextField = ({
               fontWeight: 300,
               py: multiline ? 1.5 : 0.5,
               px: multiline ? 2.5 : 1,
-            },
-          }}
-          InputLabelProps={{
-            sx: {
-              color:
-                variant === "filled" && theme.palette.mode === "dark"
-                  ? grey[100]
-                  : grey[600],
             },
           }}
           sx={{ ...sx }}
