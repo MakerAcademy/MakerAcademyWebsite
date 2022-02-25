@@ -1,3 +1,5 @@
+import commonProps from "@hoc/commonProps";
+import useDebounce from "@hooks/useDebounce";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -12,26 +14,38 @@ import {
   ClickAwayListener,
   Collapse,
   Divider,
+  FormControl,
   IconButton,
   InputBase,
+  InputLabel,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
   Paper,
   Popper,
+  Select,
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import useDebounce from "@hooks/useDebounce";
 
-const SearchFilterBar = (props) => {
-  const { inputPlaceholder = "Search Content" } = props;
-  const {tags} = props;
-  const theme = useTheme();
+const SearchFilterBar = ({
+  tags,
+  inputPlaceholder = "Search Content",
+  parentCallback,
+  withSort,
+  sortItems = [],
+  translateChips,
+  translateCategories,
+  translateSubCategories,
+  dontTranslateSubCategoriesOf = [],
+  theme,
+  t,
+}) => {
+  const [sortBy, setSortBy] = useState(sortItems[0]);
   const [filters, setFilters] = useState(tags);
   const [filteredFilters, setFilteredFilters] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -66,12 +80,13 @@ const SearchFilterBar = (props) => {
   }, [_filterSearchTerm]);
 
   const handleFilterOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    const target = event.currentTarget;
+    setAnchorEl(anchorEl ? null : target);
   };
 
   const handleFilterClose = () => {
-    setCollapsedFilterIdx(null);
     setAnchorEl(null);
+    setCollapsedFilterIdx(null);
   };
 
   const handleFilterItemClick = (item) => {
@@ -87,8 +102,167 @@ const SearchFilterBar = (props) => {
   };
 
   const triggerSearch = () => {
-    props.parentCallback(searchTerm, selectedFilters);
-  }
+    parentCallback?.(searchTerm, selectedFilters);
+  };
+
+  const FilterMenuList = () => (
+    <Popper
+      open={filterOpen}
+      anchorEl={anchorEl}
+      placement="bottom-start"
+      style={{ zIndex: 10000 }}
+    >
+      <Paper
+        sx={{
+          [theme.breakpoints.down("sm")]: { width: "100%" },
+          [theme.breakpoints.up("sm")]: { width: 300 },
+        }}
+      >
+        {/* Search */}
+        <TextField
+          variant="standard"
+          value={filterSearchTerm}
+          onChange={(e) => setFilterSearchTerm(e.target.value)}
+          placeholder="Search"
+          fullWidth
+          size="small"
+          sx={{ mt: 2, px: 2 }}
+        />
+
+        {/* Items */}
+        <List
+          sx={{
+            maxHeight: 400,
+            overflowY: "auto",
+            overflowX: "hidden",
+          }}
+        >
+          {filteredFilters.map((item, i) => {
+            const isSelected = selectedFilters?.some((o) =>
+              item.subCategories?.some((p) => o.value === p.value)
+            );
+            const isCollapseOpen = collapsedFilterIdx === i;
+
+            return (
+              <React.Fragment key={i}>
+                <ListItemButton
+                  selected={isSelected}
+                  onClick={() =>
+                    isCollapseOpen
+                      ? setCollapsedFilterIdx(null)
+                      : setCollapsedFilterIdx(i)
+                  }
+                >
+                  <ListItemText
+                    primary={
+                      <Stack direction="row" alignItems="center">
+                        <Typography>
+                          {translateCategories
+                            ? t(`filter_${item.category}`)
+                            : item.category}
+                        </Typography>
+
+                        {_filterSearchTerm.length > 0 && (
+                          <Typography
+                            variant="body2"
+                            sx={{ ml: 1, fontWeight: 300 }}
+                          >
+                            ({item.subCategories.length})
+                          </Typography>
+                        )}
+                      </Stack>
+                    }
+                  />
+                  {!isCollapseOpen ? (
+                    <ChevronRightIcon fontSize="small" />
+                  ) : (
+                    <KeyboardArrowUpIcon fontSize="small" />
+                  )}
+                </ListItemButton>
+
+                <Collapse in={isCollapseOpen} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.subCategories?.map((subItem, j) => {
+                      const isSelected2 = selectedFilters?.some(
+                        (o) => o.value === subItem.value
+                      );
+
+                      return (
+                        <ListItemButton
+                          sx={{ pl: 4 }}
+                          key={`${i}${j}`}
+                          onClick={() =>
+                            handleFilterItemClick({
+                              ...subItem,
+                              dontTranslate:
+                                dontTranslateSubCategoriesOf.includes(
+                                  item.category
+                                ),
+                            })
+                          }
+                        >
+                          <ListItemIcon>
+                            <Checkbox
+                              edge="start"
+                              checked={isSelected2}
+                              tabIndex={-1}
+                              disableRipple
+                              sx={{ py: 0 }}
+                              size="small"
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              translateSubCategories &&
+                              !dontTranslateSubCategoriesOf.includes(
+                                item.category
+                              )
+                                ? t(`filter_${subItem.label}`)
+                                : subItem.label
+                            }
+                          />
+                        </ListItemButton>
+                      );
+                    })}
+                  </List>
+                </Collapse>
+              </React.Fragment>
+            );
+          })}
+        </List>
+
+        {selectedFilters.length > 0 && (
+          <>
+            <Divider />
+
+            {/* Chips */}
+            <Paper
+              sx={{
+                p: 1,
+                [theme.breakpoints.down("sm")]: { width: "100%" },
+                [theme.breakpoints.up("sm")]: { width: 300 },
+              }}
+            >
+              <Stack direction="row" flexWrap="wrap">
+                {selectedFilters.map((item, i) => (
+                  <Chip
+                    key={i}
+                    label={
+                      translateChips && !item.dontTranslate
+                        ? t(`filter_${item.label}`)
+                        : item.label
+                    }
+                    onDelete={() => handleFilterItemClick(item)}
+                    sx={{ mb: 0.5, mr: 0.5 }}
+                  />
+                ))}
+              </Stack>
+            </Paper>
+          </>
+        )}
+      </Paper>
+    </Popper>
+  );
 
   return (
     <React.Fragment>
@@ -110,42 +284,48 @@ const SearchFilterBar = (props) => {
             borderBottomLeftRadius: "10px",
           }}
         >
-          <Button
-            sx={{
-              py: "10px",
-              px: { xs: 2, md: 3, lg: 4 },
-              textTransform: "inherit",
-              height: "100%",
-              color: theme.palette.primary.black,
-            }}
-            onClick={handleFilterOpen}
-          >
-            <Badge
-              badgeContent={selectedFilters?.length}
-              color="primary"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              sx={{
-                "& .MuiBadge-badge": {
-                  left: -8,
-                  top: 5,
-                  border: `1px solid ${theme.palette.background.paper}`,
-                  padding: "0 4px",
-                  color: theme.palette.primary.white,
-                },
-              }}
-            >
-              Filter
-            </Badge>
+          <ClickAwayListener onClickAway={handleFilterClose}>
+            <Box sx={{ height: "100%" }}>
+              <Button
+                sx={{
+                  py: "10px",
+                  px: { xs: 2, md: 3, lg: 4 },
+                  textTransform: "inherit",
+                  height: "100%",
+                  color: theme.palette.primary.black,
+                }}
+                onClick={handleFilterOpen}
+              >
+                <Badge
+                  badgeContent={selectedFilters?.length}
+                  color="primary"
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      left: -8,
+                      top: 5,
+                      border: `1px solid ${theme.palette.background.paper}`,
+                      padding: "0 4px",
+                      color: theme.palette.primary.white,
+                    },
+                  }}
+                >
+                  Filter
+                </Badge>
 
-            {!filterOpen ? (
-              <ArrowDropDownIcon fontSize="small" sx={{ ml: 0.5 }} />
-            ) : (
-              <ArrowDropUpIcon fontSize="small" sx={{ ml: 0.5 }} />
-            )}
-          </Button>
+                {!filterOpen ? (
+                  <ArrowDropDownIcon fontSize="small" sx={{ ml: 0.5 }} />
+                ) : (
+                  <ArrowDropUpIcon fontSize="small" sx={{ ml: 0.5 }} />
+                )}
+              </Button>
+
+              {<FilterMenuList />}
+            </Box>
+          </ClickAwayListener>
         </Box>
 
         <InputBase
@@ -164,155 +344,41 @@ const SearchFilterBar = (props) => {
         >
           <IconButton
             sx={{ p: "10px", color: theme.palette.primary.white }}
-            onClick={triggerSearch}>
+            onClick={triggerSearch}
+          >
             <SearchIcon />
           </IconButton>
         </Box>
       </Paper>
 
-      {filterOpen && (
-        <ClickAwayListener
-          onClickAway={() => filterOpen && handleFilterClose()}
-        >
-          <Popper
-            open
-            anchorEl={anchorEl}
-            placement="bottom-start"
-            style={{ zIndex: 10000 }}
+      {withSort && (
+        <Stack alignItems="flex-end" sx={{ width: "100%" }}>
+          <FormControl
+            sx={{ [theme.breakpoints.up("md")]: { maxWidth: 230 } }}
+            fullWidth
+            size="small"
           >
-            <Paper
-              sx={{
-                [theme.breakpoints.down("sm")]: { width: "100%" },
-                [theme.breakpoints.up("sm")]: { width: 300 },
-              }}
+            <InputLabel id="sort-label">Sort By</InputLabel>
+            <Select
+              labelId="sort-label"
+              value={sortBy}
+              label="Sort By"
+              onChange={(e) => setSortBy(e.target.value)}
             >
-              {/* Search */}
-              <TextField
-                variant="standard"
-                value={filterSearchTerm}
-                onChange={(e) => setFilterSearchTerm(e.target.value)}
-                placeholder="Search"
-                fullWidth
-                size="small"
-                sx={{ mt: 2, px: 2 }}
-              />
-
-              {/* Items */}
-              <List
-                sx={{
-                  maxHeight: 400,
-                  overflowY: "auto",
-                  overflowX: "hidden",
-                }}
-              >
-                {filteredFilters.map((item, i) => {
-                  const isSelected = selectedFilters?.some((o) =>
-                    item.subCategories?.some((p) => o.value === p.value)
-                  );
-                  const isCollapseOpen = collapsedFilterIdx === i;
-
-                  return (
-                    <React.Fragment key={i}>
-                      <ListItemButton
-                        selected={isSelected}
-                        onClick={() =>
-                          isCollapseOpen
-                            ? setCollapsedFilterIdx(null)
-                            : setCollapsedFilterIdx(i)
-                        }
-                      >
-                        <ListItemText
-                          primary={
-                            <Stack direction="row" alignItems="center">
-                              <Typography>{item.category}</Typography>
-
-                              {_filterSearchTerm.length > 0 && (
-                                <Typography
-                                  variant="body2"
-                                  sx={{ ml: 1, fontWeight: 300 }}
-                                >
-                                  ({item.subCategories.length})
-                                </Typography>
-                              )}
-                            </Stack>
-                          }
-                        />
-                        {!isCollapseOpen ? (
-                          <ChevronRightIcon fontSize="small" />
-                        ) : (
-                          <KeyboardArrowUpIcon fontSize="small" />
-                        )}
-                      </ListItemButton>
-
-                      <Collapse
-                        in={isCollapseOpen}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <List component="div" disablePadding>
-                          {item.subCategories?.map((item2, j) => {
-                            const isSelected2 = selectedFilters?.some(
-                              (o) => o.value === item2.value
-                            );
-
-                            return (
-                              <ListItemButton
-                                sx={{ pl: 4 }}
-                                key={`${i}${j}`}
-                                onClick={() => handleFilterItemClick(item2)}
-                              >
-                                <ListItemIcon>
-                                  <Checkbox
-                                    edge="start"
-                                    checked={isSelected2}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    sx={{ py: 0 }}
-                                    size="small"
-                                  />
-                                </ListItemIcon>
-                                <ListItemText primary={item2.label} />
-                              </ListItemButton>
-                            );
-                          })}
-                        </List>
-                      </Collapse>
-                    </React.Fragment>
-                  );
-                })}
-              </List>
-
-              {selectedFilters.length > 0 && (
-                <>
-                  <Divider />
-
-                  {/* Chips */}
-                  <Paper
-                    sx={{
-                      p: 1,
-                      [theme.breakpoints.down("sm")]: { width: "100%" },
-                      [theme.breakpoints.up("sm")]: { width: 300 },
-                    }}
-                  >
-                    <Stack direction="row" flexWrap="wrap">
-                      {selectedFilters.map((item, i) => (
-                        <Chip
-                          key={i}
-                          label={item.label}
-                          onDelete={() => handleFilterItemClick(item)}
-                          sx={{ mb: 0.5, mr: 0.5 }}
-                        />
-                      ))}
-                    </Stack>
-                  </Paper>
-                </>
-              )}
-            </Paper>
-          </Popper>
-        </ClickAwayListener>
+              {sortItems.map((name) => (
+                <MenuItem value={name} key={name}>
+                  {t(`sort_${name}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
       )}
     </React.Fragment>
   );
 };
 
-export default SearchFilterBar;
+export default commonProps(SearchFilterBar, {
+  basic: true,
+  translations: "content",
+});

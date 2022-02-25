@@ -2,44 +2,50 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
-import { Box, Container, Divider, Grid, Stack } from "@mui/material";
+import { CONTENT_SORT_ITEMS } from "@constants/";
+import commonProps from "@hoc/commonProps";
+import { Box, Container, Grid, Stack } from "@mui/material";
 import { connectToDB } from "lib/db/connect";
-import { getContent, getContentSearchTags, getCountEstimate } from "lib/db/content";
-import React, { useCallback, useEffect, useState } from "react";
-import {TAGS} from "src/constants/tags";
+import {
+  getContent,
+  getContentSearchTags,
+  getCountEstimate,
+} from "lib/db/content";
+import React, { useEffect, useState } from "react";
+import { TAGS } from "src/constants/tags";
 
-const ContentPage = ({ limit, content, tags }) => {
+const ContentPage = ({ limit, content, tags, t }) => {
   const [cards, setCards] = useState(content);
-  const [searchQuery, setSearchQuery ] = useState("");
-  const [searchFilters, setSearchFilters] = useState([])
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilters, setSearchFilters] = useState([]);
 
   const handleCallback = (q, f) => {
     setSearchQuery(q);
     setSearchFilters(f);
-  }
+  };
 
   useEffect(() => {
     fetchFreshDocs(searchFilters, null).then(() => {
-      console.log('fetched ', cards.length, ' cards');
-    })
-  }, [searchQuery, searchFilters])
+      console.log("fetched ", cards.length, " cards");
+    });
+  }, [searchQuery, searchFilters]);
 
   const fetchFreshDocs = async (filters, lastItemTime) => {
-    const response = fetch('api/content', {
+    const response = fetch("api/content", {
       method: "POST",
       headers: {
-          "Content-Type": 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         filters: filters,
-        lastItemTime: lastItemTime
-      })
-    }).then((response) => response.json())
+        lastItemTime: lastItemTime,
+      }),
+    })
+      .then((response) => response.json())
       .then((body) => {
-        setCards(body.message)
+        setCards(body.message);
       });
-  }
+  };
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
@@ -52,39 +58,55 @@ const ContentPage = ({ limit, content, tags }) => {
         />
 
         {/* Search */}
-        <SearchFilterBar tags={tags} parentCallback={handleCallback}/>
+        <SearchFilterBar
+          tags={tags}
+          parentCallback={handleCallback}
+          withSort
+          sortItems={CONTENT_SORT_ITEMS}
+          translateCategories
+          dontTranslateSubCategoriesOf={["author_id"]}
+        />
 
         {/* Content */}
-        <Grid container sx={{ width: "100%", pb: 2 }}>
-          {cards.length > 0 ? (cards.map((item, i) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-              <Box sx={{ p: 2 }}>
-                <ContentCard {...item} />
-              </Box>
-            </Grid>
-          ))) : (content.map((item, i) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-              <Box sx={{ p: 2 }}>
-                <ContentCard {...item} />
-              </Box>
-            </Grid>
-          )))}
-        </Grid>
+        <Box sx={{ width: "100%" }}>
+          <Grid
+            container
+            sx={{ pb: 2 }}
+            justifyContent="center"
+            alignItems="center"
+            spacing={4}
+          >
+            {/* Cards */}
+            {cards.length > 0
+              ? cards.map((item, i) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                    <ContentCard {...item} />
+                  </Grid>
+                ))
+              : content.map((item, i) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                    <ContentCard {...item} />
+                  </Grid>
+                ))}
+          </Grid>
+        </Box>
 
         {/* Load more */}
-        { (limit > content.length) ? (<RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>) :
-          (<></>)}
-
+        {limit > content.length ? (
+          <RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>
+        ) : (
+          <></>
+        )}
       </Stack>
     </Container>
   );
 };
 
 export async function getServerSideProps(context) {
-  const {db} = await connectToDB();
-  const docs = await getContent(db, {},  null);
+  const { db } = await connectToDB();
+  const docs = await getContent(db, {}, null);
   const tags = await getContentSearchTags(db, TAGS);
-  const count = await getCountEstimate(db, 'content');
+  const count = await getCountEstimate(db, "content");
 
   return {
     props: {
@@ -95,4 +117,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default ContentPage;
+export default commonProps(ContentPage, {
+  basic: true,
+  translation: "content",
+});

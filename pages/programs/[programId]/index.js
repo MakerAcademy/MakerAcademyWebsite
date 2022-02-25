@@ -6,14 +6,10 @@ import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useState } from "react";
 import { connectToDB } from "../../../lib/db/connect";
-import { getOneCourse } from "../../../lib/db/course";
 import { getOneProgram } from "../../../lib/db/program";
 
-
-const Program = ({program, topic, subtopic, title}) => {
-
+const Program = ({ program, topic, subtopic, title }) => {
   const { query } = useRouter();
   const { programId } = query;
 
@@ -37,13 +33,9 @@ const Program = ({program, topic, subtopic, title}) => {
           spacing={2}
           sx={{ pb: 4 }}
         >
-          <ResponsiveText variant="h5">
-            {title}
-          </ResponsiveText>
+          <ResponsiveText variant="h5">{title}</ResponsiveText>
 
-          <Link
-            href={`/programs/${programId}/course/${firstCourseId}`}
-          >
+          <Link href={`/programs/${programId}/course/${firstCourseId}`}>
             <RoundedButton variant="outlined" sx={{ height: 40 }}>
               Begin
             </RoundedButton>
@@ -67,22 +59,20 @@ const Program = ({program, topic, subtopic, title}) => {
   );
 };
 
-
 export async function getServerSideProps(context) {
-  const {db} = await connectToDB();
-  console.log(context.params);
+  const { db } = await connectToDB();
+  // console.log(context.params);
   const program = await getOneProgram(db, context.params.programId);
   const p = program[0];
-  console.log(p);
+  // console.log(p);
   return {
     props: {
       program: p,
       topic: p.topic,
       subtopic: p.subtopic,
       title: p.title,
-    }
-  }
+    },
+  };
 }
-
 
 export default Program;

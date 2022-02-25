@@ -11,6 +11,7 @@ import {
 import React from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Link from "next/link";
+import moment from "moment";
 
 const ContentCard = ({
   _id,
@@ -18,6 +19,7 @@ const ContentCard = ({
   title,
   subtitle,
   description,
+  author,
   topic,
   subtopic,
   duration,
@@ -44,6 +46,7 @@ const ContentCard = ({
   return (
     <Link
       href={content_type === "document" ? `/document/${_id}` : `/course/${_id}`}
+      passHref
     >
       <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
         <Box sx={{ position: "relative" }}>
@@ -60,19 +63,31 @@ const ContentCard = ({
             sx={{ position: "absolute", top: 8, left: 8 }}
             spacing={0.5}
           >
-
             {tags.map((tag, i) => (
               <CustomChip text={tag} key={i} />
             ))}
           </Stack>
         </Box>
-      <CardContent>
-        <Typography variant="caption">Posted {new Date(timestamp).toDateString()}</Typography>
-          <Typography variant="h6">{title}</Typography>
-          <Divider sx={{ my: 1.5 }} />
-          <Typography variant="body2" sx={{ mb: 3 }}>
-            {subtitle}
+
+        <CardContent>
+          <Typography variant="caption">
+            Posted {moment(timestamp).format("LL")}
           </Typography>
+
+          {author && <Typography variant="body2">By {author}</Typography>}
+
+          <Typography variant="h6" sx={{ mt: 1 }}>
+            {title}
+          </Typography>
+
+          <Divider sx={{ my: 1.5 }} />
+
+          {subtitle && (
+            <Typography variant="body2" sx={{ mb: 3 }}>
+              {subtitle}
+            </Typography>
+          )}
+
           <Stack
             direction="row"
             alignItems="center"

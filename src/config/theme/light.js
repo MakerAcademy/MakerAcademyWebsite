@@ -83,5 +83,14 @@ export const lightTheme = createTheme({
       primary: "#000",
     },
   },
+  components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: grey[600],
+        },
+      },
+    },
+  },
   typography,
 });

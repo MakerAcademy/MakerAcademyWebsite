@@ -1,5 +1,4 @@
 import { Paper, Stack, TextField, useTheme } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { EditorState } from "draft-js";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
@@ -114,11 +113,6 @@ const FormDraftField = ({
               height: "inherit",
               "& textarea": { height: "100% !important" },
             }}
-            InputLabelProps={{
-              sx: {
-                color: theme.palette.mode === "dark" ? grey[100] : grey[600],
-              },
-            }}
             InputProps={{ sx: { height: "100%" } }}
             value={markdownValue}
             onChange={(e) => handleMarkdownChange(e.target.value)}
@@ -134,11 +128,6 @@ const FormDraftField = ({
               flex: 1,
               height: "inherit",
               "& textarea": { height: "100% !important" },
-            }}
-            InputLabelProps={{
-              sx: {
-                color: theme.palette.mode === "dark" ? grey[100] : grey[600],
-              },
             }}
             InputProps={{ sx: { height: "100%" } }}
             value={htmlValue}

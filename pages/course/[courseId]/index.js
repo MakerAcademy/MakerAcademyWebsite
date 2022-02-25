@@ -18,21 +18,29 @@ import React, { useEffect, useState } from "react";
 import { connectToDB } from "../../../lib/db/connect";
 import { getOneCourse } from "../../../lib/db/course";
 
-const CoursePage = ({ course, topic, subtopic, title } ) => {
+const CoursePage = ({ course, topic, subtopic, title }) => {
   const { query } = useRouter();
   const documents = course.documents;
-  const [c,setC] = useState(course.documents)
+  const [c, setC] = useState(course.documents);
   const { courseId, programId } = query;
+
+  const firstDocId = course?.documents?.[0]?._id;
 
   const breadcrumbs = [
     { label: "Content", href: "/content" },
     { label: topic, href: "/content" },
-    { label: subtopic, href: "/content"},
+    { label: subtopic, href: "/content" },
     { label: title, active: true },
   ];
 
-  useEffect(() => {
-  }, [c])
+  // useEffect(() => {}, [c]);
+
+  const buildRedirect = (_id) => {
+    if (programId)
+      return `/programs/${programId}/course/${courseId}/document/${_id}`;
+
+    return `/course/${courseId}/documents/${_id}`;
+  };
 
   const DocumentCard = ({
     _id,
@@ -42,15 +50,8 @@ const CoursePage = ({ course, topic, subtopic, title } ) => {
     author_id,
     duration,
   }) => {
-    const buildRedirect = () => {
-      if (programId)
-        return `/programs/${programId}/course/${courseId}/document/${_id}`;
-
-      return `/course/${courseId}/documents/${_id}`;
-    };
-
     return (
-      <Link href={buildRedirect(query)}>
+      <Link href={buildRedirect(_id)} passHref>
         <Card elevation={3} sx={{ cursor: "pointer" }}>
           <Box sx={{ p: 2 }}>
             <Grid container spacing={{ xs: 2, md: 3 }}>
@@ -109,41 +110,45 @@ const CoursePage = ({ course, topic, subtopic, title } ) => {
           justifyContent="space-between"
           alignItems="center"
           spacing={2}
-          sx={{ pb: 4 }}
+          sx={{ pb: 3 }}
         >
           <ResponsiveText variant="h5">{course.title}</ResponsiveText>
 
-          <RoundedButton variant="outlined" sx={{ height: 40 }}>
+          <RoundedButton
+            variant="outlined"
+            sx={{ height: 40 }}
+            href={buildRedirect(firstDocId)}
+          >
             Begin
           </RoundedButton>
         </Stack>
 
+        {course.description && (
+          <ResponsiveText sx={{ pb: 4 }}>{course.description}</ResponsiveText>
+        )}
+
         <Stack sx={{ pb: { xs: 3, md: 5 } }} spacing={3}>
-          {c.length > 0 ? (c.map((doc, i) => (
-            <DocumentCard key={i} {...doc} />
-          ))) : (documents.map((doc, i) => (
-              <DocumentCard key={i} {...doc} />
-            )))}
+          {c.length > 0
+            ? c.map((doc, i) => <DocumentCard key={i} {...doc} />)
+            : documents.map((doc, i) => <DocumentCard key={i} {...doc} />)}
         </Stack>
       </Paper>
     </Container>
   );
 };
 
-
 export async function getServerSideProps(context) {
-  const {db} = await connectToDB();
+  const { db } = await connectToDB();
   const course = await getOneCourse(db, context.params.courseId);
   const c = course[0];
-  console.log(course);
   return {
     props: {
       course: c,
       topic: c.topic,
       subtopic: c.subtopic,
       title: c.title,
-    }
-  }
+    },
+  };
 }
 
 export default CoursePage;

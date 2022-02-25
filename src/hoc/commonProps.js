@@ -1,20 +1,33 @@
 import { useTheme } from "@mui/material";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import withAppConfig from "./withAppConfig";
 
-const commonProps = (Component) => {
+const commonProps = (Component, options = {}) => {
   const ChildComponent = (props) => {
     const theme = useTheme();
-    const { data: session, loading } = useSession();
-    // const { t, lang } = useTranslation();
+    const { basic, translation = "common" } = options;
+
+    const { data: session, loading } = basic ? {} : useSession();
+    const { t, lang } = useTranslation(translation);
+
+    const basicprops = {
+      theme,
+      t,
+      lang,
+      ...props,
+    };
+
+    if (basic) {
+      return <Component {...basicprops} />;
+    }
 
     return (
       <Component
-        theme={theme}
         user={session?.user}
         userLoading={loading === "loading"}
-        {...props}
+        {...basicprops}
       />
     );
   };

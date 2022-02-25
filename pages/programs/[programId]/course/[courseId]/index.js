@@ -10,7 +10,7 @@ import {
   Grid,
   Paper,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,30 +18,29 @@ import React, { useEffect, useState } from "react";
 import { connectToDB } from "../../../../../lib/db/connect";
 import { getOneCourse } from "../../../../../lib/db/course";
 
-const CoursePage = ({ course, topic, subtopic, title } ) => {
+const CoursePage = ({ course, topic, subtopic, title }) => {
   const { query } = useRouter();
   const documents = course.documents;
-  const [c,setC] = useState(course.documents)
+  const [c, setC] = useState(course.documents);
   const { courseId, programId } = query;
 
   const breadcrumbs = [
     { label: "Content", href: "/content" },
     { label: topic, href: "/content" },
-    { label: subtopic, href: "/content"},
+    { label: subtopic, href: "/content" },
     { label: title, active: true },
   ];
 
-  useEffect(() => {
-  }, [c])
+  useEffect(() => {}, [c]);
 
   const DocumentCard = ({
-                          _id,
-                          thumbnail_url,
-                          title,
-                          description,
-                          author_id,
-                          duration,
-                        }) => {
+    _id,
+    thumbnail_url,
+    title,
+    description,
+    author_id,
+    duration,
+  }) => {
     const buildRedirect = () => {
       if (programId)
         return `/programs/${programId}/course/${courseId}/document/${_id}`;
@@ -119,31 +118,28 @@ const CoursePage = ({ course, topic, subtopic, title } ) => {
         </Stack>
 
         <Stack sx={{ pb: { xs: 3, md: 5 } }} spacing={3}>
-          {c.length > 0 ? (c.map((doc, i) => (
-            <DocumentCard key={i} {...doc} />
-          ))) : (documents.map((doc, i) => (
-            <DocumentCard key={i} {...doc} />
-          )))}
+          {c.length > 0
+            ? c.map((doc, i) => <DocumentCard key={i} {...doc} />)
+            : documents.map((doc, i) => <DocumentCard key={i} {...doc} />)}
         </Stack>
       </Paper>
     </Container>
   );
 };
 
-
 export async function getServerSideProps(context) {
-  const {db} = await connectToDB();
+  const { db } = await connectToDB();
   const course = await getOneCourse(db, context.params.courseId);
   const c = course[0];
-  console.log(course);
+  // console.log(course);
   return {
     props: {
       course: c,
       topic: c.topic,
       subtopic: c.subtopic,
       title: c.title,
-    }
-  }
+    },
+  };
 }
 
 export default CoursePage;

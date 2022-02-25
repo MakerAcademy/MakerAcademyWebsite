@@ -26,12 +26,8 @@ const AboutSidebar = ({ menuItems, page, setPage }) => {
 
   return (
     <>
-      <IconButton size="small">
-        <MenuIcon
-          fontSize="small"
-          sx={{ cursor: "pointer" }}
-          onClick={toggleDrawer}
-        />
+      <IconButton size="small" onClick={toggleDrawer}>
+        <MenuIcon fontSize="small" sx={{ cursor: "pointer" }} />
       </IconButton>
 
       <SwipeableDrawer

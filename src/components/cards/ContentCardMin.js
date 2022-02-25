@@ -8,6 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
@@ -64,7 +65,7 @@ const ContentCardMin = ({
             </Stack>
 
             <Typography variant="caption">
-              Posted {new Date(timestamp).toDateString()}
+              Posted {moment(timestamp).format("LL")}
             </Typography>
 
             <Typography variant="h6">{title}</Typography>

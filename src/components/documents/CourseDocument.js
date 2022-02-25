@@ -1,6 +1,7 @@
 import ResponsiveText from "@components/ResponsiveText";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import moment from "moment";
 import React, { useState } from "react";
 
 // TODO: Left side navigation on text scroll
@@ -32,7 +33,9 @@ const CourseDocument = ({ data = {} }) => {
             justifyContent="flex-end"
             spacing={0.7}
           >
-            <Typography>Posted {new Date(document.timestamp).toDateString()}</Typography>
+            <Typography>
+              Posted {moment(document.timestamp).format("LL")}
+            </Typography>
           </Stack>
         </Stack>
 
