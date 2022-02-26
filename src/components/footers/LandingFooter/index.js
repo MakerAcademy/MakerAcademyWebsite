@@ -1,201 +1,87 @@
-import FacebookIcon from "@mui/icons-material/Facebook";
+import DiscordIcon from "@assets/icons/discord-brand.svg";
+import DaiIcon from "@components/DaiIcon";
+import withAppConfig from "@hoc/withAppConfig";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
-import TelegramIcon from "@mui/icons-material/Telegram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import SendIcon from "@mui/icons-material/Send";
 import {
   Box,
-  Container,
-  Grid,
+  Button,
+  IconButton,
   Stack,
-  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
-import withAppConfig from "@hoc/withAppConfig";
 import Link from "next/link";
-import DaiIcon from "@components/DaiIcon";
-
-const footerItems = [
-  {
-    title: "Resources",
-    items: [
-      { name: "Whitepaper", link: "#" },
-      { name: "FAQs", link: "#" },
-      { name: "Brand Asswts", link: "#" },
-      { name: "Feeds", link: "#" },
-      { name: "Service Status", link: "#" },
-    ],
-  },
-  {
-    title: "Products",
-    items: [
-      { name: "Migrate", link: "#" },
-      { name: "Ecosystem", link: "#" },
-      { name: "Governance", link: "#" },
-    ],
-  },
-  {
-    title: "Developers",
-    items: [
-      { name: "Documentation", link: "#" },
-      { name: "Dai.js", link: "#" },
-      { name: "Developer Guides", link: "#" },
-    ],
-  },
-];
+import { aboutRoutes } from "pages/about-us";
+import React from "react";
 
 const socials = [
-  { icon: TwitterIcon, link: "#" },
-  { icon: FacebookIcon, link: "#" },
-  { icon: TelegramIcon, link: "#" },
-  { icon: YouTubeIcon, link: "#" },
-  { icon: MusicNoteIcon, link: "#" },
-  { icon: LinkedInIcon, link: "#" },
+  { icon: TwitterIcon, link: "#", color: "#00acee" },
+  { icon: YouTubeIcon, link: "#", color: "#c4302b" },
+  { icon: LinkedInIcon, link: "#", color: "#0e76a8" },
+  { svg: DiscordIcon, link: "#" },
 ];
 
 const LandingFooter = ({ appConfig }) => {
   const theme = useTheme();
-
-  const BusinessCard = () => (
-    <>
-      <a target="_blank" href="http://makerdao.com/" rel="noopener noreferrer">
-        <Box sx={{ height: 75, cursor: "pointer" }}>
-          <DaiIcon name="maker_color" />
-        </Box>
-      </a>
-
-      <Typography variant="body2" sx={{ maxWidth: 300 }}>
-        Lorem ipsum dolor sit amet,consectetur adipisicing elit. Quis non, fugit
-        totam vel laboriosam vitae.
-      </Typography>
-    </>
-  );
-
-  const ContactSocials = () => (
-    <Stack spacing={{ xs: 2, md: 4 }}>
-      <Typography
-        sx={{
-          fontWeight: 600,
-          fontSize: 18,
-        }}
-      >
-        Subscribe
-      </Typography>
-
-      <Stack direction="row">
-        <TextField
-          variant="outlined"
-          fullWidth
-          placeholder="info@yourgmail.com"
-          sx={{ height: 55 }}
-          InputProps={{
-            sx: {
-              borderRadius: "10px",
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-              fontSize: 14,
-              fontWeight: 300,
-            },
-          }}
-        />
-        <Stack
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            backgroundColor: theme.palette.primary.main,
-            width: 60,
-            height: 53,
-            borderRadius: "10px",
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 0,
-            cursor: "pointer",
-          }}
-        >
-          <SendIcon sx={{ color: theme.palette.primary.white }} />
-        </Stack>
-      </Stack>
-
-      <Stack direction="row" spacing={1} justifyContent="space-between">
-        {socials.map((item, i) => (
-          <Box
-            key={i}
-            sx={{
-              height: 40,
-              width: 40,
-              borderRadius: "5px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              "&:hover": {
-                color: theme.palette.primary.main,
-              },
-            }}
-          >
-            <item.icon />
-          </Box>
-        ))}
-      </Stack>
-    </Stack>
-  );
+  const isDark = theme.palette.mode === "dark";
 
   return (
-    <Box
-      sx={{
-        backgroundColor: theme.palette.background.darker,
-        py: { xs: 6, md: 8 },
-        px: 4,
-      }}
-    >
-      <Container maxWidth="xl">
-        <Grid
-          container
-          spacing={{ xs: 3, md: 5, lg: 8 }}
-          justifyContent="space-between"
-        >
-          <Grid item xs={12} md={3}>
-            <BusinessCard />
-          </Grid>
+    <Box sx={{ py: { xs: 6, md: 8 }, px: 4 }}>
+      <Stack alignItems="center" justifyContent="center" spacing={2}>
+        <Typography variant="h5" sx={{ pb: 2 }}>
+          Appendix
+        </Typography>
 
-          {footerItems.map((items, i) => (
-            <Grid item xs={12} md={2} key={i}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          {aboutRoutes.map((route, i) => (
+            <Link href={route.value} key={i} passHref>
               <Typography
                 sx={{
-                  fontWeight: 600,
-                  mb: { xs: 1.5, md: 3 },
-                  fontSize: 18,
+                  cursor: "pointer",
+                  "&:hover": { textDecoration: "underline" },
                 }}
               >
-                {items.title}
+                {route.label}
               </Typography>
-
-              {items.items.map((item, i) => (
-                <Typography
-                  key={i}
-                  sx={{
-                    mb: { xs: 0.7, md: 2 },
-                    letterSpacing: 0.1,
-                    cursor: "pointer",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                    },
-                  }}
-                >
-                  {item.name}
-                </Typography>
-              ))}
-            </Grid>
+            </Link>
           ))}
+        </Stack>
 
-          <Grid item xs={12} md={3}>
-            <ContactSocials />
-          </Grid>
-        </Grid>
-      </Container>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
+          {socials.map((item, i) => (
+            <Link href={item.link} key={i} passHref>
+              <IconButton>
+                {item.icon && <item.icon sx={{ color: item.color }} />}
+
+                {item.svg && (
+                  <img
+                    src={item.svg}
+                    alt="Discord"
+                    style={{
+                      height: 26,
+                      width: 27,
+                      objectFit: "contain",
+                      filter: isDark ? "invert(0.9)" : "invert(0.2)",
+                    }}
+                  />
+                )}
+              </IconButton>
+            </Link>
+          ))}
+        </Stack>
+
+        <a
+          target="_blank"
+          href="http://makerdao.com/"
+          rel="noopener noreferrer"
+        >
+          <Box sx={{ height: 65, cursor: "pointer" }}>
+            <DaiIcon name="maker_color" />
+          </Box>
+        </a>
+      </Stack>
     </Box>
   );
 };
