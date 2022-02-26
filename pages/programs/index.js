@@ -50,15 +50,13 @@ const ProgramsPage = ({ programs, tags, count }) => {
           <Typography>{subtitle}</Typography>
         </Box>
 
-        <Link href={`/programs/${_id}`}>
-          <RoundedButton
-            variant="outlined"
-            sx={{ height: 40, px: 2, minWidth: 115 }}
-            href=""
-          >
-            View More
-          </RoundedButton>
-        </Link>
+        <RoundedButton
+          variant="outlined"
+          sx={{ height: 40, px: 2, minWidth: 115 }}
+          href={`/programs/${_id}`}
+        >
+          View More
+        </RoundedButton>
       </Stack>
 
       <Box sx={{ py: 2 }}>{children}</Box>

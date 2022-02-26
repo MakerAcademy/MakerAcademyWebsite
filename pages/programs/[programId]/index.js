@@ -13,6 +13,8 @@ const Program = ({ program, topic, subtopic, title }) => {
   const { query } = useRouter();
   const { programId } = query;
 
+  console.log(program);
+
   const firstCourseId = program?.courses?.[0]?._id;
 
   const breadcrumbs = [
@@ -35,11 +37,13 @@ const Program = ({ program, topic, subtopic, title }) => {
         >
           <ResponsiveText variant="h5">{title}</ResponsiveText>
 
-          <Link href={`/programs/${programId}/course/${firstCourseId}`}>
-            <RoundedButton variant="outlined" sx={{ height: 40 }}>
-              Begin
-            </RoundedButton>
-          </Link>
+          <RoundedButton
+            variant="outlined"
+            sx={{ height: 40 }}
+            href={`/programs/${programId}/course/${firstCourseId}`}
+          >
+            Begin
+          </RoundedButton>
         </Stack>
 
         <Box sx={{ pb: { xs: 3, md: 5 } }}>
@@ -49,11 +53,9 @@ const Program = ({ program, topic, subtopic, title }) => {
           />
         </Box>
 
-        <Container>
-          <Typography sx={{ whiteSpace: "pre-line", lineHeight: 1.4 }}>
-            {program.description}
-          </Typography>
-        </Container>
+        <Typography sx={{ whiteSpace: "pre-line", lineHeight: 1.4 }}>
+          {program.description}
+        </Typography>
       </Paper>
     </Container>
   );
