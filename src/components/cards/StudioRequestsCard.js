@@ -12,6 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { dummyMarkdown } from "@utils/markdown";
 
 const StudioRequestsCard = ({ document_title, title, image, description }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,24 +76,7 @@ const StudioRequestsCard = ({ document_title, title, image, description }) => {
         <DialogTitle>{title}</DialogTitle>
 
         <DialogContent>
-          <Stack spacing={2}>
-            <Typography>Document: {document_title}</Typography>
-
-            {image && (
-              <img
-                src={image}
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            )}
-
-            {description && (
-              <Typography variant="body2">{description}</Typography>
-            )}
-          </Stack>
+          <ReactMarkdown>{dummyMarkdown}</ReactMarkdown>
         </DialogContent>
 
         <DialogActions>
