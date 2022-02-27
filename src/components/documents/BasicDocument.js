@@ -2,7 +2,14 @@ import BackButton from "@components/buttons/BackButton";
 import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
 import {
   addChapters,
@@ -15,6 +22,9 @@ import {
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 // const StyledMarkdown = styled(ReactMarkdown)`
 //   & > h2 {
@@ -39,6 +49,9 @@ const BasicDocument = ({ data = {} }) => {
     body,
     timestamp,
     contributors = ["Person 1", "Person 2"],
+    views = 0,
+    likes = 0,
+    liked = false,
   } = document;
 
   // Generate all Ids from markdown headings
@@ -102,6 +115,31 @@ const BasicDocument = ({ data = {} }) => {
                 spacing={0.7}
               >
                 <Typography>Posted {moment(timestamp).format("LL")}</Typography>
+              </Stack>
+            </Stack>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <VisibilityIcon fontSize="small" />
+                <Typography>Views: {views}</Typography>
+              </Stack>
+
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <IconButton
+                  size="small"
+                  onClick={() => console.log("Implement Like")}
+                >
+                  {liked ? (
+                    <FavoriteIcon fontSize="small" />
+                  ) : (
+                    <FavoriteBorderIcon fontSize="small" />
+                  )}
+                </IconButton>
+                <Typography>Likes: {likes}</Typography>
               </Stack>
             </Stack>
 

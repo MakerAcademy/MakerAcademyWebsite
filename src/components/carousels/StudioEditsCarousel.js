@@ -1,4 +1,5 @@
-import { Paper, Stack, useTheme } from "@mui/material";
+import StudioRequestsCard from "@components/cards/StudioRequestsCard";
+import { Stack, useTheme } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,22 +20,18 @@ const StudioEditsCarousel = ({ requests = [] }) => {
 
   return (
     <Slider {...settings}>
-      {requests.map((content, i) => (
-        <Stack
-          direction="row"
-          alignItems="center"
-          key={i}
-          sx={{ display: "flex !important", p: 1 }}
-        >
-          <Paper
-            sx={{
-              height: 300,
-              width: 250,
-              backgroundColor: theme.palette.primary.main,
-            }}
-          />
-        </Stack>
-      ))}
+      {requests.map((req) => {
+        return (
+          <Stack
+            direction="row"
+            alignItems="center"
+            key={req._id}
+            sx={{ display: "flex !important", p: 1 }}
+          >
+            <StudioRequestsCard {...req} />
+          </Stack>
+        );
+      })}
     </Slider>
   );
 };

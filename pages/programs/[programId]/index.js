@@ -2,18 +2,17 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
 import ProgramsCoursesCarousel from "@components/carousels/ProgramsCoursesCarousel";
 import ResponsiveText from "@components/ResponsiveText";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { connectToDB } from "../../../lib/db/connect";
 import { getOneProgram } from "../../../lib/db/program";
 
-const Program = ({ program, topic, subtopic, title }) => {
+const Program = ({ program, topic, subtopic, title, likes = 0, views = 0 }) => {
   const { query } = useRouter();
   const { programId } = query;
-
-  console.log(program);
 
   const firstCourseId = program?.courses?.[0]?._id;
 
@@ -33,7 +32,7 @@ const Program = ({ program, topic, subtopic, title }) => {
           justifyContent="space-between"
           alignItems="center"
           spacing={2}
-          sx={{ pb: 4 }}
+          sx={{ pb: 1 }}
         >
           <ResponsiveText variant="h5">{title}</ResponsiveText>
 
@@ -44,6 +43,19 @@ const Program = ({ program, topic, subtopic, title }) => {
           >
             Begin
           </RoundedButton>
+        </Stack>
+
+        {/* Likes and Views */}
+        <Stack spacing={2} direction="row" sx={{ pb: 3 }}>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <VisibilityIcon sx={{ fontSize: 18 }} />
+            <Typography variant="body2">Views: {views}</Typography>
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <FavoriteIcon sx={{ fontSize: 18 }} />
+            <Typography variant="body2">Likes: {likes}</Typography>
+          </Stack>
         </Stack>
 
         <Box sx={{ pb: { xs: 3, md: 5 } }}>

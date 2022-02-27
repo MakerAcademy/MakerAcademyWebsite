@@ -21,8 +21,10 @@ import {
   getPrograms,
   getProgramSearchTags,
 } from "../../lib/db/program";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
-const ProgramsPage = ({ programs, tags, count }) => {
+const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -59,7 +61,21 @@ const ProgramsPage = ({ programs, tags, count }) => {
         </RoundedButton>
       </Stack>
 
+      {/* Body */}
       <Box sx={{ py: 2 }}>{children}</Box>
+
+      {/* Likes and Views */}
+      <Stack spacing={2} direction="row" justifyContent="flex-end">
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <VisibilityIcon sx={{ fontSize: 18 }} />
+          <Typography variant="body2">Views: {views}</Typography>
+        </Stack>
+
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <FavoriteIcon sx={{ fontSize: 18 }} />
+          <Typography variant="body2">Likes: {likes}</Typography>
+        </Stack>
+      </Stack>
     </Paper>
   );
 

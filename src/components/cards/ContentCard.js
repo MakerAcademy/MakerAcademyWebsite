@@ -1,17 +1,19 @@
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
+  Box,
   Card,
   CardContent,
+  Chip,
   Divider,
   Stack,
   Typography,
-  Chip,
-  Box,
   useTheme,
 } from "@mui/material";
-import React from "react";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import Link from "next/link";
 import moment from "moment";
+import Link from "next/link";
+import React from "react";
 
 const ContentCard = ({
   _id,
@@ -27,17 +29,22 @@ const ContentCard = ({
   level,
   timestamp,
   verification,
-  views,
-  likes,
+  views = 0,
+  likes = 0,
 }) => {
   const theme = useTheme();
   const tags = [topic, subtopic, level];
 
-  const CustomChip = ({ text }) => (
+  const CustomChip = ({ text, Icon }) => (
     <Chip
-      label={text}
+      label={
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {Icon && <Icon sx={{ fontSize: 18 }} />}
+          <Typography variant="body2">{text}</Typography>
+        </Stack>
+      }
       sx={{
-        backgroundColor: theme.palette.background.black,
+        backgroundColor: "rgba(0,0,0,0.85)",
         color: theme.palette.primary.white,
       }}
     />
@@ -67,6 +74,26 @@ const ContentCard = ({
               <CustomChip text={tag} key={i} />
             ))}
           </Stack>
+
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 8,
+              left: 8,
+            }}
+          >
+            <CustomChip text={views} Icon={VisibilityIcon} />
+          </Box>
+
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 8,
+              right: 8,
+            }}
+          >
+            <CustomChip text={likes} Icon={FavoriteIcon} />
+          </Box>
         </Box>
 
         <CardContent>
