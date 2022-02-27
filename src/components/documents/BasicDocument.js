@@ -16,12 +16,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-// const StyledMarkdown = styled(ReactMarkdown)`
-//   & > h2 {
-//     color: red;
-//   }
-// `;
-
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
   var text = children.reduce(flattenChildren, "");
@@ -33,13 +27,7 @@ const BasicDocument = ({ data = {} }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
 
-  const {
-    title,
-    author_id,
-    body,
-    timestamp,
-    contributors = ["Person 1", "Person 2"],
-  } = document;
+  const { title, username, body, timestamp, contributors } = document;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -84,13 +72,14 @@ const BasicDocument = ({ data = {} }) => {
               <Stack direction="row" spacing={1}>
                 <Brightness1Icon sx={{ fontSize: 18, mt: 0.1 }} />
                 <Stack>
-                  <Typography>Author: {author_id}</Typography>
+                  <Typography>Author: {username}</Typography>
                   <Typography>
                     Contributors:{" "}
-                    {contributors.map(
-                      (person, i) =>
-                        `${person}${i < contributors.length - 1 ? ", " : ""}`
-                    )}
+                    {contributors &&
+                      contributors.map(
+                        (person, i) =>
+                          `${person}${i < contributors.length - 1 ? ", " : ""}`
+                      )}
                   </Typography>
                 </Stack>
               </Stack>

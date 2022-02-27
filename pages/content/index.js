@@ -10,6 +10,7 @@ import {
   getContent,
   getContentSearchTags,
   getCountEstimate,
+  newGetContent,
 } from "lib/db/content";
 import React, { useEffect, useState } from "react";
 import { TAGS } from "src/constants/tags";
@@ -24,28 +25,28 @@ const ContentPage = ({ limit, content, tags, t }) => {
     setSearchFilters(f);
   };
 
-  useEffect(() => {
-    fetchFreshDocs(searchFilters, null).then(() => {
-      console.log("fetched ", cards.length, " cards");
-    });
-  }, [searchQuery, searchFilters]);
-
-  const fetchFreshDocs = async (filters, lastItemTime) => {
-    const response = fetch("api/content", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        filters: filters,
-        lastItemTime: lastItemTime,
-      }),
-    })
-      .then((response) => response.json())
-      .then((body) => {
-        setCards(body.message);
-      });
-  };
+  // useEffect(() => {
+  //   fetchFreshDocs(searchFilters, null).then(() => {
+  //     console.log("fetched ", cards.length, " cards");
+  //   });
+  // }, [searchQuery, searchFilters]);
+  //
+  // const fetchFreshDocs = async (filters, lastItemTime) => {
+  //   const response = fetch("api/content", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       filters: filters,
+  //       lastItemTime: lastItemTime,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((body) => {
+  //       setCards(body.message);
+  //     });
+  // };
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
@@ -56,7 +57,6 @@ const ContentPage = ({ limit, content, tags, t }) => {
           subtitle="This page hosts all of Maker Academy's educational content, ranging from articles to videos to entire courses. To aid your search for content, consider using our filters and search bar below!"
           sx={{ mb: 3 }}
         />
-
         {/* Search */}
         <SearchFilterBar
           tags={tags}
@@ -66,7 +66,6 @@ const ContentPage = ({ limit, content, tags, t }) => {
           translateCategories
           dontTranslateSubCategoriesOf={["author_id"]}
         />
-
         {/* Content */}
         <Box sx={{ width: "100%" }}>
           <Grid
@@ -90,13 +89,6 @@ const ContentPage = ({ limit, content, tags, t }) => {
                 ))}
           </Grid>
         </Box>
-
-        {/* Load more */}
-        {limit > content.length ? (
-          <RoundedButton onClick={handleLoadMore}>Load More</RoundedButton>
-        ) : (
-          <></>
-        )}
       </Stack>
     </Container>
   );
@@ -104,10 +96,9 @@ const ContentPage = ({ limit, content, tags, t }) => {
 
 export async function getServerSideProps(context) {
   const { db } = await connectToDB();
-  const docs = await getContent(db, {}, null);
+  const docs = await getContent(db);
   const tags = await getContentSearchTags(db, TAGS);
   const count = await getCountEstimate(db, "content");
-
   return {
     props: {
       content: docs,

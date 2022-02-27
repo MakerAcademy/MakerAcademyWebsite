@@ -15,17 +15,18 @@ import moment from "moment";
 
 const ContentCard = ({
   _id,
-  thumbnail_url,
+  thumbnail,
   title,
   subtitle,
   description,
-  author,
+  username,
   topic,
   subtopic,
   duration,
-  content_type,
+  contentType,
   level,
   timestamp,
+  published,
   verification,
   views,
   likes,
@@ -45,13 +46,17 @@ const ContentCard = ({
 
   return (
     <Link
-      href={content_type === "document" ? `/document/${_id}` : `/course/${_id}`}
+      href={
+        contentType === "documents"
+          ? `/document/${published}`
+          : `/course/${published}`
+      }
       passHref
     >
       <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
         <Box sx={{ position: "relative" }}>
           <img
-            src={thumbnail_url}
+            src={thumbnail}
             alt={title}
             style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
           />
@@ -74,7 +79,7 @@ const ContentCard = ({
             Posted {moment(timestamp).format("LL")}
           </Typography>
 
-          {author && <Typography variant="body2">By {author}</Typography>}
+          {username && <Typography variant="body2">By {username}</Typography>}
 
           <Typography variant="h6" sx={{ mt: 1 }}>
             {title}
@@ -93,11 +98,11 @@ const ContentCard = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Chip label={content_type} />
+            <Chip label={contentType} />
 
             <Stack direction="row" alignItems="center" spacing={0.7}>
               <AccessTimeIcon sx={{ fontSize: 18 }} />
-              <Typography>{duration} hrs</Typography>
+              <Typography>{duration} min</Typography>
             </Stack>
           </Stack>
         </CardContent>

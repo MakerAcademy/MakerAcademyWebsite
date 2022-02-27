@@ -15,13 +15,13 @@ import React from "react";
 const ContentCardMin = ({
   _programId,
   _id,
-  thumbnail_url,
+  thumbnail,
   title,
   description,
   topic,
   subtopic,
   duration,
-  content_type,
+  contentType,
   level,
   timestamp,
   verification,
@@ -77,11 +77,11 @@ const ContentCardMin = ({
               alignItems="center"
               justifyContent="space-between"
             >
-              <Chip label={content_type} />
+              <Chip label={contentType} />
 
               <Stack direction="row" alignItems="center" spacing={0.7}>
                 <AccessTimeIcon sx={{ fontSize: 18 }} />
-                <Typography>{duration} hrs</Typography>
+                <Typography>{duration} min</Typography>
               </Stack>
             </Stack>
           </Stack>
