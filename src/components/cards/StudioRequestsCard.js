@@ -13,12 +13,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-const StudioRequestsCard = ({
-  title,
-  image,
-  description,
-  total_requests = 0,
-}) => {
+const StudioRequestsCard = ({ document_title, title, image, description }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDialogClose = () => {
@@ -39,9 +34,9 @@ const StudioRequestsCard = ({
         onClick={() => setDialogOpen(true)}
       >
         <Stack spacing={2} sx={{ height: "100%" }}>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6">{document_title}</Typography>
 
-          <Typography variant="body2">Requests: {total_requests}</Typography>
+          <Typography variant="body2">{title}</Typography>
 
           {image && (
             <img
@@ -80,7 +75,7 @@ const StudioRequestsCard = ({
 
         <DialogContent>
           <Stack spacing={2}>
-            <Typography variant="body2">Requests: {total_requests}</Typography>
+            <Typography>Document: {document_title}</Typography>
 
             {image && (
               <img

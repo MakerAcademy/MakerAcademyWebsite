@@ -17,6 +17,7 @@ const Content = () => {
               .fill()
               .map((_, i) => ({
                 _id: i,
+                document_title: `Document title ${i}`,
                 title: `Grammer fix ${i}`,
                 description:
                   "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut odio temporibus voluptas error distinctio hic quae corrupti vero doloribus optio! Inventore ex quaerat modi blanditiis soluta maiores illum, ab velit.",

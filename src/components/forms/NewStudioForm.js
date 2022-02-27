@@ -7,7 +7,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
-const NewStudioForm = ({ handleSubmit: propsHandleSubmit }) => {
+const NewStudioForm = ({
+  handleSubmit: propsHandleSubmit,
+  edit,
+  values = {},
+}) => {
   // form validation rules
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Required"),
@@ -16,7 +20,11 @@ const NewStudioForm = ({ handleSubmit: propsHandleSubmit }) => {
     topic: Yup.string().required("Required"),
     subtopic: Yup.string().required("Required"),
   });
-  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  const formOptions = {
+    resolver: yupResolver(validationSchema),
+    defaultValues: values,
+  };
 
   const { handleSubmit, reset, control, getValues, setValue } =
     useForm(formOptions);
@@ -72,10 +80,13 @@ const NewStudioForm = ({ handleSubmit: propsHandleSubmit }) => {
           handeSubmit={handleSubmit}
           hideHtml
           direction="row"
+          value={values?.markdown}
         />
 
         <Stack alignItems="flex-end">
-          <RoundedButton type="submit">Create New Document</RoundedButton>
+          <RoundedButton type="submit">
+            {edit ? "Edit Document" : "Create New Document"}
+          </RoundedButton>
         </Stack>
       </Stack>
     </form>
