@@ -1,4 +1,3 @@
-import LandingFooter from "@components/footers/LandingFooter";
 import LandingNavbar from "@components/navbars/LandingNavbar";
 import { Box, Divider } from "@mui/material";
 import React from "react";
@@ -10,9 +9,7 @@ const LandingLayout = (props) => {
 
       {props.children}
 
-      <Divider />
-
-      <LandingFooter />
+      {/* <LandingFooter /> */}
     </Box>
   );
 };

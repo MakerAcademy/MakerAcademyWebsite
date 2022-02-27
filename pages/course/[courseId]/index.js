@@ -5,6 +5,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import {
   Box,
+  Button,
   Card,
   Container,
   Grid,
@@ -17,8 +18,17 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { connectToDB } from "../../../lib/db/connect";
 import { getOneCourse } from "../../../lib/db/course";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const CoursePage = ({ course, topic, subtopic, title }) => {
+const CoursePage = ({
+  course,
+  topic,
+  subtopic,
+  title,
+  likes = 0,
+  liked = false,
+}) => {
   const { query } = useRouter();
   const documents = course.documents;
   const [c, setC] = useState(course.documents);
@@ -123,9 +133,26 @@ const CoursePage = ({ course, topic, subtopic, title }) => {
           </RoundedButton>
         </Stack>
 
-        {course.description && (
-          <ResponsiveText sx={{ pb: 4 }}>{course.description}</ResponsiveText>
-        )}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          justifyContent="space-between"
+          sx={{ pb: 2 }}
+        >
+          {course.description && (
+            <ResponsiveText sx={{ flex: 1 }}>
+              {course.description}
+            </ResponsiveText>
+          )}
+
+          <Button color="inherit">
+            {liked ? (
+              <FavoriteIcon sx={{ fontSize: 18, mr: 0.5 }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ fontSize: 18, mr: 0.5 }} />
+            )}
+            <Typography variant="body2">{liked ? "Unlike" : "Like"}</Typography>
+          </Button>
+        </Stack>
 
         <Stack sx={{ pb: { xs: 3, md: 5 } }} spacing={3}>
           {c.length > 0

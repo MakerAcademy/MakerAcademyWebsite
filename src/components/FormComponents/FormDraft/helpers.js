@@ -33,6 +33,22 @@ export const editorToMarkdown = async (editor) => {
           return `![${entity["data"].alt}](${entity["data"].src})`;
         },
       },
+      // TODO - Do one for embedded videos (iframe)
+      //<iframe width="auto" height="auto" src="https://www.youtube.com/embed/2TV0r94p8OY" frameBorder="0"></iframe>
+      // [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/2TV0r94p8OY/0.jpg)](https://www.youtube.com/watch?v=2TV0r94p8OY)
+
+      /*
+      Use this somewhere
+      let htmlOptions = { blockRenderers: { 'atomic': (block) => { let key = block.getEntityAt(0); let type = editorState.getCurrentContent().getEntity(key).type; if(type === 'EMBEDDED_LINK') { let url = editorState.getCurrentContent().getEntity(key).getData().src; return '<div><iframe src='+url+' frameborder="0" allow="encrypted-media" allowfullscreen></iframe></div>'; } }, }, };
+      */
+      EMBEDDED_LINK: {
+        open: function (entity) {
+          return "";
+        },
+        close: function (entity) {
+          return `[![EMBED](${entity["data"].src})](${entity["data"].src})`;
+        },
+      },
     },
   });
 };
@@ -42,7 +58,9 @@ export const editorToHtml = async (editor) => {
 };
 
 export const htmlToEditor = async (html) => {
-  const blocksFromHtml = await htmlToDraft(html);
+  const _html = html.startsWith("<p") ? html : "<p></p>" + html;
+
+  const blocksFromHtml = await htmlToDraft(_html);
   const { contentBlocks, entityMap } = blocksFromHtml;
   const contentState = await ContentState.createFromBlockArray(
     contentBlocks,

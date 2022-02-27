@@ -1,8 +1,6 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import CreatorCounter from "@components/cards/CreatorCounter";
+import AboutSidebar from "@components/sidebars/AboutSidebar";
 import { withProtectedUser } from "@hoc/routes";
-import SideNavBarLayout from "@layouts/SideNavBarLayout";
-import AddIcon from "@mui/icons-material/Add";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import CommentIcon from "@mui/icons-material/Comment";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -11,163 +9,129 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import {
-  Avatar,
   Box,
   Container,
-  Grid,
-  Paper,
+  Divider,
+  Hidden,
   Stack,
+  Tab,
+  Tabs,
   Typography,
+  useTheme,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { columns, rows } from "@pages/AboutUs/dummyData";
-import React, { useState } from "react";
+import { grey } from "@mui/material/colors";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-const SIDEBAR_ITEMS = [
+const studioRoutes = [
   {
     name: "creator_studio_dashboard",
-    link: "/studio",
-    shallow: true,
+    value: "/studio",
     icon: DashboardIcon,
   },
   {
     name: "creator_studio_content",
-    link: "/studio/content",
-    shallow: true,
+    value: "/studio/content",
     icon: VideoLibraryIcon,
   },
   {
-    name: "creator_studio_playlists",
-    link: "/studio/playlists",
-    shallow: true,
-    icon: PlaylistPlayIcon,
-  },
-  {
     name: "creator_studio_analytics",
-    link: "/studio/analytics",
-    shallow: true,
+    value: "/studio/analytics",
     icon: AnalyticsIcon,
-  },
-  {
-    name: "creator_studio_comments",
-    link: "/studio/comments",
-    shallow: true,
-    icon: CommentIcon,
-  },
-  {
-    name: "creator_studio_subtitles",
-    link: "/studio/subtitles",
-    shallow: true,
-    icon: SubtitlesIcon,
-  },
-  {
-    type: "divider",
-  },
-  {
-    name: "creator_studio_settings",
-    link: "/studio/settings",
-    shallow: true,
-    icon: SettingsIcon,
   },
 ];
 
+const PageRenderer = ({ type, ...other }) => {
+  const page = {
+    "/studio": dynamic(() => import("@pages/Studio/Dashboard")),
+    "/studio/dashboard": dynamic(() => import("@pages/Studio/Dashboard")),
+    "/studio/content": dynamic(() => import("@pages/Studio/Content")),
+    "/studio/analytics": dynamic(() => import("@pages/Studio/Analytics")),
+  };
+
+  const RenderedPage = page[type];
+
+  return <RenderedPage {...other} />;
+};
+
 const CreatorStudio = ({ user }) => {
-  const [pageSize, setPageSize] = useState(5);
+  const router = useRouter();
 
-  const SidebarHeader = () => (
-    <Stack
-      justifyContent="center"
-      sx={{ height: "100%", width: "100%", borderRadius: "10px" }}
-    >
-      <Stack spacing={2} direction="row" alignItems="center">
-        <Avatar />
+  const [page, setPage] = useState(router.asPath);
 
-        <Box>
-          <Typography sx={{ fontWeight: 500 }}>{user.name}</Typography>
-          <Typography sx={{ fontSize: 14, fontWeight: 300 }}>
-            Educator
-          </Typography>
-        </Box>
-      </Stack>
-    </Stack>
-  );
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
+  useEffect(() => {
+    router.push(page, undefined, { shallow: true });
+  }, [page]);
 
   return (
-    <SideNavBarLayout
-      name="creatorSideNavBarDrawerOpen"
-      SidebarHeader={SidebarHeader}
-      sidebarItems={SIDEBAR_ITEMS}
-      intlFile="creator-studio"
-    >
-      <Container maxWidth="xl" sx={{ py: 5 }}>
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Creator Studio
-        </Typography>
-        <Stack spacing={{ xs: 3, md: 5, lg: 7 }} sx={{ width: "100%" }}>
-          {/* Stats */}
-          <Box>
-            <Grid container spacing={{ xs: 3, md: 5 }}>
-              <Grid item xs={12} sm={6} lg={3}>
-                <CreatorCounter count={74} text="TOTAL COURSES" />
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <CreatorCounter count={977} text="TOTAL FOLLOWERS" />
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <CreatorCounter count={59} text="DOWNLOADS" />
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Stack
-                  sx={{ height: "100%" }}
-                  alignItems="flex-end"
-                  justifyContent="center"
-                >
-                  <RoundedButton
-                    href="/studio/new"
-                    variant="outlined"
-                    icon={<AddIcon fontSize="small" />}
-                  >
-                    Add new Content
-                  </RoundedButton>
-                </Stack>
-              </Grid>
-            </Grid>
-          </Box>
-
-          {/* Middle */}
-          <Box>
-            <Grid container spacing={{ xs: 3, md: 5 }}>
-              <Grid item xs={12} md={5} lg={4}>
-                <Paper sx={{ height: 300, width: "100%", p: 3 }}>
-                  Left Card
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={7} lg={8}>
-                <Paper sx={{ height: 300, width: "100%", p: 3 }}>
-                  Right Card
-                </Paper>
-              </Grid>
-            </Grid>
-          </Box>
-
-          {/* Table */}
-          <Box sx={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={pageSize}
-              onPageSizeChange={(i) => setPageSize(i)}
-              rowsPerPageOptions={[5, 10, 20, 50]}
-              checkboxSelection
-              // onSelectionModelChange={handleselectedIds}
+    <Container sx={{ py: { xs: 3, md: 8 } }} maxWidth="xl">
+      <Stack spacing={3}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Hidden mdUp>
+            <AboutSidebar
+              menuItems={studioRoutes}
+              page={page}
+              setPage={setPage}
             />
-          </Box>
+          </Hidden>
+
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ width: "100%" }}
+          >
+            <Typography
+              sx={{
+                fontSize: 20,
+                fontWeight: 600,
+                [theme.breakpoints.up("md")]: {
+                  fontSize: 30,
+                  fontWeight: 600,
+                  ml: 2,
+                },
+              }}
+            >
+              Creator Studio
+            </Typography>
+
+            <RoundedButton href="/studio/new">Add New</RoundedButton>
+          </Stack>
         </Stack>
-      </Container>
-    </SideNavBarLayout>
+
+        <Hidden mdDown>
+          <Tabs
+            value={page}
+            onChange={(e, v) => setPage(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            {studioRoutes.map((item, i) => (
+              <Tab
+                key={i}
+                label={item.name}
+                value={item.value}
+                sx={{
+                  textTransform: "inherit",
+                  color: isDark ? grey[300] : grey[500],
+                }}
+              />
+            ))}
+          </Tabs>
+        </Hidden>
+
+        <Divider />
+
+        <Box sx={{ minHeight: "50vh" }}>
+          <PageRenderer type={page} />
+        </Box>
+      </Stack>
+    </Container>
   );
 };
 

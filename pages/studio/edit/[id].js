@@ -1,4 +1,4 @@
-import { Alert, Container, Snackbar } from "@mui/material";
+import { Alert, Box, Container, Snackbar, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
@@ -6,6 +6,8 @@ import dynamic from "next/dynamic";
 const CreatorStudioNew = () => {
   const router = useRouter();
   const [message, setMessage] = useState(null);
+
+  const docId = router.query.id;
 
   if (typeof window === "undefined")
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
@@ -38,7 +40,7 @@ const CreatorStudioNew = () => {
       }),
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .then(() => {
@@ -61,7 +63,15 @@ const CreatorStudioNew = () => {
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
-      <NewStudioForm handleSubmit={handleSubmit} />
+      <NewStudioForm
+        handleSubmit={handleSubmit}
+        edit
+        values={{
+          title: "Test Title",
+          description: "This description works!",
+          markdown: "hello",
+        }}
+      />
 
       <Snackbar open={!!message} autoHideDuration={3000} onClose={handleClose}>
         <Alert

@@ -25,6 +25,7 @@ import React, { useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const AUTH_LINK = "/sign-in";
 
@@ -41,6 +42,7 @@ const DesktopMenuItems = ({
   const [subMenu, setSubMenu] = useState(null);
   const [userAnchorEl, setUserAnchorEl] = useState(null);
 
+  const router = useRouter();
   const { t } = useTranslation("common");
 
   const popupState = usePopupState({
@@ -223,16 +225,24 @@ const DesktopMenuItems = ({
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <Link href="/account" passHref>
-            <MenuItem>
-              <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-              </ListItemIcon>
-              {t("my_account")}
-            </MenuItem>
-          </Link>
+          <MenuItem
+            onClick={() => {
+              setUserAnchorEl(null);
+              router.push("/account");
+            }}
+          >
+            <ListItemIcon>
+              <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            {t("my_account")}
+          </MenuItem>
 
-          <MenuItem onClick={signOut}>
+          <MenuItem
+            onClick={() => {
+              setUserAnchorEl(null);
+              signOut();
+            }}
+          >
             <ListItemIcon>
               <LogoutIcon fontSize="small" />
             </ListItemIcon>

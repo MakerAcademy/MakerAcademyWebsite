@@ -15,7 +15,7 @@ const config = ({ mode }) => ({
     { code: "hi", name: "हिन्दी" },
     { code: "sw", name: "Kiswahili" },
   ],
-  noLayoutRoutes: ["/sign-in", "/sign-up", "/studio", "/studio/[page]"],
+  noLayoutRoutes: ["/sign-in", "/sign-up"], //"/studio", "/studio/[page]"
   navbar: {
     themeToggle: true,
     languagePopup: true,
@@ -24,20 +24,15 @@ const config = ({ mode }) => ({
       {
         name: "contribute",
         link: "/contribute",
-        nestedItems: [
-          { name: "1", link: "/" },
-          { name: "2", link: "/" },
-          { name: "3", link: "/" },
-        ],
       },
       {
         name: "programs",
         link: "/programs",
-        nestedItems: [
-          { name: "1", link: "/" },
-          { name: "2", link: "/" },
-          { name: "3", link: "/" },
-        ],
+        // nestedItems: [
+        //   { name: "1", link: "/" },
+        //   { name: "2", link: "/" },
+        //   { name: "3", link: "/" },
+        // ],
       },
       { name: "content", link: "/content" },
       // { name: "about_us", link: "/about-us" },
