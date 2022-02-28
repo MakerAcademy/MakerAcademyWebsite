@@ -14,9 +14,7 @@ const DocumentPage = (props) => {
 
 export async function getServerSideProps(context) {
   const { db } = await connectToDB();
-  console.log(context.params);
   const doc = await getOneDocument(db, context.params.docId);
-  console.log(doc);
   return {
     props: {
       doc: doc,

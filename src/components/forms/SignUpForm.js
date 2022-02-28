@@ -14,22 +14,21 @@ import * as Yup from "yup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
-
 async function createUser(email, password, role) {
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
-    body: JSON.stringify({email, password, role}),
+  const response = await fetch("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ email, password, role }),
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-  })
+  });
   const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+  console.log(response.status);
+  if (response.status !== 201) {
+    throw new Error(data.message || "Something went wrong");
   }
   return data;
 }
-
 
 const SignUpForm = () => {
   const [type, setType] = useState("learner");
@@ -49,14 +48,13 @@ const SignUpForm = () => {
     try {
       const result = await createUser(email, password, type);
       console.log(result);
-      const login = await signIn('credentials', {
+      const login = await signIn("credentials", {
         email: email,
         password: password,
         callbackUrl: `${window.location.host}`,
-      }
-      );
+      });
       if (login) {
-        router.push('/');
+        router.push("/");
       }
     } catch (err) {
       console.log(err);
@@ -120,6 +118,5 @@ const SignUpForm = () => {
     </form>
   );
 };
-
 
 export default SignUpForm;

@@ -2,8 +2,9 @@ import { Alert, Container, Snackbar } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { withProtectedUser } from "@hoc/routes";
 
-const CreatorStudioNew = () => {
+const CreatorStudioNew = ({ user }) => {
   const router = useRouter();
   const [message, setMessage] = useState(null);
 
@@ -75,5 +76,7 @@ const CreatorStudioNew = () => {
     </Container>
   );
 };
+
+export const getServerSideProps = withProtectedUser();
 
 export default CreatorStudioNew;

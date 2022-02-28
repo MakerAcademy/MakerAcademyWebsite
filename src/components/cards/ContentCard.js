@@ -53,11 +53,7 @@ const ContentCard = ({
 
   return (
     <Link
-      href={
-        contentType === "documents"
-          ? `/document/${published}`
-          : `/course/${published}`
-      }
+      href={contentType === "documents" ? `/document/${_id}` : `/course/${_id}`}
       passHref
     >
       <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
