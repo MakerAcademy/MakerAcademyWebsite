@@ -14,10 +14,10 @@ import {
 import React from "react";
 import { signIn } from "next-auth/react";
 
-const SignInForm = ({providers}) => {
+const SignInForm = ({ providers }) => {
   const theme = useTheme();
 
-  const SocialButton = ({ color, children }) => (
+  const SocialButton = ({ color, children, ...other }) => (
     <IconButton
       size="large"
       sx={{
@@ -27,6 +27,7 @@ const SignInForm = ({providers}) => {
           backgroundColor: color,
         },
       }}
+      {...other}
     >
       {children}
     </IconButton>
@@ -61,8 +62,8 @@ const SignInForm = ({providers}) => {
         justifyContent="center"
         spacing={2.5}
       >
-        <SocialButton color="#DF4D3B">
-          <GoogleIcon onClick={() => signIn('google')}/>
+        <SocialButton color="#DF4D3B" onClick={() => signIn("google")}>
+          <GoogleIcon />
         </SocialButton>
       </Stack>
     </Stack>

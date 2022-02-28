@@ -15,10 +15,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const aboutRoutes = [
-  { label: "About", value: "/about-us" },
-  { label: "Privacy Policy", value: "/about-us/privacy-policy" },
-  { label: "Terms of Service", value: "/about-us/terms-of-service" },
+export const aboutRoutes = [
   {
     label: "Mission, Vision, Strategy",
     value: "/about-us/mission-vision-strategy",
@@ -27,17 +24,13 @@ const aboutRoutes = [
   { label: "Improvement Proposals", value: "/about-us/imrovement-proposals" },
   { label: "Status Updates", value: "/about-us/status-updates" },
   { label: "Team", value: "/about-us/team" },
+  { label: "Privacy Policy", value: "/about-us/privacy-policy" },
+  { label: "Terms of Service", value: "/about-us/terms-of-service" },
 ];
 
 const PageRenderer = ({ type, ...other }) => {
   const page = {
-    "/about-us": dynamic(() => import("@pages/AboutUs/AboutUs")),
-    "/about-us/privacy-policy": dynamic(() =>
-      import("@pages/AboutUs/PrivacyPolicy")
-    ),
-    "/about-us/terms-of-service": dynamic(() =>
-      import("@pages/AboutUs/TermsOfService")
-    ),
+    "/about-us": dynamic(() => import("@pages/AboutUs/MissionVisionStrategy")),
     "/about-us/mission-vision-strategy": dynamic(() =>
       import("@pages/AboutUs/MissionVisionStrategy")
     ),
@@ -49,6 +42,12 @@ const PageRenderer = ({ type, ...other }) => {
       import("@pages/AboutUs/StatusUpdates")
     ),
     "/about-us/team": dynamic(() => import("@pages/AboutUs/Team")),
+    "/about-us/privacy-policy": dynamic(() =>
+      import("@pages/AboutUs/PrivacyPolicy")
+    ),
+    "/about-us/terms-of-service": dynamic(() =>
+      import("@pages/AboutUs/TermsOfService")
+    ),
   };
 
   const RenderedPage = page[type];

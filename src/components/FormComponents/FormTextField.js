@@ -1,4 +1,4 @@
-import { TextField, useTheme } from "@mui/material";
+import { TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
@@ -8,24 +8,17 @@ const FormTextField = ({
   multiline,
   sx = {},
   variant = "outlined",
-  ...other
+  ...props
 }) => {
-  const theme = useTheme();
-
   return (
     <Controller
       name={name}
       control={control}
-      render={({
-        field: { onChange, value },
-        fieldState: { error },
-        formState,
-      }) => (
+      render={({ field: { ...field }, fieldState: { error }, formState }) => (
         <TextField
           helperText={error ? error.message : null}
           size="small"
           error={!!error}
-          onChange={onChange}
           fullWidth
           variant={variant}
           multiline={multiline}
@@ -39,7 +32,8 @@ const FormTextField = ({
             },
           }}
           sx={{ ...sx }}
-          {...other}
+          {...props}
+          {...field}
         />
       )}
     />
