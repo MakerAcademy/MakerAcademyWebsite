@@ -1,10 +1,27 @@
 import StudioEditsCarousel from "@components/carousels/StudioEditsCarousel";
+import commonProps from "@hoc/commonProps";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { columns, rows } from "@pages/Studio/dummyData";
-import React from "react";
+import { buildRows, columns } from "@pages/Studio/helperFunctions";
+// import { connectToDB } from "lib/db/connect";
+// import { getUserDocuments } from "lib/db/document";
+import React, { useEffect, useState } from "react";
 
-const Content = () => {
+// const fetchData = async (uid) => {
+//   const { db } = await connectToDB();
+//   const doc = await getUserDocuments(db, uid);
+
+//   return doc;
+// };
+
+const Content = ({ user }) => {
+  const [data, setData] = useState([]);
+  const [pageSize, setPageSize] = useState(10);
+
+  useEffect(() => {
+    // if (user._id) fetchData().then(setData);
+  }, [user]);
+
   return (
     <Box>
       {/* Top Part */}
@@ -33,17 +50,15 @@ const Content = () => {
         <DataGrid
           autoHeight
           rowHeight={70}
-          rows={rows}
+          rows={buildRows(data)}
           columns={columns}
-          pageSize={10}
+          pageSize={pageSize}
           onPageSizeChange={(i) => setPageSize(i)}
           rowsPerPageOptions={[5, 10, 20, 50]}
-          checkboxSelection
-          // onSelectionModelChange={handleselectedIds}
         />
       </Box>
     </Box>
   );
 };
 
-export default Content;
+export default commonProps(Content);

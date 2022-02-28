@@ -9,7 +9,7 @@ const commonProps = (Component, options = {}) => {
     const theme = useTheme();
     const { basic, translation = "common" } = options;
 
-    const { data: session, loading } = basic ? {} : useSession();
+    const { data: session = {}, loading } = useSession();
     const { t, lang } = useTranslation(translation);
 
     const basicprops = {
@@ -25,7 +25,10 @@ const commonProps = (Component, options = {}) => {
 
     return (
       <Component
-        user={session?.user}
+        user={{
+          ...(session?.session?.user || {}),
+          ...(session?.profile || {}),
+        }}
         userLoading={loading === "loading"}
         {...basicprops}
       />

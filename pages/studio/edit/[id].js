@@ -1,16 +1,23 @@
-import { Alert, Box, Container, Snackbar, useTheme } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Alert,
+  Box,
+  Container,
+  Snackbar,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { http } from "@config/";
+import BackButton from "@components/buttons/BackButton";
 
-const CreatorStudioNew = () => {
+const CreatorStudioNew = ({ data }) => {
   const router = useRouter();
-  const [message, setMessage] = useState(null);
+  const [submitted, setSubmitted] = useState(null);
 
-  const docId = router.query.id;
-
-  if (typeof window === "undefined")
-    return <Container sx={{ py: 5 }} maxWidth="xl" />;
+  const _id = router.query.id;
 
   const handleSubmit = async ({
     title,
@@ -20,7 +27,7 @@ const CreatorStudioNew = () => {
     subtopic,
     markdownValue,
   }) => {
-    const res = await fetch("/api/documents", {
+    const res = await fetch(`/api/documents?_id=${_id}`, {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
@@ -40,22 +47,27 @@ const CreatorStudioNew = () => {
       }),
     })
       .then((response) => {
-        // console.log(response);
         return response;
       })
       .then(() => {
-        setMessage({ type: "success", message: "This is a success message" });
+        setSubmitted({ type: "success", message: "This is a success message" });
       });
   };
 
-  const handleClose = (redirect) => {
-    if (message !== null) {
-      const { type, message, id } = message || {};
+  const handleClose = () => {
+    if (submitted) {
+      const { type } = submitted || {};
 
       // Change route based on the res id we get
-      redirect && type === "success" && router.push("/studio");
+      type === "success" && router.push("/studio/content");
+
+      setSubmitted(null);
     }
   };
+
+  if (typeof window === "undefined") {
+    return <Container sx={{ py: 5 }} maxWidth="xl" />;
+  }
 
   const NewStudioForm = dynamic(() =>
     import("@components/forms/NewStudioForm")
@@ -63,27 +75,50 @@ const CreatorStudioNew = () => {
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
+        <BackButton />
+
+        <Typography varaint="h5">Create a New Document</Typography>
+      </Stack>
+
       <NewStudioForm
         handleSubmit={handleSubmit}
         edit
-        values={{
-          title: "Test Title",
-          description: "This description works!",
-          markdown: "hello",
-        }}
+        values={{ ...(data || {}), markdown: data.body }}
       />
 
-      <Snackbar open={!!message} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
+      {submitted && (
+        <Snackbar
+          open={!!submitted}
+          autoHideDuration={3000}
           onClose={handleClose}
-          severity={message?.type}
-          sx={{ width: "100%" }}
         >
-          {message?.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleClose}
+            severity={submitted?.type}
+            sx={{ width: "100%" }}
+          >
+            {submitted?.message}
+          </Alert>
+        </Snackbar>
+      )}
     </Container>
   );
 };
 
 export default CreatorStudioNew;
+
+export const getServerSideProps = async (context) => {
+  const server = context.req.headers.host;
+  const docId = context.params.id;
+  const url = `${http}${server}/api/documents?_id=${docId}`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  return { props: { data: jsonData.message } };
+};
+
+// TODO - Add protected user

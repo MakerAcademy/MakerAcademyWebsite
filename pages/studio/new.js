@@ -1,24 +1,22 @@
-import { Alert, Container, Snackbar } from "@mui/material";
+import { Alert, Container, Snackbar, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import BackButton from "@components/buttons/BackButton";
 import { withProtectedUser } from "@hoc/routes";
 
 const CreatorStudioNew = ({ user }) => {
   const router = useRouter();
-  const [message, setMessage] = useState(null);
+  const [submitted, setSubmitted] = useState(null);
+
+  console.log(user);
 
   if (typeof window === "undefined")
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
 
-  const handleSubmit = async ({
-    title,
-    description,
-    level,
-    topic,
-    subtopic,
-    markdownValue,
-  }) => {
+  const handleSubmit = async (data) => {
+    const { title, description, level, topic, subtopic, markdownValue } = data;
+
     const res = await fetch("/api/documents", {
       method: "POST",
       headers: {
@@ -30,29 +28,34 @@ const CreatorStudioNew = ({ user }) => {
         level: level,
         topic: topic,
         subtopic: subtopic,
-        contentType: "documents",
+        content_type: "document",
         duration: 30,
-        author: user.username,
+        author_id: user?._id,
         body: markdownValue,
-        thumbnail:
+        thumbnail_url:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
       }),
     })
       .then((response) => {
-        console.log(response);
-        return response;
+        if (response.ok) return response.json();
       })
-      .then(() => {
-        setMessage({ type: "success", message: "This is a success message" });
+      .then(({ _id }) => {
+        setSubmitted({
+          type: "success",
+          message: "This is a success message",
+          _id,
+        });
       });
   };
 
-  const handleClose = (redirect) => {
-    if (message !== null) {
-      const { type, message, id } = message || {};
+  const handleClose = () => {
+    if (submitted) {
+      const { type, message, _id } = submitted || {};
 
       // Change route based on the res id we get
-      redirect && type === "success" && router.push("/studio");
+      type === "success" && router.push(`/document/${_id}`);
+
+      setSubmitted(null);
     }
   };
 
@@ -62,17 +65,25 @@ const CreatorStudioNew = ({ user }) => {
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
+        <BackButton />
+
+        <Typography varaint="h5">Create a New Document</Typography>
+      </Stack>
+
       <NewStudioForm handleSubmit={handleSubmit} />
 
-      <Snackbar open={!!message} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
+      {submitted && (
+        <Snackbar
+          open={!!submitted}
+          autoHideDuration={3000}
           onClose={handleClose}
-          severity={message?.type}
-          sx={{ width: "100%" }}
         >
-          {message?.message}
-        </Alert>
-      </Snackbar>
+          <Alert severity={submitted?.type} sx={{ width: "100%" }}>
+            {submitted?.message}
+          </Alert>
+        </Snackbar>
+      )}
     </Container>
   );
 };

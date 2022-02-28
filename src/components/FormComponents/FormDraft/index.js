@@ -25,8 +25,6 @@ const FormDraftField = ({
   direction = "column",
 }) => {
   const theme = useTheme();
-
-  const [loading, setLoading] = useState(true);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [htmlValue, setHtmlValue] = useState("");
   const [markdownValue, setMarkdownValue] = useState("");
@@ -44,8 +42,6 @@ const FormDraftField = ({
           handleDraftChange(value);
           break;
       }
-
-      setLoading(false);
     }
   }, [valueType, global.window]);
 
@@ -71,14 +67,12 @@ const FormDraftField = ({
   };
 
   useEffect(() => {
-    if (!loading) {
-      onChange?.({
-        editor: editorState,
-        html: htmlValue,
-        markdown: markdownValue,
-      });
-    }
-  }, [editorState, htmlValue, markdownValue, loading]);
+    onChange?.({
+      editor: editorState,
+      html: htmlValue,
+      markdown: markdownValue,
+    });
+  }, [editorState, htmlValue, markdownValue]);
 
   return (
     <div style={{ padding: 5 }}>
