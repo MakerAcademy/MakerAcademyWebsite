@@ -1,8 +1,10 @@
+import { ObjectId } from "mongodb";
 import { connectToDB } from "../../../lib/db/connect";
 import {
   getOneDocument,
   createDocument,
   updateDocument,
+  addToContent,
 } from "../../../lib/db/document";
 import validateJSON from "../../../lib/db/utils";
 
@@ -18,11 +20,7 @@ export default async function handler(req, res) {
         return await fetchDocs(req, res, db);
       }
     case "POST":
-      if (_id) {
-        return await updateOneDoc(req, res, db, _id);
-      } else {
-        return await createOneDoc(req, res, db);
-      }
+      return await createOneDoc(req, res, db, _id);
   }
 }
 
@@ -45,37 +43,23 @@ async function fetchOneDoc(req, res, db, _id) {
   }
 }
 
-async function createOneDoc(req, res, db) {
+async function createOneDoc(req, res, db, _id) {
   const body = req.body;
   const expectedFields = [];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
   }
+  body.author = ObjectId(body.author);
 
   try {
-    const status = await createDocument(db, body);
-
-    return res.status(200).json({
-      _id: status.insertedId,
-      success: true,
+    const documentStatus = await createDocument(db, body);
+    const contentStatus = await addToContent(db, {
+      author: body.author,
+      published: documentStatus.insertedId,
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).end();
-  }
-}
-
-async function updateOneDoc(req, res, db, _id) {
-  const body = req.body;
-  const expectedFields = [];
-  if (!_id || !validateJSON(body, expectedFields)) {
-    return res.status(400).end();
-  }
-
-  try {
-    const status = await updateDocument(db, _id, body);
 
     return res.status(200).json({
+      _id: contentStatus.insertedId,
       success: true,
     });
   } catch (err) {

@@ -35,12 +35,13 @@ const DesktopMenuItems = ({
   languagePopup,
   authButtons,
   user,
-  userLoading,
 }) => {
   const theme = useTheme();
   const [spotlight, setSpotlight] = useState(null);
   const [subMenu, setSubMenu] = useState(null);
   const [userAnchorEl, setUserAnchorEl] = useState(null);
+
+  const userExists = !!user?.email;
 
   const router = useRouter();
   const { t } = useTranslation("common");
@@ -90,9 +91,9 @@ const DesktopMenuItems = ({
           </Link>
         ))}
 
-        {authButtons && !userLoading && (
+        {authButtons && (
           <>
-            {!!user ? (
+            {!!user.email ? (
               <>
                 <Tooltip title="Account settings">
                   <IconButton onClick={(e) => setUserAnchorEl(e.currentTarget)}>
@@ -136,14 +137,11 @@ const DesktopMenuItems = ({
           </>
         )}
 
-        {/* Implement auth buttons with auth ready */}
-        {/* {authButtons && <AuthButtons />} */}
-
         {themeToggle && (
           <ThemeToggleButton
             onMouseEnter={() => setSpotlight(true)}
             sx={{
-              ml: !userLoading && !!user && 2,
+              ml: userExists && 2,
               color: spotlight && theme.palette.text.disabled,
               "&:hover": {
                 color: "inherit !important",

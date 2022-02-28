@@ -1,5 +1,6 @@
 import AuthForm from "src/pages/Auth";
 import React from "react";
+import { withUser } from "@hoc/routes";
 
 const SignUp = () => {
   return (
