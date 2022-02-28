@@ -38,12 +38,13 @@ const CreatorStudioNew = ({ data }) => {
         level: level,
         topic: topic,
         subtopic: subtopic,
-        content_type: "document",
+        contentType: "document",
         duration: 30,
-        author_id: "Zach Huang",
+        author: "Zach Huang",
         body: markdownValue,
-        thumbnail_url:
+        thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "submitted",
       }),
     })
       .then((response) => {

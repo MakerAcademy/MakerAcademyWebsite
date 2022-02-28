@@ -7,7 +7,7 @@ export function withUser(hideIfUserExists) {
     const { req, params } = context;
     const data = await getSession({ req });
 
-    if (data?.session?.user && hideIfUserExists) {
+    if (data && hideIfUserExists) {
       return {
         redirect: {
           destination: "/",
@@ -15,15 +15,12 @@ export function withUser(hideIfUserExists) {
       };
     }
 
-    const {
-      session: { user },
-      profile,
-    } = data;
+    const { session, profile } = data || {};
 
     // Pass page-specific props along with user data from `withAuth` to component
     return {
       props: {
-        user: { ...user, ...profile },
+        user: { ...(session?.user || {}), ...profile },
       },
     };
   };
@@ -35,7 +32,7 @@ export function withProtectedUser() {
     const { req } = context;
     const data = await getSession({ req });
 
-    if (!data?.session?.user) {
+    if (!data) {
       return {
         redirect: {
           destination: "/sign-in",
@@ -43,15 +40,12 @@ export function withProtectedUser() {
       };
     }
 
-    const {
-      session: { user },
-      profile,
-    } = data;
+    const { session, profile } = data || {};
 
     // Pass page-specific props along with user data from `withAuth` to component
     return {
       props: {
-        user: { ...user, ...profile },
+        user: { ...(session?.user || {}), ...profile },
       },
     };
   };

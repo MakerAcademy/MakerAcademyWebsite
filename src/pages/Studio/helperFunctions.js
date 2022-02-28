@@ -87,7 +87,7 @@ export const buildRows = (data) => {
   return data.map((item, i) => ({
     id: item._id,
     count: i,
-    image: item.thumbnail_url,
+    image: item.thumbnail,
     title: item.title,
     date: moment(item.timestamp).format("lll"),
     visibility: "Public",

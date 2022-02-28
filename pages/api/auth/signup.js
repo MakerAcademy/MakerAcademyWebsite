@@ -46,7 +46,7 @@ async function handler(req, res) {
   });
 
   const profileResult = await db.collection("user_profile").insertOne({
-    _id: result._id,
+    _id: result.insertedId,
     image: "",
     trustLevel: 1,
     walletAddress: "",

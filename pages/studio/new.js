@@ -28,12 +28,13 @@ const CreatorStudioNew = ({ user }) => {
         level: level,
         topic: topic,
         subtopic: subtopic,
-        content_type: "document",
+        contentType: "documents",
         duration: 30,
-        author_id: user?._id,
+        author: user?._id,
         body: markdownValue,
-        thumbnail_url:
+        thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "published",
       }),
     })
       .then((response) => {
