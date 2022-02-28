@@ -1,6 +1,7 @@
 import { connectToDB } from "../../../lib/db/connect";
 import { getUserByEmail } from "../../../lib/db/user";
 import { hashPassword } from "../../../lib/auth/auth";
+import { ObjectId } from "mongodb";
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -45,8 +46,10 @@ async function handler(req, res) {
     emailVerified: null,
   });
 
+  console.log("result", result);
+
   const profileResult = await db.collection("user_profile").insertOne({
-    _id: result._id,
+    _id: result.insertedId,
     image: "",
     trustLevel: 1,
     walletAddress: "",
@@ -54,6 +57,8 @@ async function handler(req, res) {
     email: email,
     username: defaultUsername,
   });
+
+  console.log(profileResult);
 
   res.status(201).json({ message: "Created user!" });
 }
