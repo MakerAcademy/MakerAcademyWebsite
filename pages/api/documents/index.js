@@ -9,8 +9,6 @@ export default async function handler(req, res) {
       return await fetchOneDoc(req, res, db);
     case "POST":
       return await createOneDoc(req, res, db);
-    case "LIKE":
-      return { val: true };
   }
 }
 

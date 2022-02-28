@@ -1,10 +1,8 @@
 import { Container } from "@mui/material";
 import React from "react";
 import NewStudioForm from "@components/forms/NewStudioForm";
-import { useSession } from "next-auth/react";
-import { withProtectedUser } from "@hoc/routes";
 
-const CreatorStudioNew = ({ user }) => {
+const CreatorStudioNew = () => {
   const handleSubmit = async ({
     title,
     description,
@@ -24,11 +22,11 @@ const CreatorStudioNew = ({ user }) => {
         level: level,
         topic: topic,
         subtopic: subtopic,
-        content_type: "documents",
+        contentType: "documents",
         duration: 30,
         author: author_id,
         body: markdownValue,
-        thumbnail_url:
+        thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
       }),
     }).then((response) => {
