@@ -22,6 +22,7 @@ export default NextAuth({
         console.log("Authentication Status: ", authenticated);
         if (authenticated) {
           console.log("SUCCESSFUL AUTHENTICATION");
+          console.log(authenticated);
           return { email: authenticated.email };
         }
         return null;
@@ -36,4 +37,21 @@ export default NextAuth({
     signIn: "/sign-in",
   },
   adapter: MongoDBAdapter(connectToDB().then((response) => response.dbClient)),
+  callbacks: {
+    async session(session, token) {
+      const { db } = await connectToDB();
+
+      const email = session?.session?.user?.email;
+
+      // TODO - change to user_profile db instead of user db
+      const userData = await getUserByEmail(db, email);
+
+      session.profile = { ...session.user, ...(userData || {}) };
+
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      return token;
+    },
+  },
 });
