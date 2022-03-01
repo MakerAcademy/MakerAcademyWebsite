@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormTextField from "@components/formComponents/FormTextField";
+import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import React, { useEffect } from "react";
@@ -20,11 +20,9 @@ const SignInForm = () => {
 
   const { handleSubmit, reset, control, getValues } = useForm(formOptions);
 
-
-
   const onSubmit = async (data, e) => {
     const { email, password } = data;
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       email: email,
       password: password,
       callbackUrl: `${window.location.host}`,

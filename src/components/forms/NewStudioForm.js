@@ -1,6 +1,6 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormDraftField from "@components/formComponents/FormDraft";
-import FormTextField from "@components/formComponents/FormTextField";
+import FormDraftField from "@components/FormComponents/FormDraft";
+import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import React from "react";
