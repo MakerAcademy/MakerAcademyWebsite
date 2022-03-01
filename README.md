@@ -1,6 +1,6 @@
 # Maker Academy
 
-Maker Academy Website. An educational platform for Maker.
+Maker Academy Website. An educational platform for the Maker ecosystem.
 ## Local Development
 For development run:
 
