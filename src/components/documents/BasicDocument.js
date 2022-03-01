@@ -39,6 +39,9 @@ function HeadingRenderer(props) {
 const BasicDocument = ({ data = {}, user }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
+  const [liked, setLiked] = useState(false);
+
+  const uid = user?._id;
 
   const {
     _id,
@@ -49,12 +52,12 @@ const BasicDocument = ({ data = {}, user }) => {
     contributors,
     views,
     likes,
-    liked = false,
+    likes_count = 0,
     author,
   } = document;
 
   // Edit Button condition here
-  const showEditBtn = !!user?.email //&& user?._id === author;
+  const showEditBtn = !!user?.email; //&& user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -73,6 +76,32 @@ const BasicDocument = ({ data = {}, user }) => {
       setIds(_temp3 || []);
     }
   }, [body]);
+
+  useEffect(() => {
+    const _liked = !!likes?.includes?.(uid);
+    console.log("in", likes, _liked, uid);
+    setLiked(_liked);
+  }, [likes, uid]);
+
+  console.log(liked);
+
+  const triggerLike = async () => {
+    const res = await fetch(
+      `/api/documents?_id=${_id}&uid=${uid}&like=${!liked}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        setLiked(!liked);
+      });
+  };
 
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
@@ -148,17 +177,14 @@ const BasicDocument = ({ data = {}, user }) => {
               </Stack>
 
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <IconButton
-                  size="small"
-                  onClick={() => console.log("Implement Like")}
-                >
+                <IconButton size="small" onClick={triggerLike}>
                   {liked ? (
                     <FavoriteIcon fontSize="small" />
                   ) : (
                     <FavoriteBorderIcon fontSize="small" />
                   )}
                 </IconButton>
-                <Typography>Likes: {likes}</Typography>
+                <Typography>Likes: {likes_count}</Typography>
               </Stack>
             </Stack>
 
