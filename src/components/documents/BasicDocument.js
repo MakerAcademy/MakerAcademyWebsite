@@ -25,6 +25,9 @@ import ReactMarkdown from "react-markdown";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import commonProps from "@hoc/commonProps";
+import RoundedButton from "@components/buttons/RoundedButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
@@ -33,11 +36,12 @@ function HeadingRenderer(props) {
   return React.createElement("h" + props.level, { id: slug }, props.children);
 }
 
-const BasicDocument = ({ data = {} }) => {
+const BasicDocument = ({ data = {}, user }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
 
   const {
+    _id,
     title,
     username,
     body,
@@ -46,7 +50,14 @@ const BasicDocument = ({ data = {} }) => {
     views,
     likes,
     liked = false,
+    author,
   } = document;
+
+  console.log(user?._id, author);
+
+  // Edit Button condition here
+  // TODO - allow admin to edit based on grant
+  const showEditBtn = !!user?.email && user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -78,9 +89,25 @@ const BasicDocument = ({ data = {} }) => {
 
         <Container>
           <Stack spacing={3}>
-            <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
-              {title}
-            </ResponsiveText>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
+              justifyContent="space-between"
+            >
+              <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
+                {title}
+              </ResponsiveText>
+
+              {showEditBtn && (
+                <RoundedButton
+                  icon={<EditIcon fontSize="small" />}
+                  href={`/studio/edit/${_id}`}
+                >
+                  Edit
+                </RoundedButton>
+              )}
+            </Stack>
 
             <Stack
               direction="row"
@@ -161,4 +188,4 @@ const BasicDocument = ({ data = {} }) => {
   );
 };
 
-export default BasicDocument;
+export default commonProps(BasicDocument);
