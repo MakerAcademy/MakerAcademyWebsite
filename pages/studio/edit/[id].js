@@ -1,19 +1,13 @@
-import {
-  Alert,
-  Box,
-  Container,
-  Snackbar,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
-import { http } from "@config/";
 import BackButton from "@components/buttons/BackButton";
+import { http } from "@config/";
+import { Alert, Container, Snackbar, Stack, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { withProtectedUser } from "@hoc/routes";
 
-const CreatorStudioNew = ({ data }) => {
+const CreatorStudioEdit = (props) => {
+  const { data, user } = props;
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
 
@@ -40,7 +34,7 @@ const CreatorStudioNew = ({ data }) => {
         subtopic: subtopic,
         contentType: "document",
         duration: 30,
-        author: "Zach Huang",
+        author: user?._id,
         body: markdownValue,
         thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
@@ -48,6 +42,7 @@ const CreatorStudioNew = ({ data }) => {
       }),
     })
       .then((response) => {
+        console.log("Client: ", response);
         return response;
       })
       .then(() => {
@@ -79,13 +74,13 @@ const CreatorStudioNew = ({ data }) => {
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
 
-        <Typography varaint="h5">Create a New Document</Typography>
+        <Typography variant="h6">Edit Document</Typography>
       </Stack>
 
       <NewStudioForm
         handleSubmit={handleSubmit}
         edit
-        values={{ ...(data || {}), markdown: data.body }}
+        values={{ ...(data || {}), markdown: data?.body }}
       />
 
       {submitted && (
@@ -107,9 +102,9 @@ const CreatorStudioNew = ({ data }) => {
   );
 };
 
-export default CreatorStudioNew;
+export default CreatorStudioEdit;
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = withProtectedUser(async (context) => {
   const server = context.req.headers.host;
   const docId = context.params.id;
   const url = `${http}${server}/api/documents?_id=${docId}`;
@@ -120,6 +115,4 @@ export const getServerSideProps = async (context) => {
   const jsonData = await res.json();
 
   return { props: { data: jsonData.message } };
-};
-
-// TODO - Add protected user
+});

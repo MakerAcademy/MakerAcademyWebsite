@@ -9,8 +9,6 @@ const CreatorStudioNew = ({ user }) => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
 
-  console.log(user);
-
   if (typeof window === "undefined")
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
 
@@ -69,7 +67,7 @@ const CreatorStudioNew = ({ user }) => {
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
 
-        <Typography varaint="h5">Create a New Document</Typography>
+        <Typography variant="h6">Create a New Document</Typography>
       </Stack>
 
       <NewStudioForm handleSubmit={handleSubmit} />
