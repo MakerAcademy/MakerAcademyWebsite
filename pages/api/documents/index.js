@@ -1,3 +1,4 @@
+import { addToContentLikes, removeFromContentLikes } from "lib/db/content";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "../../../lib/db/connect";
 import {
@@ -12,6 +13,7 @@ import validateJSON from "../../../lib/db/utils";
 export default async function handler(req, res) {
   const _id = req.query._id;
   const uid = req.query.uid;
+  const like = req.query.like;
 
   const { db } = await connectToDB();
 
@@ -23,7 +25,15 @@ export default async function handler(req, res) {
         return await fetchUserDocs(req, res, db, uid);
       }
     case "POST":
-      return await createOneDoc(req, res, db, _id);
+      if (like === "true") {
+        console.log("Liking");
+        return await likeDocument(req, res, db, _id, uid);
+      } else if (like === "false") {
+        console.log("Unliking");
+        return await unlikeDocument(req, res, db, _id, uid);
+      } else {
+        return await createOneDoc(req, res, db, _id);
+      }
   }
 }
 
@@ -90,6 +100,40 @@ async function createOneDoc(req, res, db, _id) {
 
     return res.status(200).json({
       _id: contentStatus.insertedId,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function likeDocument(req, res, db, _id, uid) {
+  if (!_id || !uid) {
+    return res.status(400).end();
+  }
+
+  try {
+    const docs = await addToContentLikes(db, _id, uid);
+    return res.status(200).json({
+      message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function unlikeDocument(req, res, db, _id, uid) {
+  if (!_id || !uid) {
+    return res.status(400).end();
+  }
+
+  try {
+    const docs = await removeFromContentLikes(db, _id, uid);
+    return res.status(200).json({
+      message: docs,
       success: true,
     });
   } catch (err) {

@@ -6,7 +6,6 @@ import { getOneDocument, incrementDocViews } from "../../lib/db/document";
 const DocumentPage = (props) => {
   const { doc = {} } = props;
 
-  console.log(doc);
   return (
     <div>
       <BasicDocument data={doc} />
