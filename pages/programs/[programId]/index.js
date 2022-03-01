@@ -10,9 +10,17 @@ import React from "react";
 import { connectToDB } from "../../../lib/db/connect";
 import { getOneProgram } from "../../../lib/db/program";
 
-const Program = ({ program, topic, subtopic, title, likes = 0, views = 0 }) => {
+const Program = ({ program, title, likes = 0, views = 0 }) => {
   const { query } = useRouter();
   const { programId } = query;
+
+  if (!program) {
+    return (
+      <Container maxWidth="xl" sx={{ py: 8 }}>
+        Program Not Found
+      </Container>
+    );
+  }
 
   const firstCourseId = program?.courses?.[0]?._id;
 
@@ -39,7 +47,12 @@ const Program = ({ program, topic, subtopic, title, likes = 0, views = 0 }) => {
           <RoundedButton
             variant="outlined"
             sx={{ height: 40 }}
-            href={`/programs/${programId}/course/${firstCourseId}`}
+            disabled={!firstCourseId}
+            href={
+              firstCourseId
+                ? `/programs/${programId}/course/${firstCourseId}`
+                : `#`
+            }
           >
             Begin
           </RoundedButton>
@@ -77,14 +90,15 @@ export async function getServerSideProps(context) {
   const { db } = await connectToDB();
   // console.log(context.params);
   const program = await getOneProgram(db, context.params.programId);
-  const p = program[0];
-  // console.log(p);
+
+  if (!program) return { props: {} };
+
   return {
     props: {
-      program: p,
-      topic: p.topic,
-      subtopic: p.subtopic,
-      title: p.title,
+      program,
+      topic: program.topic,
+      subtopic: program.subtopic,
+      title: program.title,
     },
   };
 }

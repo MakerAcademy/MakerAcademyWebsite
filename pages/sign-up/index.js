@@ -1,5 +1,6 @@
 import AuthForm from "src/pages/Auth";
 import React from "react";
+import { withUser } from "@hoc/routes";
 
 const SignUp = () => {
   return (
@@ -9,6 +10,6 @@ const SignUp = () => {
   );
 };
 
-export const getServerSideProps = withUser(true);
+export const getServerSideProps = withUser(null, { hideIfUserExists: true });
 
 export default SignUp;

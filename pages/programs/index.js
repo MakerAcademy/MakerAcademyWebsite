@@ -5,6 +5,8 @@ import ResponsiveText from "@components/ResponsiveText";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
 import { TAGS } from "@constants/tags";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
   Container,
@@ -13,7 +15,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import { connectToDB } from "../../lib/db/connect";
 import {
@@ -21,12 +23,12 @@ import {
   getPrograms,
   getProgramSearchTags,
 } from "../../lib/db/program";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
+
+  const { t } = useTranslation("programs");
 
   const ProgramContainer = ({ _id, title, subtitle, children }) => (
     <Paper
@@ -57,7 +59,7 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
           sx={{ height: 40, px: 2, minWidth: 115 }}
           href={`/programs/${_id}`}
         >
-          View More
+          {t("view_more")}
         </RoundedButton>
       </Stack>
 
@@ -68,12 +70,16 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
       <Stack spacing={2} direction="row" justifyContent="flex-end">
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <VisibilityIcon sx={{ fontSize: 18 }} />
-          <Typography variant="body2">Views: {views}</Typography>
+          <Typography variant="body2">
+            {t("views")}: {views}
+          </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <FavoriteIcon sx={{ fontSize: 18 }} />
-          <Typography variant="body2">Likes: {likes}</Typography>
+          <Typography variant="body2">
+            {t("likes")}: {likes}
+          </Typography>
         </Stack>
       </Stack>
     </Paper>
@@ -84,8 +90,8 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
       <Stack justifyContent="center" alignItems="center" spacing={3}>
         {/* Breadcrumbs */}
         <BreadcrumbsSection
-          title="Programs"
-          subtitle="If you have a specific goal in mind with your education, please check out some of our programs! These programs are sequential orderings of different pieces of content that build upon each other, culminating in a mastery of a specific goal."
+          title={t("programs")}
+          subtitle={t("programs_caption")}
           sx={{ mb: 3 }}
         />
 
@@ -96,6 +102,7 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
           sortItems={CONTENT_SORT_ITEMS}
           translateCategories
           dontTranslateSubCategoriesOf={["author_id"]}
+          inputPlaceholder={t("search_bar")}
         />
 
         {/* Content */}

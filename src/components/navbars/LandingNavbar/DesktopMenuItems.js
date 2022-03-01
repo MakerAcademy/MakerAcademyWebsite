@@ -26,6 +26,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 
 const AUTH_LINK = "/sign-in";
 
@@ -35,12 +36,13 @@ const DesktopMenuItems = ({
   languagePopup,
   authButtons,
   user,
-  userLoading,
 }) => {
   const theme = useTheme();
   const [spotlight, setSpotlight] = useState(null);
   const [subMenu, setSubMenu] = useState(null);
   const [userAnchorEl, setUserAnchorEl] = useState(null);
+
+  const userExists = !!user?.email;
 
   const router = useRouter();
   const { t } = useTranslation("common");
@@ -90,9 +92,9 @@ const DesktopMenuItems = ({
           </Link>
         ))}
 
-        {authButtons && !userLoading && (
+        {authButtons && (
           <>
-            {!!user ? (
+            {!!user.email ? (
               <>
                 <Tooltip title="Account settings">
                   <IconButton onClick={(e) => setUserAnchorEl(e.currentTarget)}>
@@ -136,14 +138,11 @@ const DesktopMenuItems = ({
           </>
         )}
 
-        {/* Implement auth buttons with auth ready */}
-        {/* {authButtons && <AuthButtons />} */}
-
         {themeToggle && (
           <ThemeToggleButton
             onMouseEnter={() => setSpotlight(true)}
             sx={{
-              ml: !userLoading && !!user && 2,
+              ml: userExists && 2,
               color: spotlight && theme.palette.text.disabled,
               "&:hover": {
                 color: "inherit !important",
@@ -235,6 +234,18 @@ const DesktopMenuItems = ({
               <SettingsIcon fontSize="small" />
             </ListItemIcon>
             {t("my_account")}
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => {
+              setUserAnchorEl(null);
+              router.push("/studio");
+            }}
+          >
+            <ListItemIcon>
+              <OndemandVideoIcon fontSize="small" />
+            </ListItemIcon>
+            {t("creator_studio")}
           </MenuItem>
 
           <MenuItem

@@ -1,29 +1,89 @@
 import StudioEditsCarousel from "@components/carousels/StudioEditsCarousel";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { columns, rows } from "@pages/Studio/dummyData";
-import React from "react";
+import { buildColumns, buildRows } from "@pages/Studio/helperFunctions";
+import useTranslation from "next-translate/useTranslation";
+import React, { useEffect, useState } from "react";
 
-const Content = () => {
+const fetchUserDocs = async (uid, callback) => {
+  const url = `/api/documents?uid=${uid}`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  callback?.(jsonData?.message || []);
+};
+
+const fetchEditSubmissions = async (uid, callback) => {
+  const url = `/api/documents?getSubmissions=true&uid=${uid}`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  const editRequests = jsonData?.message;
+
+  const flattened = editRequests
+    .reduce((acc, item) => {
+      if (!item.drafts || !item?.doc?.title || !item.published) return acc;
+
+      item.drafts.map((dr) => {
+        acc = [
+          ...acc,
+          {
+            ...dr,
+            publishedDoc: {
+              ...item.doc,
+              author: item.author,
+              _id: item.published,
+            },
+          },
+        ];
+      });
+
+      return acc;
+    }, [])
+    ?.filter((i) => i.title);
+
+  const sorted = flattened.sort((x, y) => {
+    return x.timestamp - y.timestamp;
+  });
+
+  callback?.(sorted || []);
+};
+
+const Content = ({ user }) => {
+  const [data, setData] = useState([]);
+  const [editRequests, setEditRequests] = useState([]);
+  const [pageSize, setPageSize] = useState(10);
+
+  const { t } = useTranslation("creator-studio");
+
+  useEffect(() => {
+    if (user._id) {
+      fetchUserDocs(user._id, setData);
+      fetchEditSubmissions(user._id, setEditRequests);
+    }
+  }, []);
+
   return (
     <Box>
       {/* Top Part */}
       <Paper sx={{ mb: 2, p: 2 }}>
-        <Typography sx={{ mb: 2 }}>Edit Requests</Typography>
+        <Typography sx={{ mb: 2 }}>{t("edit_requests")}</Typography>
 
         <Box>
           <StudioEditsCarousel
-            requests={Array(10)
-              .fill()
-              .map((_, i) => ({
-                _id: i,
-                document_title: `Document title ${i}`,
-                title: `Grammer fix ${i}`,
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut odio temporibus voluptas error distinctio hic quae corrupti vero doloribus optio! Inventore ex quaerat modi blanditiis soluta maiores illum, ab velit.",
-                image:
-                  "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-              }))}
+            requests={editRequests.map((req, i) => ({
+              _id: i,
+              document_title: req.publishedDoc.title,
+              image:
+                "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+              ...req,
+            }))}
           />
         </Box>
       </Paper>
@@ -33,13 +93,11 @@ const Content = () => {
         <DataGrid
           autoHeight
           rowHeight={70}
-          rows={rows}
-          columns={columns}
-          pageSize={10}
+          rows={buildRows(data, t)}
+          columns={buildColumns(t)}
+          pageSize={pageSize}
           onPageSizeChange={(i) => setPageSize(i)}
           rowsPerPageOptions={[5, 10, 20, 50]}
-          checkboxSelection
-          // onSelectionModelChange={handleselectedIds}
         />
       </Box>
     </Box>

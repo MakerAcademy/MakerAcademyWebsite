@@ -1,16 +1,17 @@
-import { Alert, Box, Container, Snackbar, useTheme } from "@mui/material";
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import BackButton from "@components/buttons/BackButton";
+import { http } from "@config/";
+import { Alert, Container, Snackbar, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { withProtectedUser } from "@hoc/routes";
 
-const CreatorStudioNew = () => {
+const CreatorStudioEdit = (props) => {
+  const { data, user } = props;
   const router = useRouter();
-  const [message, setMessage] = useState(null);
+  const [submitted, setSubmitted] = useState(null);
 
-  const docId = router.query.id;
-
-  if (typeof window === "undefined")
-    return <Container sx={{ py: 5 }} maxWidth="xl" />;
+  const _id = router.query.id;
 
   const handleSubmit = async ({
     title,
@@ -20,7 +21,7 @@ const CreatorStudioNew = () => {
     subtopic,
     markdownValue,
   }) => {
-    const res = await fetch("/api/documents", {
+    const res = await fetch(`/api/documents?_id=${_id}`, {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
@@ -31,31 +32,38 @@ const CreatorStudioNew = () => {
         level: level,
         topic: topic,
         subtopic: subtopic,
-        content_type: "document",
+        contentType: "document",
         duration: 30,
-        author_id: "Zach Huang",
+        author: user?._id,
         body: markdownValue,
-        thumbnail_url:
+        thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "submitted",
       }),
     })
       .then((response) => {
-        // console.log(response);
+        console.log("Client: ", response);
         return response;
       })
       .then(() => {
-        setMessage({ type: "success", message: "This is a success message" });
+        setSubmitted({ type: "success", message: "This is a success message" });
       });
   };
 
-  const handleClose = (redirect) => {
-    if (message !== null) {
-      const { type, message, id } = message || {};
+  const handleClose = () => {
+    if (submitted) {
+      const { type } = submitted || {};
 
       // Change route based on the res id we get
-      redirect && type === "success" && router.push("/studio");
+      type === "success" && router.push("/studio/content");
+
+      setSubmitted(null);
     }
   };
+
+  if (typeof window === "undefined") {
+    return <Container sx={{ py: 5 }} maxWidth="xl" />;
+  }
 
   const NewStudioForm = dynamic(() =>
     import("@components/forms/NewStudioForm")
@@ -63,27 +71,48 @@ const CreatorStudioNew = () => {
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
+        <BackButton />
+
+        <Typography variant="h6">Edit Document</Typography>
+      </Stack>
+
       <NewStudioForm
         handleSubmit={handleSubmit}
         edit
-        values={{
-          title: "Test Title",
-          description: "This description works!",
-          markdown: "hello",
-        }}
+        values={{ ...(data || {}), markdown: data?.body }}
       />
 
-      <Snackbar open={!!message} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
+      {submitted && (
+        <Snackbar
+          open={!!submitted}
+          autoHideDuration={3000}
           onClose={handleClose}
-          severity={message?.type}
-          sx={{ width: "100%" }}
         >
-          {message?.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleClose}
+            severity={submitted?.type}
+            sx={{ width: "100%" }}
+          >
+            {submitted?.message}
+          </Alert>
+        </Snackbar>
+      )}
     </Container>
   );
 };
 
-export default CreatorStudioNew;
+export default CreatorStudioEdit;
+
+export const getServerSideProps = withProtectedUser(async (context) => {
+  const server = context.req.headers.host;
+  const docId = context.params.id;
+  const url = `${http}${server}/api/documents?_id=${docId}`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  return { props: { data: jsonData.message } };
+});

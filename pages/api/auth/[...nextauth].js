@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import { connectToDB } from "../../../lib/db/connect";
 import GoogleProvider from "next-auth/providers/google";
-import { AuthenticateUser } from "../../../lib/db/user";
+import { AuthenticateUser, getUserByEmail } from "../../../lib/db/user";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -22,6 +22,7 @@ export default NextAuth({
         console.log("Authentication Status: ", authenticated);
         if (authenticated) {
           console.log("SUCCESSFUL AUTHENTICATION");
+          console.log(authenticated);
           return { email: authenticated.email };
         }
         return null;
@@ -36,4 +37,21 @@ export default NextAuth({
     signIn: "/sign-in",
   },
   adapter: MongoDBAdapter(connectToDB().then((response) => response.dbClient)),
+  callbacks: {
+    async session(session, token) {
+      const { db } = await connectToDB();
+
+      const email = session?.session?.user?.email;
+
+      // TODO - change to user_profile db instead of user db
+      const userData = await getUserByEmail(db, email);
+
+      session.profile = { ...session.user, ...(userData || {}) };
+
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      return token;
+    },
+  },
 });

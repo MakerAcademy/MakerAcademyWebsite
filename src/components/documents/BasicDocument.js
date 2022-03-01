@@ -25,12 +25,9 @@ import ReactMarkdown from "react-markdown";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
-// const StyledMarkdown = styled(ReactMarkdown)`
-//   & > h2 {
-//     color: red;
-//   }
-// `;
+import commonProps from "@hoc/commonProps";
+import RoundedButton from "@components/buttons/RoundedButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
@@ -39,20 +36,28 @@ function HeadingRenderer(props) {
   return React.createElement("h" + props.level, { id: slug }, props.children);
 }
 
-const BasicDocument = ({ data = {} }) => {
+const BasicDocument = ({ data = {}, user }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
+  const [liked, setLiked] = useState(false);
+
+  const uid = user?._id;
 
   const {
+    _id,
     title,
-    author_id,
+    username,
     body,
     timestamp,
-    contributors = ["Person 1", "Person 2"],
-    views = 0,
-    likes = 0,
-    liked = false,
+    contributors,
+    views,
+    likes,
+    likes_count = 0,
+    author,
   } = document;
+
+  // Edit Button condition here
+  const showEditBtn = !!user?.email; //&& user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -72,6 +77,29 @@ const BasicDocument = ({ data = {} }) => {
     }
   }, [body]);
 
+  useEffect(() => {
+    const _liked = !!likes?.includes?.(uid);
+    setLiked(_liked);
+  }, [likes, uid]);
+
+  const triggerLike = async () => {
+    const res = await fetch(
+      `/api/documents?_id=${_id}&uid=${uid}&like=${!liked}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        setLiked(!liked);
+      });
+  };
+
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
       <Stack direction="row" spacing={5}>
@@ -84,9 +112,25 @@ const BasicDocument = ({ data = {} }) => {
 
         <Container>
           <Stack spacing={3}>
-            <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
-              {title}
-            </ResponsiveText>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
+              justifyContent="space-between"
+            >
+              <ResponsiveText variant="h3" sx={{ fontWeight: 600 }}>
+                {title}
+              </ResponsiveText>
+
+              {showEditBtn && (
+                <RoundedButton
+                  icon={<EditIcon fontSize="small" />}
+                  href={`/studio/edit/${_id}`}
+                >
+                  Edit
+                </RoundedButton>
+              )}
+            </Stack>
 
             <Stack
               direction="row"
@@ -97,13 +141,14 @@ const BasicDocument = ({ data = {} }) => {
               <Stack direction="row" spacing={1}>
                 <Brightness1Icon sx={{ fontSize: 18, mt: 0.1 }} />
                 <Stack>
-                  <Typography>Author: {author_id}</Typography>
+                  <Typography>Author: {username}</Typography>
                   <Typography>
                     Contributors:{" "}
-                    {contributors.map(
-                      (person, i) =>
-                        `${person}${i < contributors.length - 1 ? ", " : ""}`
-                    )}
+                    {contributors &&
+                      contributors.map(
+                        (person, i) =>
+                          `${person}${i < contributors.length - 1 ? ", " : ""}`
+                      )}
                   </Typography>
                 </Stack>
               </Stack>
@@ -129,17 +174,14 @@ const BasicDocument = ({ data = {} }) => {
               </Stack>
 
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <IconButton
-                  size="small"
-                  onClick={() => console.log("Implement Like")}
-                >
+                <IconButton size="small" onClick={triggerLike}>
                   {liked ? (
                     <FavoriteIcon fontSize="small" />
                   ) : (
                     <FavoriteBorderIcon fontSize="small" />
                   )}
                 </IconButton>
-                <Typography>Likes: {likes}</Typography>
+                <Typography>Likes: {likes_count}</Typography>
               </Stack>
             </Stack>
 
@@ -166,4 +208,4 @@ const BasicDocument = ({ data = {} }) => {
   );
 };
 
-export default BasicDocument;
+export default commonProps(BasicDocument);

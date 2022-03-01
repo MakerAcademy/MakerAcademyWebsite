@@ -2,11 +2,7 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import AboutSidebar from "@components/sidebars/AboutSidebar";
 import { withProtectedUser } from "@hoc/routes";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
-import CommentIcon from "@mui/icons-material/Comment";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import {
   Box,
@@ -20,6 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -55,8 +52,9 @@ const PageRenderer = ({ type, ...other }) => {
   return <RenderedPage {...other} />;
 };
 
-const CreatorStudio = ({ user }) => {
+const CreatorStudio = (props) => {
   const router = useRouter();
+  const { t } = useTranslation("creator-studio");
 
   const [page, setPage] = useState(router.asPath);
 
@@ -97,10 +95,10 @@ const CreatorStudio = ({ user }) => {
                 },
               }}
             >
-              Creator Studio
+              {t("creator_studio")}
             </Typography>
 
-            <RoundedButton href="/studio/new">Add New</RoundedButton>
+            <RoundedButton href="/studio/new">{t("add_new")}</RoundedButton>
           </Stack>
         </Stack>
 
@@ -114,7 +112,7 @@ const CreatorStudio = ({ user }) => {
             {studioRoutes.map((item, i) => (
               <Tab
                 key={i}
-                label={item.name}
+                label={t(item.name)}
                 value={item.value}
                 sx={{
                   textTransform: "inherit",
@@ -128,7 +126,7 @@ const CreatorStudio = ({ user }) => {
         <Divider />
 
         <Box sx={{ minHeight: "50vh" }}>
-          <PageRenderer type={page} />
+          <PageRenderer type={page} {...props} />
         </Box>
       </Stack>
     </Container>

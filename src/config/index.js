@@ -1,5 +1,9 @@
 import { LogoDark, LogoLight } from "@utils/images";
 
+const dev = process.env.NODE_ENV !== "production";
+
+export const http = dev ? "http://" : "https://";
+
 const config = ({ mode }) => ({
   projectName: "Maker Academy",
   logo: mode === "dark" ? LogoDark : LogoLight,
