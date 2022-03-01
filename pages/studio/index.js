@@ -16,23 +16,24 @@ import {
   useTheme,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const studioRoutes = [
   {
-    name: "Dashboard",
+    name: "creator_studio_dashboard",
     value: "/studio",
     icon: DashboardIcon,
   },
   {
-    name: "Content",
+    name: "creator_studio_content",
     value: "/studio/content",
     icon: VideoLibraryIcon,
   },
   {
-    name: "Analytics",
+    name: "creator_studio_analytics",
     value: "/studio/analytics",
     icon: AnalyticsIcon,
   },
@@ -53,6 +54,7 @@ const PageRenderer = ({ type, ...other }) => {
 
 const CreatorStudio = (props) => {
   const router = useRouter();
+  const { t } = useTranslation("creator-studio");
 
   const [page, setPage] = useState(router.asPath);
 
@@ -93,10 +95,10 @@ const CreatorStudio = (props) => {
                 },
               }}
             >
-              Creator Studio
+              {t("creator_studio")}
             </Typography>
 
-            <RoundedButton href="/studio/new">Add New</RoundedButton>
+            <RoundedButton href="/studio/new">{t("add_new")}</RoundedButton>
           </Stack>
         </Stack>
 
@@ -110,7 +112,7 @@ const CreatorStudio = (props) => {
             {studioRoutes.map((item, i) => (
               <Tab
                 key={i}
-                label={item.name}
+                label={t(item.name)}
                 value={item.value}
                 sx={{
                   textTransform: "inherit",

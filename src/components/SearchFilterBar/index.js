@@ -34,7 +34,6 @@ import React, { useEffect, useState } from "react";
 
 const SearchFilterBar = ({
   tags,
-  inputPlaceholder = "Search Content",
   parentCallback,
   withSort,
   sortItems = [],
@@ -44,6 +43,7 @@ const SearchFilterBar = ({
   dontTranslateSubCategoriesOf = [],
   theme,
   t,
+  inputPlaceholder = "Search Content",
 }) => {
   const [sortBy, setSortBy] = useState(sortItems[0]);
   const [filters, setFilters] = useState(tags);
@@ -123,7 +123,7 @@ const SearchFilterBar = ({
           variant="standard"
           value={filterSearchTerm}
           onChange={(e) => setFilterSearchTerm(e.target.value)}
-          placeholder="Search"
+          placeholder={t("search")}
           fullWidth
           size="small"
           sx={{ mt: 2, px: 2 }}
@@ -313,7 +313,7 @@ const SearchFilterBar = ({
                     },
                   }}
                 >
-                  Filter
+                  {t("filter")}
                 </Badge>
 
                 {!filterOpen ? (
@@ -358,7 +358,7 @@ const SearchFilterBar = ({
             fullWidth
             size="small"
           >
-            <InputLabel id="sort-label">Sort By</InputLabel>
+            <InputLabel id="sort-label">{t("sort_by")}</InputLabel>
             <Select
               labelId="sort-label"
               value={sortBy}
@@ -380,5 +380,5 @@ const SearchFilterBar = ({
 
 export default commonProps(SearchFilterBar, {
   basic: true,
-  translations: "content",
+  translations: "common",
 });
