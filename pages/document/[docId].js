@@ -5,6 +5,8 @@ import { getOneDocument, incrementDocViews } from "../../lib/db/document";
 
 const DocumentPage = (props) => {
   const { doc = {} } = props;
+
+  console.log(doc);
   return (
     <div>
       <BasicDocument data={doc} />
@@ -13,9 +15,12 @@ const DocumentPage = (props) => {
 };
 
 export async function getServerSideProps(context) {
+  const docId = context.params.docId;
+
   const { db } = await connectToDB();
-  const doc = await getOneDocument(db, context.params.docId);
-  const result = await incrementDocViews(db, context.params.docId);
+  const doc = await getOneDocument(db, docId);
+  const result = await incrementDocViews(db, docId);
+
   return {
     props: {
       doc: doc,

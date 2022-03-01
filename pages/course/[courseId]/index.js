@@ -34,6 +34,14 @@ const CoursePage = ({
   const [c, setC] = useState(course.documents);
   const { courseId, programId } = query;
 
+  if (!course) {
+    return (
+      <Container maxWidth="xl" sx={{ py: 8 }}>
+        Course Not Found
+      </Container>
+    );
+  }
+
   const firstDocId = course?.documents?.[0]?._id;
 
   const breadcrumbs = [
@@ -42,8 +50,6 @@ const CoursePage = ({
     { label: subtopic, href: "/content" },
     { label: title, active: true },
   ];
-
-  // useEffect(() => {}, [c]);
 
   const buildRedirect = (_id) => {
     if (programId)
@@ -167,13 +173,15 @@ const CoursePage = ({
 export async function getServerSideProps(context) {
   const { db } = await connectToDB();
   const course = await getOneCourse(db, context.params.courseId);
-  const c = course[0];
+
+  if (!course) return { props: {} };
+
   return {
     props: {
-      course: c,
-      topic: c.topic,
-      subtopic: c.subtopic,
-      title: c.title,
+      course: course,
+      topic: course.topic,
+      subtopic: course.subtopic,
+      title: course.title,
     },
   };
 }

@@ -25,6 +25,8 @@ const Content = ({ user }) => {
     }
   }, []);
 
+  console.log(data);
+
   return (
     <Box>
       {/* Top Part */}
