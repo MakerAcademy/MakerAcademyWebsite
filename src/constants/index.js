@@ -10,6 +10,7 @@ export const CONTENT_SORT_ITEMS = [
   "oldest",
   "likes",
   "viewed",
-  "reading_time",
+  "highest_reading_time",
+  "lowest_reading_time",
   "difficulty",
 ];

@@ -1,7 +1,8 @@
 import StudioEditsCarousel from "@components/carousels/StudioEditsCarousel";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { buildRows, columns } from "@pages/Studio/helperFunctions";
+import { buildColumns, buildRows } from "@pages/Studio/helperFunctions";
+import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useState } from "react";
 
 const fetchUserDocs = async (uid, callback) => {
@@ -19,17 +20,21 @@ const Content = ({ user }) => {
   const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
 
+  const { t } = useTranslation("creator-studio");
+
   useEffect(() => {
     if (user._id) {
       fetchUserDocs(user._id, setData);
     }
   }, []);
 
+  console.log(data);
+
   return (
     <Box>
       {/* Top Part */}
       <Paper sx={{ mb: 2, p: 2 }}>
-        <Typography sx={{ mb: 2 }}>Edit Requests</Typography>
+        <Typography sx={{ mb: 2 }}>{t("edit_requests")}</Typography>
 
         <Box>
           <StudioEditsCarousel
@@ -53,8 +58,8 @@ const Content = ({ user }) => {
         <DataGrid
           autoHeight
           rowHeight={70}
-          rows={buildRows(data)}
-          columns={columns}
+          rows={buildRows(data, t)}
+          columns={buildColumns(t)}
           pageSize={pageSize}
           onPageSizeChange={(i) => setPageSize(i)}
           rowsPerPageOptions={[5, 10, 20, 50]}
