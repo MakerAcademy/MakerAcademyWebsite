@@ -1,10 +1,1 @@
-{
-    "hello": "Hello",
-    "greet": "Hello, {{name}}!",
-    "world": "World",
-    "documentation": "Go To Documentation",
-    "language": {
-        "tr": "🇹🇷 Türkçe",
-        "en": "🇺🇸 English"
-    }
-}
+{"sort_oldest":"Oldest","content":"Content","filter_topic":"Topic","sort_highest_reading_time":"Highest Reading Time","filter_level":"Level","sort_lowest_reading_time":"Lowest Reading Time","logout":"Logout","creator_studio":"Creator Studio","sort_likes":"Most Liked","my_account":"My Account","performance":"Performance","filter_subtopic":"Sub-topic","programs":"Programs","sign_in":"Sign In","maker":"Maker","sort_by":"Sort By","sort_newest":"Sort Newest","filter":"Filter","filter_author":"Author","contribute":"Contribute","Test":"testing","sort_recommended":"Recommended","sort_viewed":"Most Viewed","sort_difficulty":"Difficulty","about_us":"About Us"}
