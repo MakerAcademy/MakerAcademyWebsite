@@ -5,12 +5,12 @@ import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import { connectToDB } from "lib/db/connect";
-import useTranslation from "next-translate/useTranslation";
 import {
   getContent,
   getContentSearchTags,
   getCountEstimate,
 } from "lib/db/content";
+import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
 import { TAGS } from "src/constants/tags";
 

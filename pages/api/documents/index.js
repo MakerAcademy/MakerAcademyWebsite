@@ -1,4 +1,9 @@
-import { addToContentLikes, removeFromContentLikes } from "lib/db/content";
+import {
+  acceptEdit,
+  addToContentLikes,
+  rejectEdit,
+  removeFromContentLikes,
+} from "lib/db/content";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "../../../lib/db/connect";
 import {
@@ -7,6 +12,7 @@ import {
   addToContent,
   getUserDocuments,
   addToContentDraft,
+  getUserEditSubmissions,
 } from "../../../lib/db/document";
 import validateJSON from "../../../lib/db/utils";
 
@@ -14,18 +20,27 @@ export default async function handler(req, res) {
   const _id = req.query._id;
   const uid = req.query.uid;
   const like = req.query.like;
+  const getSubmissions = req.query.getSubmissions === "true";
+  const acceptSubmission = req.query.acceptSubmission === "true";
+  const rejectSubmission = req.query.rejectSubmission === "true";
 
   const { db } = await connectToDB();
 
   switch (req.method) {
     case "GET":
-      if (_id) {
+      if (uid && getSubmissions) {
+        return await fetchEditRequests(req, res, db, uid);
+      } else if (_id) {
         return await fetchOneDoc(req, res, db, _id);
       } else if (uid) {
         return await fetchUserDocs(req, res, db, uid);
       }
     case "POST":
-      if (like === "true") {
+      if (acceptSubmission === true) {
+        return await acceptEditRequest(req, res, db);
+      } else if (rejectSubmission === true) {
+        return await rejectEditRequest(req, res, db);
+      } else if (like === "true") {
         console.log("Liking");
         return await likeDocument(req, res, db, _id, uid);
       } else if (like === "false") {
@@ -40,6 +55,20 @@ export default async function handler(req, res) {
 async function fetchUserDocs(req, res, db, uid) {
   try {
     const docs = await getUserDocuments(db, uid);
+
+    return res.status(200).json({
+      message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function fetchEditRequests(req, res, db, uid) {
+  try {
+    const docs = await getUserEditSubmissions(db, uid);
 
     return res.status(200).json({
       message: docs,
@@ -132,6 +161,52 @@ async function unlikeDocument(req, res, db, _id, uid) {
 
   try {
     const docs = await removeFromContentLikes(db, _id, uid);
+    return res.status(200).json({
+      message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function acceptEditRequest(req, res, db) {
+  const body = req.body;
+  const { publishedId, draftId } = body;
+
+  console.log("IN", body);
+
+  if (!publishedId || !draftId) {
+    return res.status(400).end();
+  }
+
+  console.log("Accepting", publishedId, draftId);
+
+  try {
+    const docs = await acceptEdit(db, publishedId, draftId);
+    return res.status(200).json({
+      message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function rejectEditRequest(req, res, db) {
+  const body = req.body;
+  const { publishedId, draftId } = body;
+
+  if (!publishedId || !draftId) {
+    return res.status(400).end();
+  }
+
+  console.log("Rejecting", publishedId, draftId);
+
+  try {
+    const docs = await rejectEdit(db, publishedId, draftId);
     return res.status(200).json({
       message: docs,
       success: true,

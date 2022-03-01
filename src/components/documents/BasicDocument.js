@@ -79,11 +79,8 @@ const BasicDocument = ({ data = {}, user }) => {
 
   useEffect(() => {
     const _liked = !!likes?.includes?.(uid);
-    console.log("in", likes, _liked, uid);
     setLiked(_liked);
   }, [likes, uid]);
-
-  console.log(liked);
 
   const triggerLike = async () => {
     const res = await fetch(

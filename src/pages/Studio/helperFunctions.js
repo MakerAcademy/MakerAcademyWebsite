@@ -87,6 +87,6 @@ export const buildRows = (data, t) => {
     date: moment(item.timestamp).format("lll"),
     visibility: item.status,
     views: item.views,
-    likes: item.likes,
+    likes: item.likes?.length || 0,
   }));
 };
