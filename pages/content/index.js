@@ -13,7 +13,6 @@ import {
 } from "lib/db/content";
 import React, { useState } from "react";
 import { TAGS } from "src/constants/tags";
-import { getUserEditSubmissions } from "../../lib/db/document";
 
 const ContentPage = ({ limit, content, tags }) => {
   const [cards, setCards] = useState(content);
