@@ -58,8 +58,6 @@ async function handler(req, res) {
     username: defaultUsername,
   });
 
-  console.log(profileResult);
-
   res.status(201).json({ message: "Created user!" });
 }
 
