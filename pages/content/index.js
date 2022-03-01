@@ -10,7 +10,6 @@ import {
   getContent,
   getContentSearchTags,
   getCountEstimate,
-  newGetContent,
 } from "lib/db/content";
 import React, { useEffect, useState } from "react";
 import { TAGS } from "src/constants/tags";
@@ -24,29 +23,6 @@ const ContentPage = ({ limit, content, tags, t }) => {
     setSearchQuery(q);
     setSearchFilters(f);
   };
-
-  // useEffect(() => {
-  //   fetchFreshDocs(searchFilters, null).then(() => {
-  //     console.log("fetched ", cards.length, " cards");
-  //   });
-  // }, [searchQuery, searchFilters]);
-  //
-  // const fetchFreshDocs = async (filters, lastItemTime) => {
-  //   const response = fetch("api/content", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       filters: filters,
-  //       lastItemTime: lastItemTime,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((body) => {
-  //       setCards(body.message);
-  //     });
-  // };
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">

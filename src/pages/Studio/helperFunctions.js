@@ -7,15 +7,8 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 export const columns = [
   //   { field: "id", headerName: "ID", width: 70 },
   {
-    field: "count",
-    headerName: "ID",
-    width: 70,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "image",
-    headerName: "Image",
+    field: "thumbnail",
+    headerName: "Thumbnail",
     width: 150,
     renderCell: (params) => {
       return (
@@ -50,8 +43,8 @@ export const columns = [
     headerAlign: "center",
   },
   {
-    field: "comments",
-    headerName: "Comments",
+    field: "likes",
+    headerName: "Likes",
     width: 150,
     align: "center",
     headerAlign: "center",
@@ -87,11 +80,11 @@ export const buildRows = (data) => {
   return data.map((item, i) => ({
     id: item._id,
     count: i,
-    image: item.thumbnail,
+    thumbnail: item.thumbnail,
     title: item.title,
     date: moment(item.timestamp).format("lll"),
-    visibility: "Public",
-    views: 0,
-    comments: 0,
+    visibility: item.status,
+    views: item.views,
+    likes: item.likes,
   }));
 };

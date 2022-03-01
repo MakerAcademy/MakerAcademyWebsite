@@ -22,17 +22,17 @@ import React, { useEffect, useState } from "react";
 
 const studioRoutes = [
   {
-    name: "creator_studio_dashboard",
+    name: "Dashboard",
     value: "/studio",
     icon: DashboardIcon,
   },
   {
-    name: "creator_studio_content",
+    name: "Content",
     value: "/studio/content",
     icon: VideoLibraryIcon,
   },
   {
-    name: "creator_studio_analytics",
+    name: "Analytics",
     value: "/studio/analytics",
     icon: AnalyticsIcon,
   },
