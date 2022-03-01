@@ -1,26 +1,29 @@
 import StudioEditsCarousel from "@components/carousels/StudioEditsCarousel";
-import commonProps from "@hoc/commonProps";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { buildRows, columns } from "@pages/Studio/helperFunctions";
-// import { connectToDB } from "lib/db/connect";
-// import { getUserDocuments } from "lib/db/document";
 import React, { useEffect, useState } from "react";
 
-// const fetchData = async (uid) => {
-//   const { db } = await connectToDB();
-//   const doc = await getUserDocuments(db, uid);
+const fetchUserDocs = async (uid, callback) => {
+  const url = `/api/documents?uid=${uid}`;
 
-//   return doc;
-// };
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  callback?.(jsonData?.message || []);
+};
 
 const Content = ({ user }) => {
   const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    // if (user._id) fetchData().then(setData);
-  }, [user]);
+    if (user._id) {
+      fetchUserDocs(user._id, setData);
+    }
+  }, []);
 
   return (
     <Box>
@@ -61,4 +64,4 @@ const Content = ({ user }) => {
   );
 };
 
-export default commonProps(Content);
+export default Content;

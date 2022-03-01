@@ -26,6 +26,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 
 const AUTH_LINK = "/sign-in";
 
@@ -233,6 +234,18 @@ const DesktopMenuItems = ({
               <SettingsIcon fontSize="small" />
             </ListItemIcon>
             {t("my_account")}
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => {
+              setUserAnchorEl(null);
+              router.push("/studio");
+            }}
+          >
+            <ListItemIcon>
+              <OndemandVideoIcon fontSize="small" />
+            </ListItemIcon>
+            {t("creator_studio")}
           </MenuItem>
 
           <MenuItem

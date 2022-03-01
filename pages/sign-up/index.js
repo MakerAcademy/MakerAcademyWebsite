@@ -10,6 +10,6 @@ const SignUp = () => {
   );
 };
 
-export const getServerSideProps = withUser(true);
+export const getServerSideProps = withUser(null, { hideIfUserExists: true });
 
 export default SignUp;
