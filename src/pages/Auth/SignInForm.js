@@ -50,22 +50,22 @@ const SignInForm = ({ providers }) => {
         <LoginForm />
       </Box>
 
-      <Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>
-        Or
-      </Divider>
+      {/*<Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>*/}
+      {/*  Or*/}
+      {/*</Divider>*/}
 
-      <Typography>Sign in using social networks</Typography>
+      {/*<Typography>Sign in using social networks</Typography>*/}
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        spacing={2.5}
-      >
-        <SocialButton color="#DF4D3B" onClick={() => signIn("google")}>
-          <GoogleIcon />
-        </SocialButton>
-      </Stack>
+      {/*<Stack*/}
+      {/*  direction="row"*/}
+      {/*  alignItems="center"*/}
+      {/*  justifyContent="center"*/}
+      {/*  spacing={2.5}*/}
+      {/*>*/}
+      {/*  <SocialButton color="#DF4D3B" onClick={() => signIn("google")}>*/}
+      {/*    <GoogleIcon />*/}
+      {/*  </SocialButton>*/}
+      {/*</Stack>*/}
     </Stack>
   );
 };
