@@ -28,7 +28,7 @@ const Dashboard = () => {
   return (
     <Box>
       <Typography sx={{ whiteSpace: "pre-line", maxWidth: 1000 }}>
-        {DUMMY_TEXT}
+        Coming Soon
       </Typography>
     </Box>
   );

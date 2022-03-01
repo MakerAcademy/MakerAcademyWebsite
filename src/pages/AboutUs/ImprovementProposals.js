@@ -4,6 +4,7 @@ import TableTabsLayout from "src/containers/TableTabLayout";
 import { columns, rows } from "./dummyData";
 
 const ImprovementProposals = () => {
+  return <div>Coming Soon</div>;
   return (
     <Stack alignItems="center" spacing={4}>
       <Typography sx={{ fontWeight: 600 }}>Improvement Proposals</Typography>

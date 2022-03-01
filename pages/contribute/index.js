@@ -131,7 +131,8 @@ const ContributePage = () => {
       <Divider />
 
       <Box sx={{ minHeight: "50vh", py: 3, px: { xs: 3, md: 5 } }}>
-        <PageRenderer type={url} />
+        {/*<PageRenderer type={url} />*/}
+        Coming Soon
       </Box>
     </Box>
   );

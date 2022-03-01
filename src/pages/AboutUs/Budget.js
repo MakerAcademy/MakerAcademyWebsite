@@ -15,6 +15,7 @@ import React from "react";
 import { DAI_BUDGET, MKR_TOTAL, VESTING_DETAILS } from "./dummyData";
 
 const Budget = () => {
+  return <div>Coming Soon</div>;
   return (
     <Box>
       <Grid container spacing={5}>
