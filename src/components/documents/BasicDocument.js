@@ -53,11 +53,8 @@ const BasicDocument = ({ data = {}, user }) => {
     author,
   } = document;
 
-  console.log(user?._id, author);
-
   // Edit Button condition here
-  // TODO - allow admin to edit based on grant
-  const showEditBtn = !!user?.email && user?._id === author;
+  const showEditBtn = !!user?.email //&& user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
