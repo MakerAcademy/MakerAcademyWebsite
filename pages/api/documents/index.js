@@ -5,7 +5,7 @@ import {
   removeFromContentLikes,
 } from "lib/db/content";
 import { ObjectId } from "mongodb";
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import {
   getOneDocument,
   createDocument,
@@ -24,7 +24,8 @@ export default async function handler(req, res) {
   const acceptSubmission = req.query.acceptSubmission === "true";
   const rejectSubmission = req.query.rejectSubmission === "true";
 
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
 
   switch (req.method) {
     case "GET":

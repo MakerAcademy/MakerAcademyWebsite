@@ -1,12 +1,10 @@
 import CourseDocument from "@components/documents/CourseDocument";
 import React from "react";
-import { connectToDB } from "../../../../lib/db/connect";
+import clientPromise from "../../../../lib/db/connect";
 import { getOneDocument } from "../../../../lib/db/document";
 import BasicDocument from "@components/documents/BasicDocument";
 
-
-
-const DocumentPage = ({doc}) => {
+const DocumentPage = ({ doc }) => {
   return (
     <div>
       <BasicDocument data={doc} />
@@ -14,16 +12,15 @@ const DocumentPage = ({doc}) => {
   );
 };
 
-
 export async function getServerSideProps(context) {
-  const {db} = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const doc = await getOneDocument(db, context.params.docId);
   return {
     props: {
-      doc: doc
-    }
-  }
+      doc: doc,
+    },
+  };
 }
-
 
 export default DocumentPage;

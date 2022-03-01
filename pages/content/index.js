@@ -4,7 +4,7 @@ import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
-import { connectToDB } from "lib/db/connect";
+import clientPromise from "lib/db/connect";
 import {
   getContent,
   getContentSearchTags,
@@ -74,7 +74,8 @@ const ContentPage = ({ limit, content, tags }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const docs = await getContent(db);
   const tags = await getContentSearchTags(db, TAGS);
   const count = await getCountEstimate(db, "content");

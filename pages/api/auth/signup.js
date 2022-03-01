@@ -1,4 +1,4 @@
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import { getUserByEmail } from "../../../lib/db/user";
 import { hashPassword } from "../../../lib/auth/auth";
 import { ObjectId } from "mongodb";
@@ -25,7 +25,8 @@ async function handler(req, res) {
     return;
   }
 
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
 
   const existingUser = await getUserByEmail(db, email);
 

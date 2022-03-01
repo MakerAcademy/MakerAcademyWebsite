@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
-import { connectToDB } from "../../lib/db/connect";
+import clientPromise from "../../lib/db/connect";
 import {
   getCountEstimate,
   getPrograms,
@@ -132,7 +132,8 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
 
 export async function getServerSideProps(context) {
   // Add fetch to utils or api once backend complete
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const programs = await getPrograms(db, {}, null);
   const tags = await getProgramSearchTags(db, TAGS);
   const count = await getCountEstimate(db, "programs");

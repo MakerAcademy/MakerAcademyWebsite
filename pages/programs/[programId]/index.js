@@ -7,7 +7,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import { getOneProgram } from "../../../lib/db/program";
 
 const Program = ({ program, title, likes = 0, views = 0 }) => {
@@ -87,8 +87,8 @@ const Program = ({ program, title, likes = 0, views = 0 }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
-  // console.log(context.params);
+  const client = await clientPromise;
+  const db = client.db();
   const program = await getOneProgram(db, context.params.programId);
 
   if (!program) return { props: {} };
