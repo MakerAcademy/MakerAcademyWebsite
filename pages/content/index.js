@@ -55,11 +55,18 @@ const sortData = (data, type) => {
 };
 
 const filterData = (data, filters) => {
-  console.log(data, filters);
-  
-  const newData = data.filter((i) => filters.some((e) => i[e.key] === e.value));
+  const result = Object.keys(filters).reduce(
+    (acc, key) => {
+      const val = filters[key];
 
-  return newData;
+      acc = acc.filter((i) => val.includes(i[key]));
+
+      return acc;
+    },
+    [...data]
+  );
+
+  return result;
 };
 
 const ContentPage = ({ content, tags }) => {
@@ -77,7 +84,7 @@ const ContentPage = ({ content, tags }) => {
   const handleAll = (term, sortType, filters) => {
     let newData = data;
 
-    if (filters?.length) {
+    if (filters) {
       newData = filterData(newData, filters);
     }
 

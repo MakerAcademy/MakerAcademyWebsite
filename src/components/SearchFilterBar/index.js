@@ -32,6 +32,14 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
+const parseFilters = (filters) => {
+  return filters.reduce((acc, { value: { category, subcategory } }) => {
+    if (typeof acc[category] === "undefined") acc[category] = [];
+    acc[category].push(subcategory);
+    return acc;
+  }, {});
+};
+
 const SearchFilterBar = ({
   tags,
   withSort,
@@ -271,18 +279,13 @@ const SearchFilterBar = ({
 
   const triggerSearch = (e) => {
     e.preventDefault();
-
-    const _filters = selectedFilters.reduce((acc, i) => {
-      return [...acc, { key: i.value.category, value: i.value.subcategory }];
-    }, []);
+    const _filters = parseFilters(selectedFilters);
 
     changeCallback?.(searchTerm, sortBy, _filters);
   };
 
   useEffect(() => {
-    const _filters = selectedFilters.reduce((acc, i) => {
-      return [...acc, { key: i.value.category, value: i.value.subcategory }];
-    }, []);
+    const _filters = parseFilters(selectedFilters);
 
     if (!loading) {
       changeCallback?.(searchTerm, sortBy, _filters);
