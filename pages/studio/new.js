@@ -41,7 +41,8 @@ const CreatorStudioNew = ({ user }) => {
       .then(({ _id }) => {
         setSubmitted({
           type: "success",
-          message: "This is a success message",
+          message:
+            "Successfully created document. Redirecting to document page...",
           _id,
         });
       });
