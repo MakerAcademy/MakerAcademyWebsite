@@ -46,7 +46,10 @@ const CreatorStudioEdit = (props) => {
         return response;
       })
       .then(() => {
-        setSubmitted({ type: "success", message: "This is a success message" });
+        setSubmitted({
+          type: "success",
+          message: "Successfully submitted edit! Redirecting to studio...",
+        });
       });
   };
 

@@ -5,25 +5,45 @@ import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import clientPromise from "lib/db/connect";
-import {
-  getContent,
-  getContentSearchTags,
-  getCountEstimate,
-} from "lib/db/content";
+import { getContent } from "lib/db/content";
 import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
-import { TAGS } from "src/constants/tags";
 
-const ContentPage = ({ limit, content, tags }) => {
+const ContentPage = ({ content, tags }) => {
   const [cards, setCards] = useState(content);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFilters, setSearchFilters] = useState([]);
 
   const { t } = useTranslation("content");
 
+  const search = (q) => {
+    return cards.filter((c) => {
+      return Object.values(c)
+        .map((f) => {
+          if (typeof f === "string") {
+            return f.includes(q);
+          } else {
+            return false;
+          }
+        })
+        .includes(true);
+    });
+  };
+
+  const prepareFilters = () => {
+    return tags.map((category) => {});
+  };
+
   const handleCallback = (q, f) => {
+    console.log(tags);
     setSearchQuery(q);
     setSearchFilters(f);
+    if (q) {
+      const result = search(searchQuery);
+      setCards(result);
+    } else {
+      setCards(content);
+    }
   };
 
   return (
@@ -76,14 +96,11 @@ const ContentPage = ({ limit, content, tags }) => {
 export async function getServerSideProps(context) {
   const client = await clientPromise;
   const db = client.db();
-  const docs = await getContent(db);
-  const tags = await getContentSearchTags(db, TAGS);
-  const count = await getCountEstimate(db, "content");
+  const data = await getContent(db);
   return {
     props: {
-      content: docs,
-      tags: tags,
-      limit: count,
+      content: data[0],
+      tags: data[1],
     },
   };
 }
