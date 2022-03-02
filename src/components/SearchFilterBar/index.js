@@ -102,7 +102,7 @@ const SearchFilterBar = ({
   };
 
   const triggerSearch = () => {
-    parentCallback?.(searchTerm, selectedFilters);
+    parentCallback(searchTerm, selectedFilters);
   };
 
   const FilterMenuList = () => (

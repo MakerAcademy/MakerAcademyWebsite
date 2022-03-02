@@ -2,12 +2,13 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
+import { CONTENT_SORT_VALUES } from "@constants";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import clientPromise from "lib/db/connect";
 import { getContent } from "lib/db/content";
 import useTranslation from "next-translate/useTranslation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ContentPage = ({ content, tags }) => {
   const [cards, setCards] = useState(content);
@@ -30,22 +31,50 @@ const ContentPage = ({ content, tags }) => {
     });
   };
 
-  const prepareFilters = () => {
-    return tags.map((category) => {});
-  };
-
-  const handleCallback = (q, f) => {
-    console.log(tags);
+  const handleSearch = (q, f) => {
     setSearchQuery(q);
     setSearchFilters(f);
     if (q) {
       const result = search(searchQuery);
+      console.log("result", result);
       setCards(result);
     } else {
       setCards(content);
     }
   };
 
+  const handleSort = (order) => {
+    const protocol = CONTENT_SORT_VALUES[order];
+    const stuff = cards.sort((a, b) => {
+      switch (protocol.category) {
+        case "likes":
+          return a.likes.length - b.likes.length;
+        case "duration":
+          if (protocol["value"] === 1) {
+            return parseInt(a.duration) - parseInt(b.duration);
+          } else {
+            return parseInt(b.duration) - parseInt(a.duration);
+          }
+        case "views":
+          return a.views - b.views;
+        default:
+          if (protocol["value"] === 1) {
+            if (a[protocol.category] > b[protocol.category]) {
+              return 1;
+            }
+            return -1;
+          } else {
+            if (a[protocol.category] < b[protocol.category]) {
+              return 1;
+            }
+            return -1;
+          }
+      }
+    });
+    setCards(stuff);
+  };
+
+  useEffect(() => {}, [cards]);
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
@@ -58,9 +87,10 @@ const ContentPage = ({ content, tags }) => {
         {/* Search */}
         <SearchFilterBar
           tags={tags}
-          parentCallback={handleCallback}
+          parentCallback={handleSearch}
           withSort
           sortItems={CONTENT_SORT_ITEMS}
+          sortCallback={handleSort}
           translateCategories
           dontTranslateSubCategoriesOf={["author_id"]}
           inputPlaceholder={t("search_bar")}
