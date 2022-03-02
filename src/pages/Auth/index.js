@@ -25,7 +25,7 @@ const AuthForm = ({ appConfig, providers }) => {
 
   const CloseButton = () => (
     <CloseIcon
-      onClick={() => Router.back()}
+      onClick={() => Router.push("/")}
       sx={{
         zIndex: 999999,
         fontSize: 55,
@@ -122,7 +122,11 @@ const AuthForm = ({ appConfig, providers }) => {
               }}
               maxWidth="md"
             >
-              {mode === SIGNIN ? <SignInForm providers={providers}/> : <SignUpForm providers={providers} />}
+              {mode === SIGNIN ? (
+                <SignInForm providers={providers} />
+              ) : (
+                <SignUpForm providers={providers} />
+              )}
             </Container>
           </Box>
         </Stack>

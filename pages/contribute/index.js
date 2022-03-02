@@ -61,10 +61,10 @@ const getTitle = (type, subType, asPath) => {
   if (subType) {
     const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
     const subItem = item?.nestedItems?.find((i) => i.link === asPath);
-    return subItem.name || _default;
+    return subItem?.name || _default;
   } else if (type && !subType) {
     const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
-    return item.name || _default;
+    return item?.name || _default;
   }
   return _default;
 };

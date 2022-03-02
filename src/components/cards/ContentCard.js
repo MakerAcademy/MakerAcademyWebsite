@@ -31,7 +31,8 @@ const ContentCard = ({
   published,
   verification,
   views = 0,
-  likes = 0,
+  likes,
+  likes_count = 0,
 }) => {
   const theme = useTheme();
   const tags = [topic, subtopic, level];
@@ -93,7 +94,7 @@ const ContentCard = ({
               right: 8,
             }}
           >
-            <CustomChip text={likes} Icon={FavoriteIcon} />
+            <CustomChip text={likes_count} Icon={FavoriteIcon} />
           </Box>
         </Box>
 

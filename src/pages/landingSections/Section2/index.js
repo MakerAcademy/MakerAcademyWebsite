@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
   Container,
   Grid,
   Stack,
@@ -23,7 +22,7 @@ const learners = [
   {
     title: "acquire_skills",
     buttonText: "contributor_overview",
-    link: "/contributor-pathways",
+    link: "/contribute",
   },
   {
     title: "in_depth_knowledge",

@@ -31,7 +31,11 @@ const LandingFooter = ({ appConfig }) => {
           spacing={{ xs: 3, md: 8, lg: 15 }}
         >
           <Stack spacing={2}>
-            <Typography variant="h6">About Us</Typography>
+            <Link href="/about-us/mission-vision-strategy" passHref>
+              <Typography variant="h6" sx={{ cursor: "pointer" }}>
+                About Us
+              </Typography>
+            </Link>
 
             {aboutRoutes.map((route, i) => (
               <Link href={route.value} key={i} passHref>

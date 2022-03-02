@@ -82,9 +82,9 @@ const MobileMenuItems = ({
 
             {!!user ? (
               <>
-                <Link href={"/account"} passHref>
+                {/* <Link href={"/account"} passHref>
                   <MenuItem>{t("my_account")}</MenuItem>
-                </Link>
+                </Link> */}
 
                 <MenuItem onClick={signOut}>{t("logout")}</MenuItem>
               </>

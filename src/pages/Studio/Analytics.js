@@ -5,11 +5,11 @@ import { columns, rows } from "@pages/AboutUs/dummyData";
 import React from "react";
 
 const Analytics = () => {
+  return <Typography variant="h5">Coming Soon ...</Typography>;
+
   return (
     <Box>
       <Stack spacing={{ xs: 3, md: 5, lg: 7 }} sx={{ width: "100%" }}>
-        <Typography variant="h5">Coming Soon ...</Typography>
-
         {/* Stats */}
         <Box>
           <Grid container spacing={{ xs: 3, md: 5 }}>

@@ -60,7 +60,7 @@ const Section1 = () => {
               icon={<PlayArrowIcon fontSize="small" />}
               onClick={() => setDialogOpen(true)}
             >
-              {t("play video")}
+              {t("play_video")}
             </RoundedButton>
           </Stack>
         </Container>
