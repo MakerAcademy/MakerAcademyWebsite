@@ -15,7 +15,7 @@ const CreatorStudioNew = ({ user }) => {
   const handleSubmit = async (data) => {
     const { title, description, level, topic, subtopic, markdownValue } = data;
 
-    const res = await fetch("/api/documents", {
+    return await fetch("/api/documents", {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",

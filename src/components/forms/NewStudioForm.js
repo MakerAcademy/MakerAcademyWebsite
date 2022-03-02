@@ -3,7 +3,7 @@ import FormDraftField from "@components/FormComponents/FormDraft";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
@@ -12,6 +12,8 @@ const NewStudioForm = ({
   edit,
   values = {},
 }) => {
+  const [disabled, setDisabled] = useState(false);
+
   // form validation rules
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Required"),
@@ -30,8 +32,8 @@ const NewStudioForm = ({
     useForm(formOptions);
 
   const onSubmit = (data, e) => {
+    setDisabled(true);
     propsHandleSubmit({ ...data });
-    reset(); // reset after form submit
   };
 
   const handleDraftChange = ({ editor, markdown, html }) => {
@@ -41,7 +43,13 @@ const NewStudioForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <FormTextField name="title" label="Title" control={control} fullWidth />
+        <FormTextField
+          name="title"
+          label="Title"
+          control={control}
+          fullWidth
+          disabled={disabled}
+        />
 
         <FormTextField
           name="description"
@@ -50,6 +58,7 @@ const NewStudioForm = ({
           fullWidth
           multiline
           rows={5}
+          disabled={disabled}
         />
 
         <Stack direction="row" spacing={2}>
@@ -58,6 +67,7 @@ const NewStudioForm = ({
             label="Level"
             control={control}
             fullWidth
+            disabled={disabled}
           />
 
           <FormTextField
@@ -65,6 +75,7 @@ const NewStudioForm = ({
             label="Topic"
             control={control}
             fullWidth
+            disabled={disabled}
           />
 
           <FormTextField
@@ -72,6 +83,7 @@ const NewStudioForm = ({
             label="Sub-topic"
             control={control}
             fullWidth
+            disabled={disabled}
           />
         </Stack>
 
@@ -84,7 +96,7 @@ const NewStudioForm = ({
         />
 
         <Stack alignItems="flex-end">
-          <RoundedButton type="submit">
+          <RoundedButton type="submit" disabled={disabled}>
             {edit ? "Edit Document" : "Create New Document"}
           </RoundedButton>
         </Stack>

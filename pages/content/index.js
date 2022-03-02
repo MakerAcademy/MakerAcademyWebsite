@@ -2,79 +2,96 @@ import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
-import { CONTENT_SORT_VALUES } from "@constants";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
 import clientPromise from "lib/db/connect";
 import { getContent } from "lib/db/content";
+import _ from "lodash";
 import useTranslation from "next-translate/useTranslation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+const searchData = (data, term) => {
+  const searchedArr = data.filter((item) => {
+    const _find = `${item.title}
+    ${item.topic}
+    ${item.subtopic}
+    ${item.level}
+    ${item.username}
+    ${item.description}`.toLowerCase();
+
+    const searchArr = term.toLowerCase().split(" ");
+
+    return searchArr.every((v) => _find.includes(v));
+  });
+
+  return searchedArr;
+};
+
+const sortData = (data, type) => {
+  let newData = [...data];
+
+  switch (type) {
+    case "oldest":
+      return _.orderBy(newData, ["timestamp"], ["asc"]);
+
+    case "newest":
+      return _.orderBy(newData, ["timestamp"], ["desc"]);
+
+    case "likes":
+      return _.orderBy(newData, ["likes"], ["desc"]);
+
+    case "viewed":
+      return _.orderBy(newData, ["views"], ["desc"]);
+
+    case "highest_reading_time":
+      return _.orderBy(newData, ["duration"], ["desc"]);
+
+    case "lowest_reading_time":
+      return _.orderBy(newData, ["duration"], ["asc"]);
+
+    default:
+      return _.orderBy(newData, ["timestamp"], ["desc"]);
+  }
+};
+
+const filterData = (data, filters) => {
+  console.log(data, filters);
+  
+  const newData = data.filter((i) => filters.some((e) => i[e.key] === e.value));
+
+  return newData;
+};
 
 const ContentPage = ({ content, tags }) => {
-  const [cards, setCards] = useState(content);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchFilters, setSearchFilters] = useState([]);
+  const initialContent = sortData(content, "newest");
+  const [data, setData] = useState(initialContent);
+  const [filteredData, setFilteredData] = useState(initialContent);
 
   const { t } = useTranslation("content");
 
-  const search = (q) => {
-    return cards.filter((c) => {
-      return Object.values(c)
-        .map((f) => {
-          if (typeof f === "string") {
-            return f.includes(q);
-          } else {
-            return false;
-          }
-        })
-        .includes(true);
-    });
+  const handleSearch = (term) => {
+    const searched = searchData(filteredData, term);
+    setFilteredData(searched);
   };
 
-  const handleSearch = (q, f) => {
-    setSearchQuery(q);
-    setSearchFilters(f);
-    if (q) {
-      const result = search(searchQuery);
-      console.log("result", result);
-      setCards(result);
-    } else {
-      setCards(content);
+  const handleAll = (term, sortType, filters) => {
+    let newData = data;
+
+    if (filters?.length) {
+      newData = filterData(newData, filters);
     }
+
+    if (term) {
+      newData = searchData(newData, term);
+    }
+
+    if (sortType) {
+      newData = sortData(newData, sortType);
+    }
+
+    setFilteredData(newData);
   };
 
-  const handleSort = (order) => {
-    const protocol = CONTENT_SORT_VALUES[order];
-    const stuff = cards.sort((a, b) => {
-      switch (protocol.category) {
-        case "likes":
-          return a.likes.length - b.likes.length;
-        case "duration":
-          if (protocol["value"] === 1) {
-            return parseInt(a.duration) - parseInt(b.duration);
-          } else {
-            return parseInt(b.duration) - parseInt(a.duration);
-          }
-        case "views":
-          return a.views - b.views;
-        default:
-          if (protocol["value"] === 1) {
-            if (a[protocol.category] > b[protocol.category]) {
-              return 1;
-            }
-            return -1;
-          } else {
-            if (a[protocol.category] < b[protocol.category]) {
-              return 1;
-            }
-            return -1;
-          }
-      }
-    });
-    setCards(stuff);
-  };
-
-  useEffect(() => {}, [cards]);
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
@@ -87,26 +104,34 @@ const ContentPage = ({ content, tags }) => {
         {/* Search */}
         <SearchFilterBar
           tags={tags}
-          parentCallback={handleSearch}
+          searchCallback={handleSearch}
+          // filtersCallback={handleFilter}
           withSort
           sortItems={CONTENT_SORT_ITEMS}
-          sortCallback={handleSort}
+          // sortCallback={handleSort}
           translateCategories
           dontTranslateSubCategoriesOf={["author_id"]}
           inputPlaceholder={t("search_bar")}
+          changeCallback={handleAll}
         />
+
         {/* Content */}
         <Box sx={{ width: "100%" }}>
           <Grid
             container
             sx={{ pb: 2 }}
-            justifyContent="center"
+            // justifyContent="center"
             alignItems="center"
             spacing={4}
           >
             {/* Cards */}
-            {cards.length > 0
-              ? cards.map((item, i) => (
+            {filteredData.map((item, i) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                <ContentCard {...item} />
+              </Grid>
+            ))}
+            {/* {filteredData.length > 0
+              ? filteredData.map((item, i) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
                     <ContentCard {...item} />
                   </Grid>
@@ -115,7 +140,7 @@ const ContentPage = ({ content, tags }) => {
                   <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
                     <ContentCard {...item} />
                   </Grid>
-                ))}
+                ))} */}
           </Grid>
         </Box>
       </Stack>
