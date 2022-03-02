@@ -11,6 +11,7 @@ async function handler(req, res) {
   const data = req.body;
 
   const { email, password, role } = data;
+  console.log(data);
 
   if (
     !email ||
