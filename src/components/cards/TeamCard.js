@@ -30,7 +30,9 @@ const TeamCard = ({
     <Card
       elevation={0}
       sx={{
+        mb: 2,
         maxWidth: 345,
+        height: "100%",
         width: "100%",
         border: `1px solid ${isDark ? grey[800] : grey[300]}`,
         "&:hover": {
@@ -45,6 +47,7 @@ const TeamCard = ({
         image={image}
         alt={name}
         sx={{
+          objectFit: "cover",
           height: 190,
           [theme.breakpoints.up("md")]: {
             height: 230,
@@ -54,6 +57,7 @@ const TeamCard = ({
           },
         }}
       />
+
       <CardContent>
         <Stack spacing={1.5}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -62,31 +66,39 @@ const TeamCard = ({
 
           <Typography variant="body2">{title}</Typography>
 
-          <Typography variant="body2" sx={{ fontWeight: 300 }}>
-            {description}
-          </Typography>
+          {description && (
+            <Typography variant="body2" sx={{ fontWeight: 300 }}>
+              {description}
+            </Typography>
+          )}
 
           <Stack spacing={1} direction="row">
-            <Link href="#">
-              <IconButton size="small">
-                <LinkedInIcon fontSize="small" sx={{ color: "#0072B1" }} />
-              </IconButton>
-            </Link>
+            {linkedIn && (
+              <Link href={linkedIn} target="_blank">
+                <IconButton size="small">
+                  <LinkedInIcon fontSize="small" sx={{ color: "#0072B1" }} />
+                </IconButton>
+              </Link>
+            )}
 
-            <Link href="#">
-              <IconButton size="small">
-                <TwitterIcon fontSize="small" sx={{ color: "#1DA1F2" }} />
-              </IconButton>
-            </Link>
+            {twitter && (
+              <Link href={twitter} target="_blank">
+                <IconButton size="small">
+                  <TwitterIcon fontSize="small" sx={{ color: "#1DA1F2" }} />
+                </IconButton>
+              </Link>
+            )}
 
-            <Link href="#">
-              <IconButton size="small">
-                <LanguageIcon
-                  fontSize="small"
-                  sx={{ color: theme.palette.primary.inverse }}
-                />
-              </IconButton>
-            </Link>
+            {website && (
+              <Link href={website} target="_blank">
+                <IconButton size="small">
+                  <LanguageIcon
+                    fontSize="small"
+                    sx={{ color: theme.palette.primary.inverse }}
+                  />
+                </IconButton>
+              </Link>
+            )}
           </Stack>
         </Stack>
       </CardContent>

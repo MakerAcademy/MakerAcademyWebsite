@@ -3,16 +3,30 @@ import withAppConfig from "@hoc/withAppConfig";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
-import Link from "next/link";
+import { Box, Stack, Typography, useTheme, Link } from "@mui/material";
 import { aboutRoutes } from "pages/about-us";
 import React from "react";
 
 const socials = [
-  { label: "Twitter", icon: TwitterIcon, link: "#", color: "#00acee" },
-  { label: "Youtube", icon: YouTubeIcon, link: "#", color: "#c4302b" },
-  { label: "LinkedIn", icon: LinkedInIcon, link: "#", color: "#1f8cbf" },
-  { label: "Discord", svg: DiscordIcon, link: "#" },
+  {
+    label: "Twitter",
+    icon: TwitterIcon,
+    link: "https://twitter.com/MakerDAO",
+    color: "#00acee",
+  },
+  {
+    label: "Youtube",
+    icon: YouTubeIcon,
+    link: "https://www.youtube.com/MakerDAO",
+    color: "#c4302b",
+  },
+  {
+    label: "LinkedIn",
+    icon: LinkedInIcon,
+    link: "https://www.linkedin.com/company/makerdao/mycompany/",
+    color: "#1f8cbf",
+  },
+  { label: "Discord", svg: DiscordIcon, link: "https://discord.gg/FTwZQJkbZr" },
 ];
 
 const LandingFooter = ({ appConfig }) => {
@@ -31,14 +45,23 @@ const LandingFooter = ({ appConfig }) => {
           spacing={{ xs: 3, md: 8, lg: 15 }}
         >
           <Stack spacing={2}>
-            <Link href="/about-us/mission-vision-strategy" passHref>
+            <Link
+              href="/about-us/mission-vision-strategy"
+              color="inherit"
+              underline="none"
+            >
               <Typography variant="h6" sx={{ cursor: "pointer" }}>
                 About Us
               </Typography>
             </Link>
 
             {aboutRoutes.map((route, i) => (
-              <Link href={route.value} key={i} passHref>
+              <Link
+                href={route.value}
+                key={i}
+                color="inherit"
+                underline="hover"
+              >
                 <Typography
                   sx={{
                     cursor: "pointer",
@@ -55,16 +78,14 @@ const LandingFooter = ({ appConfig }) => {
             <Typography variant="h6">Socials</Typography>
 
             {socials.map((item, i) => (
-              <Link href={item.link} key={i} passHref>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={0.5}
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": { textDecoration: "underline" },
-                  }}
-                >
+              <Link
+                href={item.link}
+                target="_blank"
+                key={i}
+                color="inherit"
+                underline="hover"
+              >
+                <Stack direction="row" alignItems="center" spacing={0.5}>
                   <>
                     {item.icon && <item.icon sx={{ color: item.color }} />}
 

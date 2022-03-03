@@ -1,30 +1,41 @@
+import Salman from "@assets/images/team/salman.jpg";
+import Raj from "@assets/images/team/raj.jpg";
+
 // Team
 export const TEAM = [
   {
     image: "https://i.ibb.co/4m90nLX/image.png",
     name: "Colby Anderson",
     title: "Facilitator",
-    description: "A few lines description here",
-    linkedIn: "",
+    // description: "A few lines description here",
+    linkedIn: "https://www.linkedin.com/in/colby-anderson-644997203/",
     twitter: "",
-    website: "",
+    website: "https://forum.makerdao.com/u/colby/summary",
   },
   {
     image: "https://i.ibb.co/fCJG2D1/image.png",
     name: "Zach Huang",
     title: "Project Manager",
-    description: "A few lines description here",
-    linkedIn: "",
-    twitter: "",
-    website: "",
+    // description: "A few lines description here",
+    linkedIn: "https://www.makerdao.com/",
+    twitter: "https://www.makerdao.com/",
+    website: "https://www.makerdao.com/",
   },
   {
-    image: "https://i.ibb.co/vjZTjWb/image.png",
+    image: Salman,
     name: "Salman Fazal",
     title: "Frontend Engineer",
-    description: "A few lines description here",
+    // description: "A few lines description here",
+    linkedIn: "https://www.linkedin.com/in/salmanfazal/",
+    website: "https://www.salmans.work/",
+  },
+  {
+    image: Raj,
+    name: "Raj",
+    title: "Title here",
+    // description: "A few lines description here",
     linkedIn: "",
-    twitter: "",
+    twitter: "https://twitter.com/rajmitra17",
     website: "",
   },
 ];
