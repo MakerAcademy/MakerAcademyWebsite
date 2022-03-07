@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import AboutSidebar from "@components/sidebars/AboutSidebar";
+import Sidebar from "@components/sidebars/Sidebar";
 import { withProtectedUser } from "@hoc/routes";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -23,17 +23,17 @@ import React, { useEffect, useState } from "react";
 
 const studioRoutes = [
   {
-    name: "creator_studio_dashboard",
+    label: "creator_studio_dashboard",
     value: "/studio",
     icon: DashboardIcon,
   },
   {
-    name: "creator_studio_content",
+    label: "creator_studio_content",
     value: "/studio/content",
     icon: VideoLibraryIcon,
   },
   {
-    name: "creator_studio_analytics",
+    label: "creator_studio_analytics",
     value: "/studio/analytics",
     icon: AnalyticsIcon,
   },
@@ -70,10 +70,12 @@ const CreatorStudio = (props) => {
       <Stack spacing={3}>
         <Stack direction="row" spacing={1} alignItems="center">
           <Hidden mdUp>
-            <AboutSidebar
+            <Sidebar
               menuItems={studioRoutes}
               page={page}
               setPage={setPage}
+              t={t}
+              title={t("creator_studio")}
             />
           </Hidden>
 
@@ -112,7 +114,7 @@ const CreatorStudio = (props) => {
             {studioRoutes.map((item, i) => (
               <Tab
                 key={i}
-                label={t(item.name)}
+                label={t(item.label)}
                 value={item.value}
                 sx={{
                   textTransform: "inherit",

@@ -1,6 +1,6 @@
 import PreviewDocument from "@components/documents/PreviewDocument";
 import React from "react";
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import { getDraft } from "../../../lib/db/document";
 
 const PreviewPage = (props) => {
@@ -13,7 +13,8 @@ const PreviewPage = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const doc = await getDraft(db, context.params.id);
   return {
     props: {

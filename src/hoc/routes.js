@@ -1,5 +1,4 @@
 import { getSession } from "next-auth/react";
-import { connectToDB } from "../../lib/db/connect";
 
 // Pass userdata to props if logged in
 export function withUser(gssp, { hideIfUserExists }) {

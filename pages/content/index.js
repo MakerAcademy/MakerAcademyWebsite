@@ -4,26 +4,99 @@ import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
 import { Box, Container, Grid, Stack } from "@mui/material";
-import { connectToDB } from "lib/db/connect";
-import {
-  getContent,
-  getContentSearchTags,
-  getCountEstimate,
-} from "lib/db/content";
+import clientPromise from "lib/db/connect";
+import { getContent } from "lib/db/content";
+import _ from "lodash";
 import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
-import { TAGS } from "src/constants/tags";
 
-const ContentPage = ({ limit, content, tags }) => {
-  const [cards, setCards] = useState(content);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchFilters, setSearchFilters] = useState([]);
+const searchData = (data, term) => {
+  const searchedArr = data.filter((item) => {
+    const _find = `${item.title}
+    ${item.topic}
+    ${item.subtopic}
+    ${item.level}
+    ${item.username}
+    ${item.description}`.toLowerCase();
+
+    const searchArr = term.toLowerCase().split(" ");
+
+    return searchArr.every((v) => _find.includes(v));
+  });
+
+  return searchedArr;
+};
+
+const sortData = (data, type) => {
+  let newData = [...data];
+
+  switch (type) {
+    case "oldest":
+      return _.orderBy(newData, ["timestamp"], ["asc"]);
+
+    case "newest":
+      return _.orderBy(newData, ["timestamp"], ["desc"]);
+
+    case "likes":
+      return _.orderBy(newData, ["likes"], ["desc"]);
+
+    case "viewed":
+      return _.orderBy(newData, ["views"], ["desc"]);
+
+    case "highest_reading_time":
+      return _.orderBy(newData, ["duration"], ["desc"]);
+
+    case "lowest_reading_time":
+      return _.orderBy(newData, ["duration"], ["asc"]);
+
+    default:
+      return _.orderBy(newData, ["timestamp"], ["desc"]);
+  }
+};
+
+const filterData = (data, filters) => {
+  const result = Object.keys(filters).reduce(
+    (acc, key) => {
+      const val = filters[key];
+
+      acc = acc.filter((i) => val.includes(i[key]));
+
+      return acc;
+    },
+    [...data]
+  );
+
+  return result;
+};
+
+const ContentPage = ({ content, tags }) => {
+  const initialContent = sortData(content, "newest");
+  const [data, setData] = useState(initialContent);
+  const [filteredData, setFilteredData] = useState(initialContent);
 
   const { t } = useTranslation("content");
 
-  const handleCallback = (q, f) => {
-    setSearchQuery(q);
-    setSearchFilters(f);
+  const handleSearch = (term) => {
+    const searched = searchData(filteredData, term);
+    setFilteredData(searched);
+  };
+
+  const handleAll = (term, sortType, filters) => {
+    let newData = data;
+
+    if (filters) {
+      newData = filterData(newData, filters);
+    }
+
+    if (term) {
+      newData = searchData(newData, term);
+    }
+
+    if (sortType) {
+      newData = sortData(newData, sortType);
+    }
+
+    setFilteredData(newData);
   };
 
   return (
@@ -38,25 +111,34 @@ const ContentPage = ({ limit, content, tags }) => {
         {/* Search */}
         <SearchFilterBar
           tags={tags}
-          parentCallback={handleCallback}
+          searchCallback={handleSearch}
+          // filtersCallback={handleFilter}
           withSort
           sortItems={CONTENT_SORT_ITEMS}
+          // sortCallback={handleSort}
           translateCategories
           dontTranslateSubCategoriesOf={["author_id"]}
           inputPlaceholder={t("search_bar")}
+          changeCallback={handleAll}
         />
+
         {/* Content */}
         <Box sx={{ width: "100%" }}>
           <Grid
             container
             sx={{ pb: 2 }}
-            justifyContent="center"
+            // justifyContent="center"
             alignItems="center"
             spacing={4}
           >
             {/* Cards */}
-            {cards.length > 0
-              ? cards.map((item, i) => (
+            {filteredData.map((item, i) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                <ContentCard {...item} />
+              </Grid>
+            ))}
+            {/* {filteredData.length > 0
+              ? filteredData.map((item, i) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
                     <ContentCard {...item} />
                   </Grid>
@@ -65,7 +147,7 @@ const ContentPage = ({ limit, content, tags }) => {
                   <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
                     <ContentCard {...item} />
                   </Grid>
-                ))}
+                ))} */}
           </Grid>
         </Box>
       </Stack>
@@ -74,15 +156,13 @@ const ContentPage = ({ limit, content, tags }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
-  const docs = await getContent(db);
-  const tags = await getContentSearchTags(db, TAGS);
-  const count = await getCountEstimate(db, "content");
+  const client = await clientPromise;
+  const db = client.db();
+  const data = await getContent(db);
   return {
     props: {
-      content: docs,
-      tags: tags,
-      limit: count,
+      content: data[0],
+      tags: data[1],
     },
   };
 }

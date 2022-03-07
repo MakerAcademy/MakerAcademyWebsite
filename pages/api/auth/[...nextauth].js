@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import GoogleProvider from "next-auth/providers/google";
 import { AuthenticateUser, getUserByEmail } from "../../../lib/db/user";
 
@@ -17,7 +17,8 @@ export default NextAuth({
       name: "Credentials",
       credentials: {},
       async authorize(credentials) {
-        const { db } = await connectToDB();
+        const client = await clientPromise;
+        const db = client.db();
         const authenticated = await AuthenticateUser(db, credentials);
         console.log("Authentication Status: ", authenticated);
         if (authenticated) {
@@ -36,10 +37,11 @@ export default NextAuth({
   pages: {
     signIn: "/sign-in",
   },
-  adapter: MongoDBAdapter(connectToDB().then((response) => response.dbClient)),
+  adapter: MongoDBAdapter(clientPromise),
   callbacks: {
     async session(session, token) {
-      const { db } = await connectToDB();
+      const client = await clientPromise;
+      const db = client.db();
 
       const email = session?.session?.user?.email;
 

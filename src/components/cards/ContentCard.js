@@ -31,7 +31,8 @@ const ContentCard = ({
   published,
   verification,
   views = 0,
-  likes = 0,
+  likes,
+  likes_count = 0,
 }) => {
   const theme = useTheme();
   const tags = [topic, subtopic, level];
@@ -47,6 +48,7 @@ const ContentCard = ({
       sx={{
         backgroundColor: "rgba(0,0,0,0.85)",
         color: theme.palette.primary.white,
+        mb: 0.5,
       }}
     />
   );
@@ -70,6 +72,7 @@ const ContentCard = ({
             alignItems="center"
             sx={{ position: "absolute", top: 8, left: 8 }}
             spacing={0.5}
+            flexWrap="wrap"
           >
             {tags.map((tag, i) => (
               <CustomChip text={tag} key={i} />
@@ -93,7 +96,7 @@ const ContentCard = ({
               right: 8,
             }}
           >
-            <CustomChip text={likes} Icon={FavoriteIcon} />
+            <CustomChip text={likes?.length || 0} Icon={FavoriteIcon} />
           </Box>
         </Box>
 

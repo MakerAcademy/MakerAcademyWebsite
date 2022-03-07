@@ -49,30 +49,22 @@ const SignUpForm = () => {
         <RegisterForm />
       </Box>
 
-      <Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>
-        Or
-      </Divider>
+      {/*<Divider variant="middle" sx={{ width: "100%", maxWidth: 410 }}>*/}
+      {/*  Or*/}
+      {/*</Divider>*/}
 
-      <Typography>Sign up using social networks</Typography>
+      {/*<Typography>Sign up using social networks</Typography>*/}
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        spacing={2.5}
-      >
-        <SocialButton color="#DF4D3B">
-          <GoogleIcon />
-        </SocialButton>
-
-        <SocialButton color="#1C9CEA">
-          <TwitterIcon />
-        </SocialButton>
-
-        <SocialButton color="#47546D">
-          <LinkedInIcon />
-        </SocialButton>
-      </Stack>
+      {/*<Stack*/}
+      {/*  direction="row"*/}
+      {/*  alignItems="center"*/}
+      {/*  justifyContent="center"*/}
+      {/*  spacing={2.5}*/}
+      {/*>*/}
+      {/*  <SocialButton color="#DF4D3B">*/}
+      {/*    <GoogleIcon />*/}
+      {/*  </SocialButton>*/}
+      {/*</Stack>*/}
     </Stack>
   );
 };

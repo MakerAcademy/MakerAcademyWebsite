@@ -1,4 +1,4 @@
-import AboutSidebar from "@components/sidebars/AboutSidebar";
+import Sidebar from "@components/sidebars/Sidebar";
 import {
   Box,
   Container,
@@ -72,10 +72,12 @@ const AboutUsPage = () => {
       <Stack spacing={3}>
         <Stack direction="row" spacing={1} alignItems="center">
           <Hidden mdUp>
-            <AboutSidebar
+            <Sidebar
               menuItems={aboutRoutes}
               page={page}
               setPage={setPage}
+              // t={t}
+              title={"About Us"}
             />
           </Hidden>
 

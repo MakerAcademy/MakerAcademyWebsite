@@ -1,9 +1,10 @@
-import { connectToDB } from "../../../lib/db/connect";
+import clientPromise from "../../../lib/db/connect";
 import { getContent } from "../../../lib/db/content";
 import validateJSON from "../../../lib/db/utils";
 
 export default async function handler(req, res) {
-  const {db} = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   switch (req.method) {
     case "GET":
       return await fetchMoreContent(req, res, db);
@@ -13,23 +14,23 @@ export default async function handler(req, res) {
 }
 
 async function fetchMoreContent(req, res, db) {
-  const body = req.body
-  const expectedFields = ['filters','lastItemTime']
+  const body = req.body;
+  const expectedFields = ["filters", "lastItemTime"];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
   }
-  let filters = {}
-  const f = body.filters
+  let filters = {};
+  const f = body.filters;
   if (f.length > 0) {
     filters = {
-      $and: f.map((f) => f.value)
-    }
+      $and: f.map((f) => f.value),
+    };
   }
   try {
     const content = await getContent(db, filters, body.lastItemTime);
     return res.status(200).json({
       message: content,
-      success: true
+      success: true,
     });
   } catch (err) {
     console.log(err);

@@ -10,12 +10,12 @@ import {
   Grid,
   Paper,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { connectToDB } from "../../../../../lib/db/connect";
+import clientPromise from "../../../../../lib/db/connect";
 import { getOneCourse } from "../../../../../lib/db/course";
 
 const CoursePage = ({ course, topic, subtopic, title }) => {
@@ -128,7 +128,8 @@ const CoursePage = ({ course, topic, subtopic, title }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const course = await getOneCourse(db, context.params.courseId);
   const c = course[0];
   // console.log(course);

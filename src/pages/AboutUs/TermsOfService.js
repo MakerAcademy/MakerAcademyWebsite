@@ -1,7 +1,7 @@
 import React from "react";
 
 const TermsOfService = () => {
-  return <div>Terms Of Service Content</div>;
+  return <div>Coming Soon</div>;
 };
 
 export default TermsOfService;

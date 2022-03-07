@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { connectToDB } from "../../../lib/db/connect";
+import React, { useState } from "react";
+import clientPromise from "../../../lib/db/connect";
 import { getOneCourse } from "../../../lib/db/course";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -171,7 +171,8 @@ const CoursePage = ({
 };
 
 export async function getServerSideProps(context) {
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const course = await getOneCourse(db, context.params.courseId);
 
   if (!course) return { props: {} };

@@ -1,1 +1,1 @@
-export const TAGS = ["topic", "subtopic", "level", "author_id"];
+export const TAGS = ["topic", "subtopic", "level"];

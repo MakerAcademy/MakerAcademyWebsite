@@ -1,79 +1,64 @@
 import Sidebar from "@components/sidebars/Sidebar";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Hidden,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { grey } from "@mui/material/colors";
 import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const SIDEBAR_ITEMS = [
+export const routes = [
   {
-    name: "contributor_dashboard",
-    link: "/contribute",
-    shallow: true,
+    label: "contributor_dashboard",
+    value: "/contribute",
   },
   {
-    name: "contributor_directory",
-    link: "/contribute/directory",
-    shallow: true,
+    label: "contributor_directory",
+    value: "/contribute/directory",
   },
   {
-    name: "contributor_pipelines",
-    link: "/contribute/pipeline",
-    disableButton: true,
-    nestedItems: [
-      {
-        name: "grants_research",
-        link: "/contribute/pipeline/grants-research",
-        shallow: true,
-      },
-      {
-        name: "bug_bounties",
-        link: "/contribute/pipeline/bug-bounties",
-        shallow: true,
-      },
-      {
-        name: "core_unit_incubation",
-        link: "/contribute/pipeline/core-unit-incubation",
-        shallow: true,
-      },
-      {
-        name: "education",
-        link: "/contribute/pipeline/education",
-        shallow: true,
-      },
-      {
-        name: "onboarding",
-        link: "/contribute/pipeline/onboarding",
-        shallow: true,
-      },
-      {
-        name: "enterprise_integration",
-        link: "/contribute/pipeline/enterprise-integration",
-        shallow: true,
-      },
-    ],
+    label: "grants_research",
+    value: "/contribute/pipeline/grants-research",
+  },
+  {
+    label: "bug_bounties",
+    value: "/contribute/pipeline/bug-bounties",
+  },
+  {
+    label: "core_unit_incubation",
+    value: "/contribute/pipeline/core-unit-incubation",
+  },
+  {
+    label: "education",
+    value: "/contribute/pipeline/education",
+  },
+  {
+    label: "onboarding",
+    value: "/contribute/pipeline/onboarding",
+  },
+  {
+    label: "enterprise_integration",
+    value: "/contribute/pipeline/enterprise-integration",
   },
 ];
-
-const getTitle = (type, subType, asPath) => {
-  const _default = "contributor_dashboard";
-
-  if (subType) {
-    const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
-    const subItem = item?.nestedItems?.find((i) => i.link === asPath);
-    return subItem.name || _default;
-  } else if (type && !subType) {
-    const item = SIDEBAR_ITEMS.find((i) => i.link === `/contribute/${type}`);
-    return item.name || _default;
-  }
-  return _default;
-};
 
 const PageRenderer = ({ type, ...other }) => {
   const page = {
     "/contribute": dynamic(() => import("@pages/Contribute/Dashboard")),
     "/contribute/directory": dynamic(() =>
       import("@pages/Contribute/Directory")
+    ),
+    "/contribute/pipeline": dynamic(() =>
+      import("@pages/Contribute/GrantsResearch")
     ),
     "/contribute/pipeline/grants-research": dynamic(() =>
       import("@pages/Contribute/GrantsResearch")
@@ -85,7 +70,7 @@ const PageRenderer = ({ type, ...other }) => {
       import("@pages/Contribute/CoreUnitIncubation")
     ),
     "/contribute/pipeline/education": dynamic(() =>
-      import("@pages/Contribute/Education")
+      import("@pages/Contribute/Directory")
     ),
     "/contribute/pipeline/onboarding": dynamic(() =>
       import("@pages/Contribute/OnBoarding")
@@ -95,45 +80,84 @@ const PageRenderer = ({ type, ...other }) => {
     ),
   };
 
-  if (page[type]) {
-    const RenderedPage = page[type];
-    return <RenderedPage {...other} />;
-  }
+  const RenderedPage = page[type];
 
-  return <div>Not found</div>;
+  return <RenderedPage {...other} />;
 };
 
 const ContributePage = () => {
-  const { asPath, query } = useRouter();
-  const [url, setUrl] = useState(asPath);
-  const [title, setTitle] = useState("contributor_dashboard");
-
-  const { type, subType } = query;
+  const router = useRouter();
 
   const { t } = useTranslation("contribute");
 
+  const [page, setPage] = useState(router.asPath);
+
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   useEffect(() => {
-    setTitle(getTitle(type, subType, asPath));
-    setUrl(asPath);
-  }, [asPath]);
+    router.push(page, undefined, { shallow: true });
+  }, [page]);
 
   return (
-    <Box>
-      <Stack sx={{ py: 5, px: { xs: 2, md: 5 } }} spacing={2}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Sidebar title="contributor" intlNames items={SIDEBAR_ITEMS} />
-          <Typography variant="h4">Contribute</Typography>
+    <Container sx={{ py: { xs: 3, md: 8 } }} maxWidth="xl">
+      <Stack spacing={3}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Hidden mdUp>
+            <Sidebar
+              menuItems={routes}
+              page={page}
+              setPage={setPage}
+              t={t}
+              title={"Contribute"}
+            />
+          </Hidden>
+
+          <Typography
+            sx={{
+              fontSize: 20,
+              fontWeight: 600,
+              [theme.breakpoints.up("md")]: {
+                fontSize: 30,
+                fontWeight: 600,
+                ml: 2,
+              },
+            }}
+          >
+            Contribute
+            {/* {t("contribute")} */}
+          </Typography>
         </Stack>
 
-        <Typography variant="h6">{t(title)}</Typography>
+        <Hidden mdDown>
+          <Tabs
+            value={page}
+            onChange={(e, v) => setPage(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            {routes.map((item, i) => (
+              <Tab
+                key={i}
+                label={t(item.label)}
+                value={item.value}
+                sx={{
+                  textTransform: "inherit",
+                  color: isDark ? grey[300] : grey[500],
+                }}
+              />
+            ))}
+          </Tabs>
+        </Hidden>
+
+        <Divider />
+
+        <Box sx={{ minHeight: "50vh" }}>
+          Coming Soon
+          {/* <PageRenderer type={page} /> */}
+        </Box>
       </Stack>
-
-      <Divider />
-
-      <Box sx={{ minHeight: "50vh", py: 3, px: { xs: 3, md: 5 } }}>
-        <PageRenderer type={url} />
-      </Box>
-    </Box>
+    </Container>
   );
 };
 

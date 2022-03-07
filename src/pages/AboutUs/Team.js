@@ -16,7 +16,7 @@ const Team = () => {
 
       <Grid container spacing={2} justifyContent="center">
         {TEAM.map((member, i) => (
-          <Grid item xs={12} md={4} key={i}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
             <Stack alignItems="center">
               <TeamCard {...member} />
             </Stack>

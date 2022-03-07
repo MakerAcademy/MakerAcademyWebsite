@@ -32,9 +32,16 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
+const parseFilters = (filters) => {
+  return filters.reduce((acc, { value: { category, subcategory } }) => {
+    if (typeof acc[category] === "undefined") acc[category] = [];
+    acc[category].push(subcategory);
+    return acc;
+  }, {});
+};
+
 const SearchFilterBar = ({
   tags,
-  parentCallback,
   withSort,
   sortItems = [],
   translateChips,
@@ -42,9 +49,12 @@ const SearchFilterBar = ({
   translateSubCategories,
   dontTranslateSubCategoriesOf = [],
   theme,
+  sortCallback,
   t,
+  changeCallback,
   inputPlaceholder = "Search Content",
 }) => {
+  const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState(sortItems[0]);
   const [filters, setFilters] = useState(tags);
   const [filteredFilters, setFilteredFilters] = useState([]);
@@ -55,6 +65,13 @@ const SearchFilterBar = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const filterOpen = Boolean(anchorEl);
+
+  const hasAnyOptionSet =
+    !!searchTerm || !!selectedFilters.length || sortBy !== sortItems[0];
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   // Filter Search term inside filter menu
   useEffect(() => {
@@ -99,10 +116,6 @@ const SearchFilterBar = ({
     } else {
       setSelectedFilters((old) => [...old, item]);
     }
-  };
-
-  const triggerSearch = () => {
-    parentCallback?.(searchTerm, selectedFilters);
   };
 
   const FilterMenuList = () => (
@@ -264,6 +277,21 @@ const SearchFilterBar = ({
     </Popper>
   );
 
+  const triggerSearch = (e) => {
+    e.preventDefault();
+    const _filters = parseFilters(selectedFilters);
+
+    changeCallback?.(searchTerm, sortBy, _filters);
+  };
+
+  useEffect(() => {
+    const _filters = parseFilters(selectedFilters);
+
+    if (!loading) {
+      changeCallback?.(searchTerm, sortBy, _filters);
+    }
+  }, [sortBy, selectedFilters]);
+
   return (
     <React.Fragment>
       <Paper
@@ -276,6 +304,7 @@ const SearchFilterBar = ({
           border: `1px solid ${theme.palette.primary.main}80`,
           borderRadius: "10px",
         }}
+        onSubmit={triggerSearch}
       >
         <Box
           sx={{
@@ -342,12 +371,16 @@ const SearchFilterBar = ({
             borderBottomRightRadius: "10px",
           }}
         >
-          <IconButton
-            sx={{ p: "10px", color: theme.palette.primary.white }}
-            onClick={triggerSearch}
+          <Button
+            sx={{
+              p: "10px",
+              color: theme.palette.primary.white,
+              minWidth: 0,
+            }}
+            type="submit"
           >
             <SearchIcon />
-          </IconButton>
+          </Button>
         </Box>
       </Paper>
 

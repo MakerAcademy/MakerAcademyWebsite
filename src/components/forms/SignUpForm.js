@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormTextField from "@components/formComponents/FormTextField";
+import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Stack,
@@ -74,20 +74,20 @@ const SignUpForm = () => {
         spacing={3}
         sx={{ width: "100%" }}
       >
-        <Typography>Join Maker Academy as a</Typography>
+        {/*<Typography>Join Maker Academy as a</Typography>*/}
 
-        <ToggleButtonGroup
-          color="primary"
-          value={type}
-          exclusive
-          onChange={handleTypeChange}
-          fullWidth
-          sx={{ maxWidth: 450 }}
-        >
-          <ToggleButton value="learner">Learner</ToggleButton>
-          <ToggleButton value="educator">Educator</ToggleButton>
-          <ToggleButton value="contributor">Contributor</ToggleButton>
-        </ToggleButtonGroup>
+        {/*<ToggleButtonGroup*/}
+        {/*  color="primary"*/}
+        {/*  value={type}*/}
+        {/*  exclusive*/}
+        {/*  onChange={handleTypeChange}*/}
+        {/*  fullWidth*/}
+        {/*  sx={{ maxWidth: 450 }}*/}
+        {/*>*/}
+        {/*  <ToggleButton value="learner">Learner</ToggleButton>*/}
+        {/*  <ToggleButton value="educator">Educator</ToggleButton>*/}
+        {/*  <ToggleButton value="contributor">Contributor</ToggleButton>*/}
+        {/*</ToggleButtonGroup>*/}
 
         <FormTextField
           name="email"

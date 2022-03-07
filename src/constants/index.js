@@ -5,12 +5,19 @@ export const NAVBAR_HEIGHT_MOBILE = 80;
 export const SIDE_NAV_BAR_DRAWER_WIDTH = 280;
 
 export const CONTENT_SORT_ITEMS = [
-  "recommended",
   "newest",
   "oldest",
   "likes",
   "viewed",
   "highest_reading_time",
   "lowest_reading_time",
-  "difficulty",
 ];
+
+export const CONTENT_SORT_VALUES = {
+  newest: { category: "timestamp", value: "-1" },
+  oldest: { category: "timestamp", value: "1" },
+  likes: { category: "likes", value: "-1" },
+  viewed: { category: "views", value: "-1" },
+  highest_reading_time: { category: "duration", value: "-1" },
+  lowest_reading_time: { category: "duration", value: "1" },
+};

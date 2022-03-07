@@ -1,6 +1,6 @@
 import BasicDocument from "@components/documents/BasicDocument";
 import React from "react";
-import { connectToDB } from "../../lib/db/connect";
+import clientPromise from "../../lib/db/connect";
 import { getOneDocument, incrementDocViews } from "../../lib/db/document";
 
 const DocumentPage = (props) => {
@@ -16,7 +16,8 @@ const DocumentPage = (props) => {
 export async function getServerSideProps(context) {
   const docId = context.params.docId;
 
-  const { db } = await connectToDB();
+  const client = await clientPromise;
+  const db = client.db();
   const doc = await getOneDocument(db, docId);
   const result = await incrementDocViews(db, docId);
 

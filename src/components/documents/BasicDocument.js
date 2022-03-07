@@ -6,7 +6,7 @@ import {
   Box,
   Container,
   Divider,
-  IconButton,
+  Button,
   Stack,
   Typography,
 } from "@mui/material";
@@ -43,7 +43,7 @@ const BasicDocument = ({ data = {}, user }) => {
 
   const uid = user?._id;
 
-  const {
+  var {
     _id,
     title,
     username,
@@ -57,7 +57,7 @@ const BasicDocument = ({ data = {}, user }) => {
   } = document;
 
   // Edit Button condition here
-  const showEditBtn = !!user?.email; //&& user?._id === author;
+  const isLoggedIn = !!user?.email; //&& user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -83,6 +83,8 @@ const BasicDocument = ({ data = {}, user }) => {
   }, [likes, uid]);
 
   const triggerLike = async () => {
+    if (!isLoggedIn) return null;
+
     const res = await fetch(
       `/api/documents?_id=${_id}&uid=${uid}&like=${!liked}`,
       {
@@ -122,7 +124,7 @@ const BasicDocument = ({ data = {}, user }) => {
                 {title}
               </ResponsiveText>
 
-              {showEditBtn && (
+              {isLoggedIn && (
                 <RoundedButton
                   icon={<EditIcon fontSize="small" />}
                   href={`/studio/edit/${_id}`}
@@ -174,14 +176,19 @@ const BasicDocument = ({ data = {}, user }) => {
               </Stack>
 
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <IconButton size="small" onClick={triggerLike}>
+                <Button
+                  size="small"
+                  onClick={triggerLike}
+                  disabled={!isLoggedIn}
+                  sx={(theme) => ({ color: theme.palette.primary.inverse })}
+                >
                   {liked ? (
-                    <FavoriteIcon fontSize="small" />
+                    <FavoriteIcon fontSize="small" sx={{ mr: 0.7 }} />
                   ) : (
-                    <FavoriteBorderIcon fontSize="small" />
+                    <FavoriteBorderIcon fontSize="small" sx={{ mr: 0.7 }} />
                   )}
-                </IconButton>
-                <Typography>Likes: {likes_count}</Typography>
+                  Likes: {likes_count}
+                </Button>
               </Stack>
             </Stack>
 
