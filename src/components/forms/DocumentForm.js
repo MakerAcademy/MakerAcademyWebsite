@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
-const NewStudioForm = ({
+const DocumentForm = ({
   handleSubmit: propsHandleSubmit,
   edit,
   values = {},
@@ -105,4 +105,4 @@ const NewStudioForm = ({
   );
 };
 
-export default NewStudioForm;
+export default DocumentForm;

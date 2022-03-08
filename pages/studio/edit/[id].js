@@ -68,8 +68,8 @@ const CreatorStudioEdit = (props) => {
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
   }
 
-  const NewStudioForm = dynamic(() =>
-    import("@components/forms/NewStudioForm")
+  const DocumentForm = dynamic(() =>
+    import("@components/forms/DocumentForm")
   );
 
   return (
@@ -80,7 +80,7 @@ const CreatorStudioEdit = (props) => {
         <Typography variant="h6">Edit Document</Typography>
       </Stack>
 
-      <NewStudioForm
+      <DocumentForm
         handleSubmit={handleSubmit}
         edit
         values={{ ...(data || {}), markdown: data?.body }}

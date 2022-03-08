@@ -49,7 +49,6 @@ const SearchFilterBar = ({
   translateSubCategories,
   dontTranslateSubCategoriesOf = [],
   theme,
-  sortCallback,
   t,
   changeCallback,
   inputPlaceholder = "Search Content",
@@ -66,9 +65,6 @@ const SearchFilterBar = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const filterOpen = Boolean(anchorEl);
 
-  const hasAnyOptionSet =
-    !!searchTerm || !!selectedFilters.length || sortBy !== sortItems[0];
-
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -81,11 +77,11 @@ const SearchFilterBar = ({
           ...acc,
           {
             ...item,
-            subCategories: item.subCategories.filter((subItem) =>
-              subItem.value
-                .toLowerCase()
-                ?.includes(_filterSearchTerm.toLowerCase())
-            ),
+            subCategories: item.subCategories.filter((subItem) => {
+              return subItem?.value?.subcategory
+                ?.toLowerCase?.()
+                ?.includes?.(_filterSearchTerm?.toLowerCase?.());
+            }),
           },
         ];
       }, []);
@@ -208,6 +204,7 @@ const SearchFilterBar = ({
                             handleFilterItemClick({
                               ...subItem,
                               dontTranslate:
+                                dontTranslateSubCategoriesOf.includes("ALL") ||
                                 dontTranslateSubCategoriesOf.includes(
                                   item.category
                                 ),
@@ -227,9 +224,10 @@ const SearchFilterBar = ({
                           <ListItemText
                             primary={
                               translateSubCategories &&
-                              !dontTranslateSubCategoriesOf.includes(
-                                item.category
-                              )
+                              (!dontTranslateSubCategoriesOf.includes("ALL") ||
+                                !dontTranslateSubCategoriesOf.includes(
+                                  item.category
+                                ))
                                 ? t(`filter_${subItem.label}`)
                                 : subItem.label
                             }
@@ -352,7 +350,7 @@ const SearchFilterBar = ({
                 )}
               </Button>
 
-              {<FilterMenuList />}
+              {FilterMenuList()}
             </Box>
           </ClickAwayListener>
         </Box>
