@@ -84,6 +84,16 @@ export const lightTheme = createTheme({
     },
   },
   components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          fontWeight: 400,
+          "&::-webkit-input-placeholder": {
+            color: "#000",
+          },
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {

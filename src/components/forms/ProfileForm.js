@@ -2,14 +2,26 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import PreviewProfileCard from "@components/cards/PreviewProfileCard";
 import FormDropzone from "@components/FormComponents/FormDropzone";
 import FormTextField from "@components/FormComponents/FormTextField";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
+import * as Yup from "yup";
 
-const ProfileForm = () => {
+const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
   const theme = useTheme();
 
-  const hookForm = useForm();
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Required"),
+  });
+
+  const formOptions = {
+    resolver: yupResolver(validationSchema),
+    defaultValues: values,
+  };
+
+  const hookForm = useForm(formOptions);
   const { handleSubmit, reset, control, getValues } = hookForm;
 
   const _image = useWatch({ control, name: "image" });
@@ -27,8 +39,9 @@ const ProfileForm = () => {
   );
 
   const onSubmit = (data, e) => {
-    reset(); // reset after form submit
+    // reset(); // reset after form submit
     console.log(data);
+    propsHandleSubmit({ ...data });
   };
 
   return (

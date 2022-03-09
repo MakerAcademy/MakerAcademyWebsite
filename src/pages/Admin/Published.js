@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import {
   buildPublishedColumns,
@@ -9,6 +9,7 @@ import {
 } from "./helperFunctions";
 
 const Published = () => {
+  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
 
   const { t } = useTranslation("admin");
