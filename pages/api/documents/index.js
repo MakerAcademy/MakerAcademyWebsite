@@ -21,6 +21,8 @@ export default async function handler(req, res) {
   const uid = req.query.uid;
   const like = req.query.like;
   const getSubmissions = req.query.getSubmissions === "true";
+  const getPublishedDocs = req.query.getPublishedDocs === "true";
+  const getPendingDocs = req.query.getPendingDocs === "true";
   const acceptSubmission = req.query.acceptSubmission === "true";
   const rejectSubmission = req.query.rejectSubmission === "true";
 
@@ -29,7 +31,11 @@ export default async function handler(req, res) {
 
   switch (req.method) {
     case "GET":
-      if (uid && getSubmissions) {
+      if (getPublishedDocs) {
+        return await fetchPublishedDocs(req, res, db);
+      } else if (getPendingDocs) {
+        return await fetchPendingDocs(req, res, db);
+      } else if (uid && getSubmissions) {
         return await fetchEditRequests(req, res, db, uid);
       } else if (_id) {
         return await fetchOneDoc(req, res, db, _id);
@@ -42,14 +48,42 @@ export default async function handler(req, res) {
       } else if (rejectSubmission === true) {
         return await rejectEditRequest(req, res, db);
       } else if (like === "true") {
-        console.log("Liking");
         return await likeDocument(req, res, db, _id, uid);
       } else if (like === "false") {
-        console.log("Unliking");
         return await unlikeDocument(req, res, db, _id, uid);
       } else {
         return await createOneDoc(req, res, db, _id);
       }
+  }
+}
+
+async function fetchPublishedDocs(req, res, db) {
+  try {
+    // TODO - get docs from backend
+    // const docs = await getUserDocuments(db, uid);
+
+    return res.status(200).json({
+      message: [],
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function fetchPendingDocs(req, res, db) {
+  try {
+    // TODO - get docs from backend
+    // const docs = await getUserDocuments(db, uid);
+
+    return res.status(200).json({
+      message: [],
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
   }
 }
 

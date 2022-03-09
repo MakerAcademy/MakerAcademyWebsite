@@ -1,10 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
-import { rows, columns } from "./dummyData";
+import useTranslation from "next-translate/useTranslation";
+import React, { useEffect, useState } from "react";
+import {
+  buildUserColumns,
+  buildUserRows,
+  fetchUserDocs,
+} from "./helperFunctions";
 
 const Users = () => {
+  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(50);
+
+  const { t } = useTranslation("admin");
+
+  useEffect(() => {
+    fetchUserDocs(setData);
+  }, []);
 
   return (
     <div>
@@ -14,8 +26,8 @@ const Users = () => {
 
       <Box>
         <DataGrid
-          rows={rows}
-          columns={columns}
+          rows={buildUserRows(data, t)}
+          columns={buildUserColumns(t)}
           pageSize={pageSize}
           autoHeight
           onPageSizeChange={(i) => setPageSize(i)}

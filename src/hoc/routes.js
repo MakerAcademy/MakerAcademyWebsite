@@ -1,7 +1,8 @@
 import { getSession } from "next-auth/react";
 
 // Pass userdata to props if logged in
-export function withUser(gssp, { hideIfUserExists }) {
+export function withUser(gssp, options = {}) {
+  const { hideIfUserExists } = options;
   return async (context) => {
     const { req, params } = context;
     const data = await getSession({ req });

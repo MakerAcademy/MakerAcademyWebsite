@@ -5,72 +5,88 @@ import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 // ----- Users -----
-export const columns = [
-  {
-    field: "thumbnail",
-    headerName: "",
-    align: "center",
-    width: 100,
-    renderCell: (params) => {
-      return <Avatar />;
-    },
-  },
-  // { field: "id", headerName: "ID", width: 70 },
-  { field: "name", headerName: "Name", width: 250 },
-  {
-    field: "email",
-    headerName: "Email",
-    // type: "date",
-    width: 150,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    // type: "date",
-    width: 250,
-  },
-  { field: "user_role", headerName: "User Role", width: 200 },
-  { field: "added", headerName: "Added", width: 200 },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 300,
-    renderCell: (params) => (
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {/* <RoundedButton
-          size="small"
-          variant="outlined"
-          href={`/studio/edit/${params.id}`}
-          icon={<EditIcon sx={{ fontSize: 16 }} />}
-        >
-          Edit
-        </RoundedButton> */}
+export const fetchUserDocs = async (callback) => {
+  const url = `/api/users?getAllUsers=true`;
 
-        <RoundedButton
-          size="small"
-          // href={`/account/profile/${params.id}`}
-          icon={<OpenInNewIcon sx={{ fontSize: 16 }} />}
-        >
-          Open
-        </RoundedButton>
-      </Stack>
-    ),
-  },
-];
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
 
-export const statuses = ["Admin", "MA Team", "User"];
+  callback?.(jsonData.message || []);
+};
 
-export const rows = Array(20)
-  .fill()
-  .map((_, i) => ({
-    id: i,
+export const buildUserRows = (data, t) => {
+  const statuses = ["Admin", "MA Team", "User"];
+
+  return data.map((item, i) => ({
+    id: item._id,
     name: `Name ${i}`,
-    email: "test@123.com",
+    email: item.email,
+    thumbnail: item.image,
     added: moment().format("LLL"),
     user_role: statuses[Math.floor(Math.random() * statuses.length)],
   }));
+};
+
+export const buildUserColumns = (t) => {
+  return [
+    {
+      field: "thumbnail",
+      headerName: "",
+      align: "center",
+      width: 100,
+      renderCell: (params) => {
+        return <Avatar />;
+      },
+    },
+    // { field: "id", headerName: "ID", width: 70 },
+    { field: "name", headerName: "Name", width: 250 },
+    {
+      field: "email",
+      headerName: "Email",
+      // type: "date",
+      width: 150,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      // type: "date",
+      width: 250,
+    },
+    { field: "user_role", headerName: "User Role", width: 200 },
+    { field: "added", headerName: "Added", width: 200 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 300,
+      renderCell: (params) => (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <RoundedButton
+            size="small"
+            href={`/account/${params.id}/profile`}
+            icon={<OpenInNewIcon sx={{ fontSize: 16 }} />}
+          >
+            Open
+          </RoundedButton>
+        </Stack>
+      ),
+    },
+  ];
+};
 
 // ----- PUBLISHED -----
+export const fetchPublishedDocs = async (callback) => {
+  const url = `/api/documents?getPublishedDocs=true`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  callback?.(jsonData.message || []);
+};
+
 export const buildPublishedColumns = (t) => {
   return [
     //   { field: "id", headerName: "ID", width: 70 },
@@ -156,4 +172,16 @@ export const buildPublishedRows = (data, t) => {
     views: item.views,
     likes: item.likes?.length || 0,
   }));
+};
+
+// Pending
+export const fetchPendingDocs = async (callback) => {
+  const url = `/api/documents?getPendingDocs=true`;
+
+  const res = await fetch(url, {
+    method: "GET",
+  });
+  const jsonData = await res.json();
+
+  callback?.(jsonData.message || []);
 };

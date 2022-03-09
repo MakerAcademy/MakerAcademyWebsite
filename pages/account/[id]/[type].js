@@ -8,9 +8,9 @@ import dynamic from "next/dynamic";
 
 const PageRenderer = ({ type, ...other }) => {
   const page = {
-    "/account": dynamic(() => import("@pages/Account/Profile")),
-    "/account/profile": dynamic(() => import("@pages/Account/Profile")),
-    "/account/auth": dynamic(() => import("@pages/Account/Auth")),
+    "": dynamic(() => import("@pages/Account/Profile")),
+    profile: dynamic(() => import("@pages/Account/Profile")),
+    auth: dynamic(() => import("@pages/Account/Auth")),
   };
 
   const RenderedPage = page[type];
@@ -20,6 +20,7 @@ const PageRenderer = ({ type, ...other }) => {
 
 const AccountPage = () => {
   const router = useRouter();
+  const type = router.query.type;
 
   const [page, setPage] = useState(router.asPath);
 
@@ -35,7 +36,7 @@ const AccountPage = () => {
         </Box>
 
         <Box sx={{ flex: 1 }}>
-          <PageRenderer type={page} />
+          <PageRenderer type={type} />
         </Box>
       </Stack>
     </Container>

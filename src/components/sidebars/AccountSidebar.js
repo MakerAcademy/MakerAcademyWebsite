@@ -26,13 +26,13 @@ const sidebarItems = [
     name: "Profile",
     value: "profile",
     icon: PersonOutlinedIcon,
-    href: "/account/profile",
+    href: "/account/{id}/profile",
   },
   {
     name: "Account",
     value: "auth",
     icon: SettingsOutlinedIcon,
-    href: "/account/auth",
+    href: "/account/{id}/auth",
   },
   { type: "divider" },
   {
@@ -53,7 +53,7 @@ const AccountSidebar = ({ setPage }) => {
   };
 
   const router = useRouter();
-  const { type } = router.query;
+  const { id, type } = router.query;
 
   const UserCard = () => (
     <Stack direction="row" alignItems="center" spacing={2.5} sx={{ px: 2 }}>
@@ -67,10 +67,14 @@ const AccountSidebar = ({ setPage }) => {
   );
 
   const handleClick = (url, differentPage) => {
+    const _url = url?.replaceAll(/\{(.+?)\}/g, function (_, _param) {
+      return router.query?.[_param] || "";
+    });
+
     if (differentPage) {
-      router.push(url);
+      router.push(_url);
     } else {
-      setPage(url);
+      setPage(_url);
     }
   };
 
