@@ -3,25 +3,39 @@ import AccountForm from "@components/forms/AccountForm";
 import ProfileForm from "@components/forms/ProfileForm";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const PageRenderer = ({ type, ...other }) => {
+  const page = {
+    "/account": dynamic(() => import("@pages/Account/Profile")),
+    "/account/profile": dynamic(() => import("@pages/Account/Profile")),
+    "/account/auth": dynamic(() => import("@pages/Account/Auth")),
+  };
+
+  const RenderedPage = page[type];
+
+  return <RenderedPage {...other} />;
+};
 
 const AccountPage = () => {
   const router = useRouter();
-  const { type } = router.query;
 
-  const NotFound = () => <Typography>Not Found</Typography>;
+  const [page, setPage] = useState(router.asPath);
 
-  const Form = FormRenderer[type] || NotFound;
+  useEffect(() => {
+    router.push(page, undefined, { shallow: true });
+  }, [page]);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="xl">
       <Stack direction="row" spacing={{ md: 6, lg: 10 }}>
         <Box>
-          <AccountSidebar />
+          <AccountSidebar setPage={setPage} />
         </Box>
 
         <Box sx={{ flex: 1 }}>
-          <Form />
+          <PageRenderer type={page} />
         </Box>
       </Stack>
     </Container>

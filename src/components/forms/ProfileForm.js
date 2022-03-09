@@ -4,13 +4,15 @@ import FormDropzone from "@components/FormComponents/FormDropzone";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 const ProfileForm = () => {
   const theme = useTheme();
 
   const hookForm = useForm();
   const { handleSubmit, reset, control, getValues } = hookForm;
+
+  const _image = useWatch({ control, name: "image" });
 
   const SectionTitle = ({ children }) => (
     <Typography sx={{ fontSize: 20, fontWeight: 500, mb: 2.5 }}>
@@ -37,7 +39,7 @@ const ProfileForm = () => {
           {/* Upload File */}
           <Box>
             <SectionTitle>Upload a Profile Picture</SectionTitle>
-            <FormDropzone name="image" control={control}>
+            <FormDropzone name="image" control={control} exists={!!_image}>
               <Stack
                 spacing={2}
                 direction="row"

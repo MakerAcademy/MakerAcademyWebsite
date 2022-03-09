@@ -44,7 +44,7 @@ const sidebarItems = [
   },
 ];
 
-const AccountSidebar = () => {
+const AccountSidebar = ({ setPage }) => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -67,7 +67,11 @@ const AccountSidebar = () => {
   );
 
   const handleClick = (url, differentPage) => {
-    router.push(url, undefined, { shallow: !differentPage });
+    if (differentPage) {
+      router.push(url);
+    } else {
+      setPage(url);
+    }
   };
 
   const SideMenu = () => (

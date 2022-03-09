@@ -4,8 +4,9 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Controller } from "react-hook-form";
 
-const Dropzone = ({ onChange, multiple, children, ...rest }) => {
+const Dropzone = ({ onChange, multiple, children, exists, ...rest }) => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -25,6 +26,7 @@ const Dropzone = ({ onChange, multiple, children, ...rest }) => {
         height: 100,
         borderRadius: "8px",
         p: 2,
+        backgroundColor: exists && (isDark ? "green" : "lime"),
       }}
     >
       <input {...getInputProps({ onChange })} />
