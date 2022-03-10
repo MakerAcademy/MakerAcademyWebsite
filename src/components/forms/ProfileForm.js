@@ -40,7 +40,6 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
 
   const onSubmit = (data, e) => {
     // reset(); // reset after form submit
-    console.log(data);
     propsHandleSubmit({ ...data });
   };
 

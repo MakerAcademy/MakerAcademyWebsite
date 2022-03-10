@@ -8,9 +8,19 @@ const DocumentPage = ({ doc }) => {
 };
 
 export async function getServerSideProps(context) {
+  const id = context.params.docId;
+
+  if (!id) {
+    return {
+      props: {
+        doc: [],
+      },
+    };
+  }
+
   const client = await clientPromise;
   const db = client.db();
-  const doc = await getOneDocument(db, context.params.docId);
+  const doc = await getOneDocument(db, id);
   return {
     props: {
       doc: doc,

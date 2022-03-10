@@ -14,12 +14,20 @@ const DocumentPage = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  const docId = context.params.docId;
+  const id = context.params.docId;
+
+  if (!id) {
+    return {
+      props: {
+        doc: [],
+      },
+    };
+  }
 
   const client = await clientPromise;
   const db = client.db();
-  const doc = await getOneDocument(db, docId);
-  const result = await incrementDocViews(db, docId);
+  const doc = await getOneDocument(db, id);
+  const result = await incrementDocViews(db, id);
 
   return {
     props: {

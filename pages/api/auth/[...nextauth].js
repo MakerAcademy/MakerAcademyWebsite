@@ -3,7 +3,11 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/db/connect";
 import GoogleProvider from "next-auth/providers/google";
-import { AuthenticateUser, getUserByEmail } from "../../../lib/db/user";
+import {
+  AuthenticateUser,
+  getUserByEmail,
+  getUserProfileById,
+} from "../../../lib/db/user";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -45,10 +49,14 @@ export default NextAuth({
 
       const email = session?.session?.user?.email;
 
-      // TODO - change to user_profile db instead of user db
       const userData = await getUserByEmail(db, email);
+      const profileData = await getUserProfileById(db, userData._id);
 
-      session.profile = { ...session.user, ...(userData || {}) };
+      session.profile = {
+        ...session.user,
+        ...(userData || {}),
+        ...(profileData || {}),
+      };
 
       return session;
     },

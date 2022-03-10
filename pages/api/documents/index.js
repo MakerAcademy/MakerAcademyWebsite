@@ -1,6 +1,7 @@
 import {
   acceptEdit,
   addToContentLikes,
+  getAdminContent,
   rejectEdit,
   removeFromContentLikes,
 } from "lib/db/content";
@@ -59,11 +60,10 @@ export default async function handler(req, res) {
 
 async function fetchPublishedDocs(req, res, db) {
   try {
-    // TODO - get docs from backend
-    // const docs = await getUserDocuments(db, uid);
+    const docs = await getAdminContent(db);
 
     return res.status(200).json({
-      message: [],
+      message: docs?.published || [],
       success: true,
     });
   } catch (err) {
@@ -74,11 +74,10 @@ async function fetchPublishedDocs(req, res, db) {
 
 async function fetchPendingDocs(req, res, db) {
   try {
-    // TODO - get docs from backend
-    // const docs = await getUserDocuments(db, uid);
+    const docs = await getAdminContent(db);
 
     return res.status(200).json({
-      message: [],
+      message: docs?.pending || [],
       success: true,
     });
   } catch (err) {
@@ -141,8 +140,7 @@ async function createOneDoc(req, res, db, _id) {
 
   body.author = ObjectId(body.author);
 
-  const isNewDoc = req.body.status === "published";
-  // TODO - complete logic for when its not a new doc
+  const isNewDoc = req.body.status === "pending";
 
   try {
     const documentStatus = await createDocument(db, body);

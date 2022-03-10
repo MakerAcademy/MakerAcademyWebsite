@@ -1,4 +1,4 @@
-import { withUser } from "@hoc/routes";
+import { withProtectedUser } from "@hoc/routes";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
@@ -12,6 +12,6 @@ const AccountPage = ({ user }) => {
   return <div></div>;
 };
 
-export const getServerSideProps = withUser();
+export const getServerSideProps = withProtectedUser();
 
 export default AccountPage;

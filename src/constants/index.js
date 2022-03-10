@@ -21,3 +21,9 @@ export const CONTENT_SORT_VALUES = {
   highest_reading_time: { category: "duration", value: "-1" },
   lowest_reading_time: { category: "duration", value: "1" },
 };
+
+export const TRUST_LEVELS = {
+  1: "user",
+  2: "internal",
+  3: "admin",
+};

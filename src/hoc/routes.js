@@ -15,22 +15,29 @@ export function withUser(gssp, options = {}) {
       };
     }
 
-    const gsspData = gssp ? await gssp(context) : { props: {} };
-
     const { session, profile } = data || {};
+
+    const userData = { ...(session?.user || {}), ...profile };
+
+    const gsspData = gssp ? await gssp(context, userData) : { props: {} };
+
+    if (gsspData.redirect) {
+      return gsspData;
+    }
 
     // Pass page-specific props along with user data from `withAuth` to component
     return {
       props: {
         ...gsspData.props,
-        user: { ...(session?.user || {}), ...profile },
+        user: userData,
       },
     };
   };
 }
 
 // Redirect to login if not authenticated
-export function withProtectedUser(gssp) {
+export function withProtectedUser(gssp, options = {}) {
+  const { trustLevel } = options;
   return async (context) => {
     const { req } = context;
     const data = await getSession({ req });
@@ -45,13 +52,27 @@ export function withProtectedUser(gssp) {
 
     const { session, profile } = data || {};
 
-    const gsspData = gssp ? await gssp(context) : { props: {} };
+    if (!!trustLevel && profile.trustLevel < trustLevel) {
+      return {
+        redirect: {
+          destination: "/",
+        },
+      };
+    }
+
+    const userData = { ...(session?.user || {}), ...profile };
+
+    const gsspData = gssp ? await gssp(context, userData) : { props: {} };
+
+    if (gsspData.redirect) {
+      return gsspData;
+    }
 
     // Pass page-specific props along with user data from `withAuth` to component
     return {
       props: {
         ...gsspData.props,
-        user: { ...(session?.user || {}), ...profile },
+        user: userData,
       },
     };
   };

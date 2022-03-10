@@ -32,13 +32,15 @@ const CreatorStudioNewDocument = ({ user }) => {
         body: markdownValue,
         thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
-        status: "published",
+        status: "pending",
       }),
     })
       .then((response) => {
         if (response.ok) return response.json();
       })
-      .then(({ _id }) => {
+      .then((response) => {
+        const { _id } = response;
+
         setSubmitted({
           type: "success",
           message:
@@ -59,9 +61,7 @@ const CreatorStudioNewDocument = ({ user }) => {
     }
   };
 
-  const DocumentForm = dynamic(() =>
-    import("@components/forms/DocumentForm")
-  );
+  const DocumentForm = dynamic(() => import("@components/forms/DocumentForm"));
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">

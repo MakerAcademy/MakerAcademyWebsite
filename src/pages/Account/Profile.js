@@ -9,7 +9,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
-  const _id = router.query.id;
+  const _id = router.query.uid;
 
   useEffect(() => {
     fetchUserProfile(_id, setData).then(() => {
@@ -25,9 +25,25 @@ const Profile = () => {
     return <Typography>User not found</Typography>;
   }
 
+  const handleSubmit = async (data) => {
+    // return console.log(data);
+
+    const res = await fetch(`/api/users?updateProfile=true&&_id=${_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+      }),
+    }).then((response) => {
+      if (response.ok) console.log("Updated");
+    });
+  };
+
   return (
     <div>
-      <ProfileForm values={data} />
+      <ProfileForm values={data} handleSubmit={handleSubmit} />
     </div>
   );
 };

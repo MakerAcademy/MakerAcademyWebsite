@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AdminPendingCard = (props) => {
-  const { _id, title, image, author, description } = props;
+  const { _id, title, thumbnail, author, description } = props;
 
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -60,14 +60,14 @@ const AdminPendingCard = (props) => {
 
           <Typography variant="body2">Author: {author}</Typography>
 
-          {image && (
+          {thumbnail && (
             <img
-              src={image}
+              src={thumbnail}
               style={{ height: "100%", width: "100%", objectFit: "cover" }}
             />
           )}
 
-          {description && !image && (
+          {description && !thumbnail && (
             <Typography variant="body2">{description}</Typography>
           )}
 

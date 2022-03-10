@@ -1,8 +1,4 @@
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import PersonOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import {
   Avatar,
   Box,
@@ -21,30 +17,7 @@ import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const sidebarItems = [
-  {
-    name: "Profile",
-    value: "profile",
-    icon: PersonOutlinedIcon,
-    href: "/account/{id}/profile",
-  },
-  {
-    name: "Account",
-    value: "auth",
-    icon: SettingsOutlinedIcon,
-    href: "/account/{id}/auth",
-  },
-  { type: "divider" },
-  {
-    name: "Creator Studio",
-    icon: MovieOutlinedIcon,
-    rightIcon: OpenInNewIcon,
-    href: "/studio",
-    differentPage: true,
-  },
-];
-
-const AccountSidebar = ({ setPage }) => {
+const AccountSidebar = ({ setPage, sidebarItems }) => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -88,16 +61,17 @@ const AccountSidebar = ({ setPage }) => {
 
       {sidebarItems.map((item, i) => {
         if (item.type === "divider") return <Divider key={i} />;
+        if (item.hidden) return null;
 
         const isSelected = item.value === type;
 
         return (
           <MenuItem
             key={i}
-            sx={{ py: 1.5 }}
             selected={isSelected}
             onClick={() => handleClick(item.href, !!item.differentPage)}
             sx={{
+              py: 1,
               borderLeft:
                 isSelected && `3px solid ${theme.palette.primary.main}`,
             }}
