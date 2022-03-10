@@ -49,7 +49,7 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
         {/* Form */}
         <Grid item xs={12} lg={8} xl={9}>
           {/* Upload File */}
-          <Box>
+          {/* <Box>
             <SectionTitle>Upload a Profile Picture</SectionTitle>
             <FormDropzone name="image" control={control} exists={!!_image}>
               <Stack
@@ -66,7 +66,7 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 <RoundedButton variant="outlined">Upload file</RoundedButton>
               </Stack>
             </FormDropzone>
-          </Box>
+          </Box> */}
 
           {/* Form */}
           <Grid
