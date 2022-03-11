@@ -3,6 +3,7 @@ import { Avatar, Box, Stack } from "@mui/material";
 import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { TRUST_LEVELS } from "@constants";
 
 // ----- Users -----
 export const fetchUserDocs = async (callback) => {
@@ -17,15 +18,13 @@ export const fetchUserDocs = async (callback) => {
 };
 
 export const buildUserRows = (data, t) => {
-  const statuses = ["Admin", "MA Team", "User"];
-
-  return data.map((item, i) => ({
+  return data.map((item) => ({
     id: item._id,
-    name: `Name ${i}`,
+    name: item.name,
     email: item.email,
     thumbnail: item.image,
     added: moment().format("LLL"),
-    user_role: statuses[Math.floor(Math.random() * statuses.length)],
+    user_role: t(TRUST_LEVELS[item.trustLevel || 1]),
   }));
 };
 

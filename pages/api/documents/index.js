@@ -1,8 +1,10 @@
 import {
   acceptEdit,
+  acceptPending,
   addToContentLikes,
   getAdminContent,
   rejectEdit,
+  rejectPending,
   removeFromContentLikes,
 } from "lib/db/content";
 import { ObjectId } from "mongodb";
@@ -26,6 +28,8 @@ export default async function handler(req, res) {
   const getPendingDocs = req.query.getPendingDocs === "true";
   const acceptSubmission = req.query.acceptSubmission === "true";
   const rejectSubmission = req.query.rejectSubmission === "true";
+  const acceptPendingDoc = req.query.acceptPendingDoc === "true";
+  const rejectPendingDoc = req.query.rejectPendingDoc === "true";
 
   const client = await clientPromise;
   const db = client.db();
@@ -44,9 +48,13 @@ export default async function handler(req, res) {
         return await fetchUserDocs(req, res, db, uid);
       }
     case "POST":
-      if (acceptSubmission === true) {
+      if (acceptPendingDoc) {
+        return await acceptPendingRequest(req, res, db, _id);
+      } else if (rejectPendingDoc) {
+        return await rejectPendingRequest(req, res, db, _id);
+      } else if (acceptSubmission) {
         return await acceptEditRequest(req, res, db);
-      } else if (rejectSubmission === true) {
+      } else if (rejectSubmission) {
         return await rejectEditRequest(req, res, db);
       } else if (like === "true") {
         return await likeDocument(req, res, db, _id, uid);
@@ -242,6 +250,40 @@ async function rejectEditRequest(req, res, db) {
     const docs = await rejectEdit(db, publishedId, draftId);
     return res.status(200).json({
       message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function acceptPendingRequest(req, res, db, _id) {
+  if (!_id) {
+    return res.status(400).end();
+  }
+
+  try {
+    const _res = await acceptPending(db, _id);
+    return res.status(200).json({
+      message: _res,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function rejectPendingRequest(req, res, db, _id) {
+  if (!_id) {
+    return res.status(400).end();
+  }
+
+  try {
+    const _res = await rejectPending(db, _id);
+    return res.status(200).json({
+      message: _res,
       success: true,
     });
   } catch (err) {
