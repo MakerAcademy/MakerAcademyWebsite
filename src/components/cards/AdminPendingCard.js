@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AdminPendingCard = (props) => {
-  const { published, title, thumbnail, username, description, body } = props;
+  const { _id, title, thumbnail, username, description, body } = props;
 
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -32,7 +32,7 @@ const AdminPendingCard = (props) => {
 
   const acceptDoc = async () => {
     const res = await fetch(
-      `/api/documents?acceptPendingDoc=true&&_id=${published}`,
+      `/api/documents?acceptPendingDoc=true&&_id=${_id}`,
       {
         method: "POST",
         headers: {
@@ -42,17 +42,16 @@ const AdminPendingCard = (props) => {
       }
     )
       .then((response) => {
-        console.log(response);
         if (response.ok) handleDialogClose();
       })
-      .then((response) => {
-        // window.location.reload();
+      .then(() => {
+        window.location.reload();
       });
   };
 
   const rejectDoc = async () => {
     const res = await fetch(
-      `/api/documents?rejectPendingDoc=true&&_id=${published}`,
+      `/api/documents?rejectPendingDoc=true&&_id=${_id}`,
       {
         method: "POST",
         headers: {

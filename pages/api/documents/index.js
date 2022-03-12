@@ -148,7 +148,7 @@ async function createOneDoc(req, res, db, _id) {
 
   body.author = ObjectId(body.author);
 
-  const isNewDoc = req.body.status === "pending";
+  const isNewDoc = req.body.status === "published";
 
   try {
     const documentStatus = await createDocument(db, body);
