@@ -2,16 +2,12 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import FormDraftField from "@components/FormComponents/FormDraft";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
-const NewStudioForm = ({
-  handleSubmit: propsHandleSubmit,
-  edit,
-  values = {},
-}) => {
+const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const [disabled, setDisabled] = useState(false);
 
   // form validation rules
@@ -38,6 +34,30 @@ const NewStudioForm = ({
 
   const handleDraftChange = ({ editor, markdown, html }) => {
     setValue("markdownValue", markdown);
+  };
+
+  const FormFieldArrayElements = ({ index, remove }) => {
+    return (
+      <Stack direction="row" spacing={2} alignItems="center">
+        <FormTextField
+          name={`courses[${index}].title`}
+          label="Title"
+          control={control}
+          fullWidth
+          disabled={disabled}
+        />
+
+        <FormTextField
+          name={`courses[${index}].video_url`}
+          label="Video Url"
+          control={control}
+          fullWidth
+          disabled={disabled}
+        />
+
+        <Button onClick={() => remove(index)}>Remove</Button>
+      </Stack>
+    );
   };
 
   return (
@@ -95,6 +115,14 @@ const NewStudioForm = ({
           value={values?.markdown}
         />
 
+        {/* Example of using field arrays */}
+        {/* <FormFieldArray
+          control={control}
+          label="Courses"
+          name="courses"
+          Elements={FormFieldArrayElements}
+        /> */}
+
         <Stack alignItems="flex-end">
           <RoundedButton type="submit" disabled={disabled}>
             {edit ? "Edit Document" : "Create New Document"}
@@ -105,4 +133,4 @@ const NewStudioForm = ({
   );
 };
 
-export default NewStudioForm;
+export default CourseForm;

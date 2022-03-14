@@ -2,16 +2,16 @@ import { withProtectedUser } from "@hoc/routes";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-const AccountPage = ({ user }) => {
+const Admin = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push(`/account/${user._id}/profile`);
+    router.push("/admin/pending", undefined, { shallow: true });
   }, []);
 
   return <div></div>;
 };
 
-export const getServerSideProps = withProtectedUser();
+export default Admin;
 
-export default AccountPage;
+export const getServerSideProps = withProtectedUser(null, { trustLevel: 3 });

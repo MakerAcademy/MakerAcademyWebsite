@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import BackButton from "@components/buttons/BackButton";
 import { withProtectedUser } from "@hoc/routes";
 
-const CreatorStudioNewDocument = ({ user }) => {
+const CreatorStudioNewCourse = ({ user }) => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
 
@@ -38,9 +38,7 @@ const CreatorStudioNewDocument = ({ user }) => {
       .then((response) => {
         if (response.ok) return response.json();
       })
-      .then((response) => {
-        const { _id } = response;
-
+      .then(({ _id }) => {
         setSubmitted({
           type: "success",
           message:
@@ -55,23 +53,23 @@ const CreatorStudioNewDocument = ({ user }) => {
       const { type, message, _id } = submitted || {};
 
       // Change route based on the res id we get
-      type === "success" && router.push(`/document/${_id}`);
+      type === "success" && router.push(`/course/${_id}`);
 
       setSubmitted(null);
     }
   };
 
-  const DocumentForm = dynamic(() => import("@components/forms/DocumentForm"));
+  const CourseForm = dynamic(() => import("@components/forms/CourseForm"));
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
-        <Typography variant="h6">Create a New Document</Typography>
+        <Typography variant="h6">Create a New Course</Typography>
       </Stack>
 
       {/* Form */}
-      <DocumentForm handleSubmit={handleSubmit} />
+      <CourseForm handleSubmit={handleSubmit} />
 
       {/* Submitted alert */}
       {submitted && (
@@ -91,4 +89,4 @@ const CreatorStudioNewDocument = ({ user }) => {
 
 export const getServerSideProps = withProtectedUser();
 
-export default CreatorStudioNewDocument;
+export default CreatorStudioNewCourse;

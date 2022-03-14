@@ -1,7 +1,10 @@
 import {
   acceptEdit,
+  acceptPending,
   addToContentLikes,
+  getAdminContent,
   rejectEdit,
+  rejectPending,
   removeFromContentLikes,
 } from "lib/db/content";
 import { ObjectId } from "mongodb";
@@ -21,15 +24,23 @@ export default async function handler(req, res) {
   const uid = req.query.uid;
   const like = req.query.like;
   const getSubmissions = req.query.getSubmissions === "true";
+  const getPublishedDocs = req.query.getPublishedDocs === "true";
+  const getPendingDocs = req.query.getPendingDocs === "true";
   const acceptSubmission = req.query.acceptSubmission === "true";
   const rejectSubmission = req.query.rejectSubmission === "true";
+  const acceptPendingDoc = req.query.acceptPendingDoc === "true";
+  const rejectPendingDoc = req.query.rejectPendingDoc === "true";
 
   const client = await clientPromise;
   const db = client.db();
 
   switch (req.method) {
     case "GET":
-      if (uid && getSubmissions) {
+      if (getPublishedDocs) {
+        return await fetchPublishedDocs(req, res, db);
+      } else if (getPendingDocs) {
+        return await fetchPendingDocs(req, res, db);
+      } else if (uid && getSubmissions) {
         return await fetchEditRequests(req, res, db, uid);
       } else if (_id) {
         return await fetchOneDoc(req, res, db, _id);
@@ -37,19 +48,49 @@ export default async function handler(req, res) {
         return await fetchUserDocs(req, res, db, uid);
       }
     case "POST":
-      if (acceptSubmission === true) {
+      if (acceptPendingDoc) {
+        return await acceptPendingRequest(req, res, db, _id);
+      } else if (rejectPendingDoc) {
+        return await rejectPendingRequest(req, res, db, _id);
+      } else if (acceptSubmission) {
         return await acceptEditRequest(req, res, db);
-      } else if (rejectSubmission === true) {
+      } else if (rejectSubmission) {
         return await rejectEditRequest(req, res, db);
       } else if (like === "true") {
-        console.log("Liking");
         return await likeDocument(req, res, db, _id, uid);
       } else if (like === "false") {
-        console.log("Unliking");
         return await unlikeDocument(req, res, db, _id, uid);
       } else {
         return await createOneDoc(req, res, db, _id);
       }
+  }
+}
+
+async function fetchPublishedDocs(req, res, db) {
+  try {
+    const docs = await getAdminContent(db);
+
+    return res.status(200).json({
+      message: docs?.published || [],
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function fetchPendingDocs(req, res, db) {
+  try {
+    const docs = await getAdminContent(db);
+
+    return res.status(200).json({
+      message: docs?.pending || [],
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
   }
 }
 
@@ -108,7 +149,6 @@ async function createOneDoc(req, res, db, _id) {
   body.author = ObjectId(body.author);
 
   const isNewDoc = req.body.status === "published";
-  // TODO - complete logic for when its not a new doc
 
   try {
     const documentStatus = await createDocument(db, body);
@@ -210,6 +250,40 @@ async function rejectEditRequest(req, res, db) {
     const docs = await rejectEdit(db, publishedId, draftId);
     return res.status(200).json({
       message: docs,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function acceptPendingRequest(req, res, db, _id) {
+  if (!_id) {
+    return res.status(400).end();
+  }
+
+  try {
+    const _res = await acceptPending(db, _id);
+    return res.status(200).json({
+      message: _res,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).end();
+  }
+}
+
+async function rejectPendingRequest(req, res, db, _id) {
+  if (!_id) {
+    return res.status(400).end();
+  }
+
+  try {
+    const _res = await rejectPending(db, _id);
+    return res.status(200).json({
+      message: _res,
       success: true,
     });
   } catch (err) {

@@ -2,15 +2,29 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import PreviewProfileCard from "@components/cards/PreviewProfileCard";
 import FormDropzone from "@components/FormComponents/FormDropzone";
 import FormTextField from "@components/FormComponents/FormTextField";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import * as Yup from "yup";
 
-const ProfileForm = () => {
+const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
   const theme = useTheme();
 
-  const hookForm = useForm();
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Required"),
+  });
+
+  const formOptions = {
+    resolver: yupResolver(validationSchema),
+    defaultValues: values,
+  };
+
+  const hookForm = useForm(formOptions);
   const { handleSubmit, reset, control, getValues } = hookForm;
+
+  const _image = useWatch({ control, name: "image" });
 
   const SectionTitle = ({ children }) => (
     <Typography sx={{ fontSize: 20, fontWeight: 500, mb: 2.5 }}>
@@ -25,8 +39,8 @@ const ProfileForm = () => {
   );
 
   const onSubmit = (data, e) => {
-    reset(); // reset after form submit
-    console.log(data);
+    // reset(); // reset after form submit
+    propsHandleSubmit({ ...data });
   };
 
   return (
@@ -35,9 +49,9 @@ const ProfileForm = () => {
         {/* Form */}
         <Grid item xs={12} lg={8} xl={9}>
           {/* Upload File */}
-          <Box>
+          {/* <Box>
             <SectionTitle>Upload a Profile Picture</SectionTitle>
-            <FormDropzone name="image" control={control}>
+            <FormDropzone name="image" control={control} exists={!!_image}>
               <Stack
                 spacing={2}
                 direction="row"
@@ -52,7 +66,7 @@ const ProfileForm = () => {
                 <RoundedButton variant="outlined">Upload file</RoundedButton>
               </Stack>
             </FormDropzone>
-          </Box>
+          </Box> */}
 
           {/* Form */}
           <Grid

@@ -117,7 +117,7 @@ const ContentPage = ({ content, tags }) => {
           sortItems={CONTENT_SORT_ITEMS}
           // sortCallback={handleSort}
           translateCategories
-          dontTranslateSubCategoriesOf={["author_id"]}
+          dontTranslateSubCategoriesOf={["ALL"]}
           inputPlaceholder={t("search_bar")}
           changeCallback={handleAll}
         />

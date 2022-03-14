@@ -1,8 +1,4 @@
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import PersonOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import {
   Avatar,
   Box,
@@ -21,30 +17,7 @@ import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const sidebarItems = [
-  {
-    name: "Profile",
-    value: "profile",
-    icon: PersonOutlinedIcon,
-    href: "/account/profile",
-  },
-  {
-    name: "Account",
-    value: "auth",
-    icon: SettingsOutlinedIcon,
-    href: "/account/auth",
-  },
-  { type: "divider" },
-  {
-    name: "Creator Studio",
-    icon: MovieOutlinedIcon,
-    rightIcon: OpenInNewIcon,
-    href: "/studio",
-    differentPage: true,
-  },
-];
-
-const AccountSidebar = () => {
+const AccountSidebar = ({ setPage, sidebarItems }) => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -53,7 +26,7 @@ const AccountSidebar = () => {
   };
 
   const router = useRouter();
-  const { type } = router.query;
+  const { id, type } = router.query;
 
   const UserCard = () => (
     <Stack direction="row" alignItems="center" spacing={2.5} sx={{ px: 2 }}>
@@ -67,7 +40,15 @@ const AccountSidebar = () => {
   );
 
   const handleClick = (url, differentPage) => {
-    router.push(url, undefined, { shallow: !differentPage });
+    const _url = url?.replaceAll(/\{(.+?)\}/g, function (_, _param) {
+      return router.query?.[_param] || "";
+    });
+
+    if (differentPage) {
+      router.push(_url);
+    } else {
+      setPage(_url);
+    }
   };
 
   const SideMenu = () => (
@@ -80,16 +61,17 @@ const AccountSidebar = () => {
 
       {sidebarItems.map((item, i) => {
         if (item.type === "divider") return <Divider key={i} />;
+        if (item.hidden) return null;
 
         const isSelected = item.value === type;
 
         return (
           <MenuItem
             key={i}
-            sx={{ py: 1.5 }}
             selected={isSelected}
             onClick={() => handleClick(item.href, !!item.differentPage)}
             sx={{
+              py: 1,
               borderLeft:
                 isSelected && `3px solid ${theme.palette.primary.main}`,
             }}

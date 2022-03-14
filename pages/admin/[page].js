@@ -21,30 +21,30 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const studioRoutes = [
+const routes = [
   {
-    label: "creator_studio_dashboard",
-    value: "/studio",
+    label: "admin_pending",
+    value: "/admin/pending",
     icon: DashboardIcon,
   },
   {
-    label: "creator_studio_content",
-    value: "/studio/content",
+    label: "admin_published",
+    value: "/admin/published",
     icon: VideoLibraryIcon,
   },
   {
-    label: "creator_studio_analytics",
-    value: "/studio/analytics",
+    label: "admin_users",
+    value: "/admin/users",
     icon: AnalyticsIcon,
   },
 ];
 
 const PageRenderer = ({ type, ...other }) => {
   const page = {
-    "/studio": dynamic(() => import("@pages/Studio/Dashboard")),
-    "/studio/dashboard": dynamic(() => import("@pages/Studio/Dashboard")),
-    "/studio/content": dynamic(() => import("@pages/Studio/Content")),
-    "/studio/analytics": dynamic(() => import("@pages/Studio/Analytics")),
+    "/admin": dynamic(() => import("@pages/Admin/Pending")),
+    "/admin/pending": dynamic(() => import("@pages/Admin/Pending")),
+    "/admin/published": dynamic(() => import("@pages/Admin/Published")),
+    "/admin/users": dynamic(() => import("@pages/Admin/Users")),
   };
 
   const RenderedPage = page[type];
@@ -52,9 +52,9 @@ const PageRenderer = ({ type, ...other }) => {
   return <RenderedPage {...other} />;
 };
 
-const CreatorStudio = (props) => {
+const Admin = (props) => {
   const router = useRouter();
-  const { t } = useTranslation("creator-studio");
+  const { t } = useTranslation("admin");
 
   const [page, setPage] = useState(router.asPath);
 
@@ -71,11 +71,11 @@ const CreatorStudio = (props) => {
         <Stack direction="row" spacing={1} alignItems="center">
           <Hidden mdUp>
             <Sidebar
-              menuItems={studioRoutes}
+              menuItems={routes}
               page={page}
               setPage={setPage}
               t={t}
-              title={t("creator_studio")}
+              title={t("admin")}
             />
           </Hidden>
 
@@ -98,12 +98,10 @@ const CreatorStudio = (props) => {
                 },
               }}
             >
-              {t("creator_studio")}
+              {t("admin")}
             </Typography>
 
-            <RoundedButton href="/studio/new">{t("add_new")}</RoundedButton>
-
-            {/* <RoundedButton href="/studio/new-course">
+            {/* <RoundedButton href="/admin/new-course">
               {t("add_new_course")}
             </RoundedButton> */}
           </Stack>
@@ -116,7 +114,7 @@ const CreatorStudio = (props) => {
             variant="scrollable"
             scrollButtons="auto"
           >
-            {studioRoutes.map((item, i) => (
+            {routes.map((item, i) => (
               <Tab
                 key={i}
                 label={t(item.label)}
@@ -140,6 +138,6 @@ const CreatorStudio = (props) => {
   );
 };
 
-export default CreatorStudio;
+export default Admin;
 
-export const getServerSideProps = withProtectedUser();
+export const getServerSideProps = withProtectedUser(null, { trustLevel: 3 });

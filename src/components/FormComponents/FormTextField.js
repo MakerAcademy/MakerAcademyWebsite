@@ -1,4 +1,6 @@
-import { TextField } from "@mui/material";
+import { TextField, useTheme } from "@mui/material";
+import { grey } from "@mui/material/colors";
+
 import React from "react";
 import { Controller } from "react-hook-form";
 
@@ -10,6 +12,9 @@ const FormTextField = ({
   variant = "outlined",
   ...props
 }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   return (
     <Controller
       name={name}
@@ -31,7 +36,13 @@ const FormTextField = ({
               px: multiline ? 2.5 : 1,
             },
           }}
-          sx={{ ...sx }}
+          sx={{
+            ".MuiInputBase-input.Mui-disabled": {
+              WebkitTextFillColor: isDark ? grey[300] : grey[600],
+              color: isDark ? grey[300] : grey[600],
+            },
+            ...sx,
+          }}
           {...props}
           {...field}
         />

@@ -54,7 +54,7 @@ const BasicDocument = ({ data = {}, user }) => {
     likes,
     likes_count = 0,
     author,
-  } = document;
+  } = document || {};
 
   // Edit Button condition here
   const isLoggedIn = !!user?.email; //&& user?._id === author;

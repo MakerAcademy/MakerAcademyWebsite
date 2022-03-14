@@ -224,7 +224,7 @@ const DesktopMenuItems = ({
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          {/* <MenuItem
+          <MenuItem
             onClick={() => {
               setUserAnchorEl(null);
               router.push("/account");
@@ -234,7 +234,7 @@ const DesktopMenuItems = ({
               <SettingsIcon fontSize="small" />
             </ListItemIcon>
             {t("my_account")}
-          </MenuItem> */}
+          </MenuItem>
 
           <MenuItem
             onClick={() => {
