@@ -1,18 +1,28 @@
-import { Alert, Container, Snackbar, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 import BackButton from "@components/buttons/BackButton";
+import CourseForm from "@components/forms/CourseForm";
 import { withProtectedUser } from "@hoc/routes";
+import {
+  Alert,
+  Container,
+  Snackbar,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const CreatorStudioNewDocument = ({ user }) => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
+  const [type, setType] = useState("document");
 
   if (typeof window === "undefined")
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
 
-  const handleSubmit = async (data) => {
+  const handleDocumentSubmit = async (data) => {
     const { title, description, level, topic, subtopic, markdownValue } = data;
 
     return await fetch("/api/documents", {
@@ -50,6 +60,48 @@ const CreatorStudioNewDocument = ({ user }) => {
       });
   };
 
+  const handleCourseSubmit = async (data) => {
+    const { title, description, level, topic, subtopic, documents = [] } = data;
+
+    return await fetch("/api/courses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        documents,
+        contentType: "course",
+        duration: 30,
+        author: user?._id,
+        thumbnail:
+          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "published",
+      }),
+    })
+      // .then((response) => {
+      //   if (response.ok) return response.json();
+      // })
+      // .then((response) => {
+      //   const { _id } = response;
+
+      //   setSubmitted({
+      //     type: "success",
+      //     message:
+      //       "Successfully created document. Redirecting to document page...",
+      //     _id,
+      //   });
+      // });
+  };
+
+  const handleTypeChange = () => {
+    setType((old) => (old === "document" ? "course" : "document"));
+  };
+
   const handleSnackbarClose = () => {
     if (submitted) {
       const { type, message, _id } = submitted || {};
@@ -67,11 +119,27 @@ const CreatorStudioNewDocument = ({ user }) => {
     <Container sx={{ py: 5 }} maxWidth="xl">
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
-        <Typography variant="h6">Create a New Document</Typography>
+        <Typography variant="h6">Create New Content</Typography>
       </Stack>
 
+      <ToggleButtonGroup
+        color="primary"
+        value={type}
+        exclusive
+        onChange={handleTypeChange}
+        fullWidth
+        sx={{ maxWidth: 450, mb: 3 }}
+      >
+        <ToggleButton value="document">Document</ToggleButton>
+        <ToggleButton value="course">Course</ToggleButton>
+      </ToggleButtonGroup>
+
       {/* Form */}
-      <DocumentForm handleSubmit={handleSubmit} />
+      {type === "document" && (
+        <DocumentForm handleSubmit={handleDocumentSubmit} />
+      )}
+
+      {type === "course" && <CourseForm handleSubmit={handleCourseSubmit} />}
 
       {/* Submitted alert */}
       {submitted && (

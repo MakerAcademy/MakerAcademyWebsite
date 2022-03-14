@@ -23,13 +23,6 @@ function MyApp({
 }) {
   const queryClient = new QueryClient();
 
-  // useEffect(() => {
-  //   if (!lang) {
-  //     console.log("IN");
-  //     handleLanguageChange("fr");
-  //   }
-  // }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>

@@ -1,14 +1,36 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormDraftField from "@components/FormComponents/FormDraft";
-import FormTextField from "@components/FormComponents/FormTextField";
+import FormFieldArray from "@components/formComponents/FormFieldArray";
+import FormTextField from "@components/formComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Stack } from "@mui/material";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { fetchPublishedDocs } from "@pages/Admin/helperFunctions";
+import React, { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
+  const [dialogOpen, setDialogOpen] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    fetchPublishedDocs(setDocuments);
+  }, []);
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -27,109 +49,149 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const { handleSubmit, reset, control, getValues, setValue } =
     useForm(formOptions);
 
+  const _documents = useWatch({ control, name: "documents" }) || [];
+
   const onSubmit = (data, e) => {
     setDisabled(true);
     propsHandleSubmit({ ...data });
   };
 
-  const handleDraftChange = ({ editor, markdown, html }) => {
-    setValue("markdownValue", markdown);
+  const handleListItemClick = (doc) => {
+    setValue("documents", [..._documents, { _id: doc._id, title: doc.title }]);
   };
 
-  const FormFieldArrayElements = ({ index, remove }) => {
+  const RenderListItem = ({ title, _id, remove, index }) => {
     return (
-      <Stack direction="row" spacing={2} alignItems="center">
-        <FormTextField
-          name={`courses[${index}].title`}
-          label="Title"
-          control={control}
-          fullWidth
-          disabled={disabled}
-        />
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ width: "100%" }}
+      >
+        <ListItemText primary={title} secondary={_id} />
 
-        <FormTextField
-          name={`courses[${index}].video_url`}
-          label="Video Url"
-          control={control}
-          fullWidth
-          disabled={disabled}
-        />
-
-        <Button onClick={() => remove(index)}>Remove</Button>
+        <IconButton onClick={() => remove(index)} size="small">
+          <DeleteIcon />
+        </IconButton>
       </Stack>
     );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        <FormTextField
-          name="title"
-          label="Title"
-          control={control}
-          fullWidth
-          disabled={disabled}
-        />
-
-        <FormTextField
-          name="description"
-          label="Description"
-          control={control}
-          fullWidth
-          multiline
-          rows={5}
-          disabled={disabled}
-        />
-
-        <Stack direction="row" spacing={2}>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={3}>
           <FormTextField
-            name="level"
-            label="Level"
+            name="title"
+            label="Title"
             control={control}
             fullWidth
             disabled={disabled}
           />
 
           <FormTextField
-            name="topic"
-            label="Topic"
+            name="description"
+            label="Description"
             control={control}
             fullWidth
+            multiline
+            rows={5}
             disabled={disabled}
           />
 
-          <FormTextField
-            name="subtopic"
-            label="Sub-topic"
+          <Stack direction="row" spacing={2}>
+            <FormTextField
+              name="level"
+              label="Level"
+              control={control}
+              fullWidth
+              disabled={disabled}
+            />
+
+            <FormTextField
+              name="topic"
+              label="Topic"
+              control={control}
+              fullWidth
+              disabled={disabled}
+            />
+
+            <FormTextField
+              name="subtopic"
+              label="Sub-topic"
+              control={control}
+              fullWidth
+              disabled={disabled}
+            />
+          </Stack>
+
+          <FormFieldArray
+            list
             control={control}
-            fullWidth
-            disabled={disabled}
+            name="documents"
+            RenderListItem={RenderListItem}
+            RenderHeader={
+              <Stack direction={{ xs: "column", md: "row" }}>
+                <Typography variant="h6" sx={{ flex: 1 }}>
+                  Documents
+                </Typography>
+
+                <Button
+                  onClick={() => {
+                    setDialogOpen(true);
+                  }}
+                >
+                  Add Document
+                </Button>
+              </Stack>
+            }
           />
+
+          <Stack alignItems="flex-end">
+            <RoundedButton type="submit" disabled={disabled}>
+              {edit ? "Edit Course" : "Create New Course"}
+            </RoundedButton>
+          </Stack>
         </Stack>
+      </form>
 
-        <FormDraftField
-          onChange={handleDraftChange}
-          handeSubmit={handleSubmit}
-          hideHtml
-          direction="row"
-          value={values?.markdown}
-        />
+      <Dialog
+        onClose={() => setDialogOpen(false)}
+        open={!!dialogOpen}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Select Document</DialogTitle>
 
-        {/* Example of using field arrays */}
-        {/* <FormFieldArray
-          control={control}
-          label="Courses"
-          name="courses"
-          Elements={FormFieldArrayElements}
-        /> */}
+        <DialogContent>
+          <List sx={{ pt: 0 }}>
+            {documents?.map((doc, i) => {
+              const selected = _documents?.find?.((i) => i._id === doc._id);
 
-        <Stack alignItems="flex-end">
-          <RoundedButton type="submit" disabled={disabled}>
-            {edit ? "Edit Document" : "Create New Document"}
-          </RoundedButton>
-        </Stack>
-      </Stack>
-    </form>
+              return (
+                <React.Fragment key={i}>
+                  <ListItem
+                    button
+                    disabled={!!selected}
+                    onClick={() => !selected && handleListItemClick(doc)}
+                  >
+                    <ListItemText
+                      primary={doc.title}
+                      secondary={doc.username}
+                    />
+                  </ListItem>
+
+                  <Divider />
+                </React.Fragment>
+              );
+            })}
+          </List>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
