@@ -1,13 +1,12 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
 import {
   AppBar,
-  Box,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   IconButton,
   Paper,
@@ -20,9 +19,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { dummyMarkdown } from "@utils/markdown";
-import CloseIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -178,12 +174,14 @@ const StudioRequestsCard = (props) => {
           <Grid container spacing={{ xs: 5 }}>
             <Grid item xs={12} md={6}>
               <Paper elevation={3} sx={{ p: 2 }}>
-                <ReactMarkdown>{body}</ReactMarkdown>
+                <ReactMarkdown>{body || description}</ReactMarkdown>
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
               <Paper elevation={3} sx={{ p: 2 }}>
-                <ReactMarkdown>{publishedDoc?.body}</ReactMarkdown>
+                <ReactMarkdown>
+                  {publishedDoc?.body || publishedDoc?.description}
+                </ReactMarkdown>
               </Paper>
             </Grid>
           </Grid>

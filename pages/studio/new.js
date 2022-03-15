@@ -75,7 +75,7 @@ const CreatorStudioNewDocument = ({ user }) => {
         topic,
         subtopic,
         documents,
-        contentType: "course",
+        contentType: "courses",
         duration: 30,
         author: user?._id,
         thumbnail:
@@ -83,19 +83,19 @@ const CreatorStudioNewDocument = ({ user }) => {
         status: "published",
       }),
     })
-      // .then((response) => {
-      //   if (response.ok) return response.json();
-      // })
-      // .then((response) => {
-      //   const { _id } = response;
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((response) => {
+        const { _id } = response;
 
-      //   setSubmitted({
-      //     type: "success",
-      //     message:
-      //       "Successfully created document. Redirecting to document page...",
-      //     _id,
-      //   });
-      // });
+        setSubmitted({
+          type: "success",
+          message:
+            "Successfully created course. Redirecting to document page...",
+          _id,
+        });
+      });
   };
 
   const handleTypeChange = () => {
@@ -106,8 +106,8 @@ const CreatorStudioNewDocument = ({ user }) => {
     if (submitted) {
       const { type, message, _id } = submitted || {};
 
-      // Change route based on the res id we get
-      type === "success" && router.push(`/document/${_id}`);
+      // Change route based on the res id we get - `/document/${_id}`
+      type === "success" && router.push("/studio/content");
 
       setSubmitted(null);
     }

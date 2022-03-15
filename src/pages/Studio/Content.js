@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useState } from "react";
 
 const fetchUserDocs = async (uid, callback) => {
-  const url = `/api/documents?uid=${uid}`;
+  const url = `/api/content?uid=${uid}`;
 
   const res = await fetch(url, {
     method: "GET",
@@ -17,7 +17,7 @@ const fetchUserDocs = async (uid, callback) => {
 };
 
 const fetchEditSubmissions = async (uid, callback) => {
-  const url = `/api/documents?getSubmissions=true&uid=${uid}`;
+  const url = `/api/content?getSubmissions=true&uid=${uid}`;
 
   const res = await fetch(url, {
     method: "GET",
