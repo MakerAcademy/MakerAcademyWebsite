@@ -34,8 +34,6 @@ const config = ({ mode }) => ({
         link: "/programs",
         // nestedItems: [
         //   { name: "1", link: "/" },
-        //   { name: "2", link: "/" },
-        //   { name: "3", link: "/" },
         // ],
       },
       { name: "content", link: "/content" },

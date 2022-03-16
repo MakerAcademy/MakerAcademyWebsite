@@ -22,12 +22,19 @@ export const buildColumns = (t) => {
         );
       },
     },
-    { field: "title", headerName: t("title"), width: 300 },
+    { field: "title", headerName: t("title"), width: 180 },
     {
       field: "date",
       headerName: t("date"),
       // type: "date",
       width: 200,
+    },
+    {
+      field: "contentType",
+      headerName: t("content_type"),
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "visibility",
@@ -59,7 +66,7 @@ export const buildColumns = (t) => {
           <RoundedButton
             size="small"
             variant="outlined"
-            href={`/studio/edit/${params.id}`}
+            href={`/studio/edit/${params.row.contentType}/${params.id}`}
             icon={<EditIcon sx={{ fontSize: 16 }} />}
           >
             {t("edit")}
@@ -67,7 +74,11 @@ export const buildColumns = (t) => {
 
           <RoundedButton
             size="small"
-            href={`/document/${params.id}`}
+            href={
+              params.row.contentType === "courses"
+                ? `/course/${params.id}`
+                : `/document/${params.id}`
+            }
             icon={<OpenInNewIcon sx={{ fontSize: 16 }} />}
           >
             {t("open")}
@@ -83,6 +94,7 @@ export const buildRows = (data, t) => {
     id: item._id,
     count: i,
     thumbnail: item.thumbnail,
+    contentType: t(item.contentType),
     title: item.title,
     date: moment(item.timestamp).format("lll"),
     visibility: item.status,

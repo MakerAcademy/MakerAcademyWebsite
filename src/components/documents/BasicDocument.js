@@ -127,7 +127,7 @@ const BasicDocument = ({ data = {}, user }) => {
               {isLoggedIn && (
                 <RoundedButton
                   icon={<EditIcon fontSize="small" />}
-                  href={`/studio/edit/${_id}`}
+                  href={`/studio/documents/edit/${_id}`}
                 >
                   Edit
                 </RoundedButton>

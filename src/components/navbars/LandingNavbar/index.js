@@ -1,3 +1,4 @@
+import DaiIcon from "@components/DaiIcon";
 import { NAVBAR_HEIGHT_DESKTOP, NAVBAR_HEIGHT_MOBILE } from "@constants/";
 import withAppConfig from "@hoc/withAppConfig";
 import {
@@ -6,16 +7,13 @@ import {
   Container,
   Divider,
   Hidden,
-  Icon,
   Stack,
-  SvgIcon,
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
 import DesktopMenuItems from "./DesktopMenuItems";
 import MobileMenuItems from "./MobileMenuItems";
-import DaiIcon from "@components/DaiIcon";
 
 const LandingNavbar = ({ appConfig, LeftComponent }) => {
   const [spotlight, setSpotlight] = useState(null);

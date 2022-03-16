@@ -1,6 +1,7 @@
 import {
   acceptEdit,
   acceptPending,
+  addToContentDraft,
   addToContentLikes,
   getAdminContent,
   rejectEdit,
@@ -10,12 +11,10 @@ import {
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../lib/db/connect";
 import {
-  getOneDocument,
-  createDocument,
   addToContent,
+  createDocument,
+  getOneDocument,
   getUserDocuments,
-  addToContentDraft,
-  getUserEditSubmissions,
 } from "../../../lib/db/document";
 import validateJSON from "../../../lib/db/utils";
 
@@ -23,7 +22,6 @@ export default async function handler(req, res) {
   const _id = req.query._id;
   const uid = req.query.uid;
   const like = req.query.like;
-  const getSubmissions = req.query.getSubmissions === "true";
   const getPublishedDocs = req.query.getPublishedDocs === "true";
   const getPendingDocs = req.query.getPendingDocs === "true";
   const acceptSubmission = req.query.acceptSubmission === "true";
@@ -40,8 +38,6 @@ export default async function handler(req, res) {
         return await fetchPublishedDocs(req, res, db);
       } else if (getPendingDocs) {
         return await fetchPendingDocs(req, res, db);
-      } else if (uid && getSubmissions) {
-        return await fetchEditRequests(req, res, db, uid);
       } else if (_id) {
         return await fetchOneDoc(req, res, db, _id);
       } else if (uid) {
@@ -97,20 +93,6 @@ async function fetchPendingDocs(req, res, db) {
 async function fetchUserDocs(req, res, db, uid) {
   try {
     const docs = await getUserDocuments(db, uid);
-
-    return res.status(200).json({
-      message: docs,
-      success: true,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).end();
-  }
-}
-
-async function fetchEditRequests(req, res, db, uid) {
-  try {
-    const docs = await getUserEditSubmissions(db, uid);
 
     return res.status(200).json({
       message: docs,

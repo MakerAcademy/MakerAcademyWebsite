@@ -5,7 +5,11 @@ import {
   Button,
   Dialog,
   DialogContent,
+  Divider,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
   Paper,
   Slide,
   Stack,
@@ -21,7 +25,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AdminPendingCard = (props) => {
-  const { _id, title, thumbnail, username, description, body } = props;
+  const { _id, title, thumbnail, username, description, body, documents } =
+    props;
 
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -147,7 +152,23 @@ const AdminPendingCard = (props) => {
 
         <DialogContent>
           <Paper elevation={3} sx={{ p: 2 }}>
-            <ReactMarkdown>{body}</ReactMarkdown>
+            <ReactMarkdown>{body || description}</ReactMarkdown>
+
+            {documents && (
+              <>
+                <Divider sx={{ mb: 2 }} />
+
+                <Typography>Documents</Typography>
+
+                <List>
+                  {documents.map((item, i) => (
+                    <ListItem key={i}>
+                      <ListItemText primary={item.title} secondary={item._id} />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
           </Paper>
         </DialogContent>
       </Dialog>

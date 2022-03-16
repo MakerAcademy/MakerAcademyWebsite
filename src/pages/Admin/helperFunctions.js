@@ -104,12 +104,19 @@ export const buildPublishedColumns = (t) => {
         );
       },
     },
-    { field: "title", headerName: t("title"), width: 300 },
+    { field: "title", headerName: t("title"), width: 250 },
     {
       field: "date",
       headerName: t("date"),
       // type: "date",
-      width: 200,
+      width: 180,
+    },
+    {
+      field: "contentType",
+      headerName: t("content_type"),
+      width: 170,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "visibility",
@@ -121,27 +128,27 @@ export const buildPublishedColumns = (t) => {
     {
       field: "views",
       headerName: t("views"),
-      width: 150,
+      width: 120,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "likes",
       headerName: t("likes"),
-      width: 150,
+      width: 120,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "actions",
       headerName: t("actions"),
-      width: 300,
+      width: 280,
       renderCell: (params) => (
         <Stack direction="row" alignItems="center" spacing={1}>
           <RoundedButton
             size="small"
             variant="outlined"
-            href={`/studio/edit/${params.id}`}
+            href={`/studio/edit/${params.row.contentType}/${params.id}`}
             icon={<EditIcon sx={{ fontSize: 16 }} />}
           >
             {t("edit")}
@@ -165,6 +172,7 @@ export const buildPublishedRows = (data, t) => {
     id: item._id,
     count: i,
     thumbnail: item.thumbnail,
+    contentType: item.contentType,
     title: item.title,
     date: moment(item.timestamp).format("lll"),
     visibility: item.status,

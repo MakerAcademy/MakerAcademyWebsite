@@ -27,6 +27,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
 const AUTH_LINK = "/sign-in";
 
@@ -43,6 +44,7 @@ const DesktopMenuItems = ({
   const [userAnchorEl, setUserAnchorEl] = useState(null);
 
   const userExists = !!user?.email;
+  const isAdmin = user.trustLevel >= 3;
 
   const router = useRouter();
   const { t } = useTranslation("common");
@@ -236,10 +238,24 @@ const DesktopMenuItems = ({
             {t("my_account")}
           </MenuItem>
 
+          {isAdmin && (
+            <MenuItem
+              onClick={() => {
+                setUserAnchorEl(null);
+                router.push("/admin");
+              }}
+            >
+              <ListItemIcon>
+                <AdminPanelSettingsOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              {t("admin")}
+            </MenuItem>
+          )}
+
           <MenuItem
             onClick={() => {
               setUserAnchorEl(null);
-              router.push("/studio");
+              router.push("/studio/content");
             }}
           >
             <ListItemIcon>

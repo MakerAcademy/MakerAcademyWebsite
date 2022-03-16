@@ -11,9 +11,11 @@ const CreatorStudioEdit = (props) => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
 
+  const isCourse = data.contentType === "courses";
+
   const _id = router.query.id;
 
-  const handleSubmit = async ({
+  const handleDocumentSubmit = async ({
     title,
     description,
     level,
@@ -27,15 +29,55 @@ const CreatorStudioEdit = (props) => {
         "Content-Type": "Application/json",
       },
       body: JSON.stringify({
-        title: title,
-        description: description,
-        level: level,
-        topic: topic,
-        subtopic: subtopic,
-        contentType: "document",
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        contentType: "documents",
         duration: 30,
         author: user?._id,
         body: markdownValue,
+        thumbnail:
+          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "submitted",
+      }),
+    })
+      .then((response) => {
+        console.log("Client: ", response);
+        return response;
+      })
+      .then(() => {
+        setSubmitted({
+          type: "success",
+          message: "Successfully submitted edit! Redirecting to studio...",
+        });
+      });
+  };
+
+  const handleCourseSubmit = async ({
+    title,
+    description,
+    level,
+    topic,
+    subtopic,
+    documents,
+  }) => {
+    const res = await fetch(`/api/courses?_id=${_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        contentType: "courses",
+        duration: 30,
+        author: user?._id,
+        documents: documents || [],
         thumbnail:
           "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
         status: "submitted",
@@ -68,23 +110,32 @@ const CreatorStudioEdit = (props) => {
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
   }
 
-  const DocumentForm = dynamic(() =>
-    import("@components/forms/DocumentForm")
-  );
+  const DocumentForm = dynamic(() => import("@components/forms/DocumentForm"));
+  const CourseForm = dynamic(() => import("@components/forms/CourseForm"));
 
   return (
     <Container sx={{ py: 5 }} maxWidth="xl">
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
 
-        <Typography variant="h6">Edit Document</Typography>
+        <Typography variant="h6">
+          Edit {isCourse ? "Course" : "Document"}
+        </Typography>
       </Stack>
 
-      <DocumentForm
-        handleSubmit={handleSubmit}
-        edit
-        values={{ ...(data || {}), markdown: data?.body }}
-      />
+      {isCourse ? (
+        <CourseForm
+          handleSubmit={handleCourseSubmit}
+          edit
+          values={data || {}}
+        />
+      ) : (
+        <DocumentForm
+          handleSubmit={handleDocumentSubmit}
+          edit
+          values={{ ...(data || {}), markdown: data?.body }}
+        />
+      )}
 
       {submitted && (
         <Snackbar
@@ -110,11 +161,13 @@ export default CreatorStudioEdit;
 export const getServerSideProps = withProtectedUser(async (context) => {
   const server = context.req.headers.host;
   const docId = context.params.id;
-  const url = `${http}${server}/api/documents?_id=${docId}`;
+  const contentType = context.params.contentType;
+  const url = `${http}${server}/api/${contentType}?_id=${docId}`;
 
   const res = await fetch(url, {
     method: "GET",
   });
+
   const jsonData = await res.json();
 
   return { props: { data: jsonData.message } };
