@@ -6,7 +6,7 @@ import { TEAM } from "./dummyData";
 const Team = () => {
   return (
     <Stack alignItems="center" spacing={4}>
-      <Typography sx={{ fontWeight: 600 }}>Our Teams</Typography>
+      <Typography sx={{ fontWeight: 600 }}>Our Team</Typography>
 
       <Typography sx={{ maxWidth: 700, fontWeight: 300, textAlign: "center" }}>
         Our expert team is made up of creatives wih technical knowhow,

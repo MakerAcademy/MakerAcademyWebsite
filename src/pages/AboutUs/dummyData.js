@@ -32,7 +32,7 @@ export const TEAM = [
   {
     image: Raj,
     name: "Raj",
-    title: "Title here",
+    title: "Content Producer",
     // description: "A few lines description here",
     linkedIn: "",
     twitter: "https://twitter.com/rajmitra17",

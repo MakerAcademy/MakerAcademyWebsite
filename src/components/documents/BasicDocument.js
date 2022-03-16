@@ -28,6 +28,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import commonProps from "@hoc/commonProps";
 import RoundedButton from "@components/buttons/RoundedButton";
 import EditIcon from "@mui/icons-material/Edit";
+import Router, { useRouter } from "next/router";
+import Link from "next/link";
 
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
@@ -39,7 +41,7 @@ function HeadingRenderer(props) {
 const BasicDocument = ({ data = {}, user }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
-  const [liked, setLiked] = useState(false);
+  const router = useRouter();
 
   const uid = user?._id;
 
@@ -52,9 +54,10 @@ const BasicDocument = ({ data = {}, user }) => {
     contributors,
     views,
     likes,
-    likes_count = 0,
     author,
   } = document || {};
+
+  const liked = !!likes?.includes?.(uid);
 
   // Edit Button condition here
   const isLoggedIn = !!user?.email; //&& user?._id === author;
@@ -77,11 +80,6 @@ const BasicDocument = ({ data = {}, user }) => {
     }
   }, [body]);
 
-  useEffect(() => {
-    const _liked = !!likes?.includes?.(uid);
-    setLiked(_liked);
-  }, [likes, uid]);
-
   const triggerLike = async () => {
     if (!isLoggedIn) return null;
 
@@ -98,7 +96,7 @@ const BasicDocument = ({ data = {}, user }) => {
         if (response.ok) return response.json();
       })
       .then((data) => {
-        setLiked(!liked);
+        data.success && Router.reload();
       });
   };
 
@@ -143,7 +141,11 @@ const BasicDocument = ({ data = {}, user }) => {
               <Stack direction="row" spacing={1}>
                 <Brightness1Icon sx={{ fontSize: 18, mt: 0.1 }} />
                 <Stack>
-                  <Typography>Author: {username}</Typography>
+                  <Link href={`/profile/123`} passHref>
+                    <Typography sx={{ cursor: "pointer" }}>
+                      Author: {username}
+                    </Typography>
+                  </Link>
                   <Typography>
                     Contributors:{" "}
                     {contributors &&
@@ -187,7 +189,7 @@ const BasicDocument = ({ data = {}, user }) => {
                   ) : (
                     <FavoriteBorderIcon fontSize="small" sx={{ mr: 0.7 }} />
                   )}
-                  Likes: {likes_count}
+                  Likes: {likes?.length || 0}
                 </Button>
               </Stack>
             </Stack>

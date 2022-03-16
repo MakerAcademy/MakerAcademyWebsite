@@ -25,19 +25,15 @@ const config = ({ mode }) => ({
     languagePopup: true,
     authButtons: true,
     menuItems: [
+      { name: "content", link: "/content" },
+      {
+        name: "programs",
+        link: "/programs",
+      },
       {
         name: "contribute",
         link: "/contribute",
       },
-      {
-        name: "programs",
-        link: "/programs",
-        // nestedItems: [
-        //   { name: "1", link: "/" },
-        // ],
-      },
-      { name: "content", link: "/content" },
-      // { name: "about_us", link: "/about-us" },
     ],
   },
 });

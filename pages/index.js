@@ -7,7 +7,6 @@ import React from "react";
 import moment from "moment";
 
 const Home = (props) => {
-  console.log(moment.utc().format());
   return (
     <Box>
       <Section1 />

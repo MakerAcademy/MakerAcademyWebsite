@@ -1,6 +1,8 @@
 import RoundedButton from "@components/buttons/RoundedButton";
 import FormDraftField from "@components/FormComponents/FormDraft";
+import FormSelectField from "@components/FormComponents/FormSelectField";
 import FormTextField from "@components/FormComponents/FormTextField";
+import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import React, { useState } from "react";
@@ -62,12 +64,21 @@ const DocumentForm = ({
         />
 
         <Stack direction="row" spacing={2}>
-          <FormTextField
+          {/* <FormTextField
             name="level"
             label="Level"
             control={control}
             fullWidth
             disabled={disabled}
+          /> */}
+
+          <FormSelectField
+            name="level"
+            label="Level"
+            control={control}
+            fullWidth
+            disabled={disabled}
+            options={CONTENT_DIFFICULTY_LEVELS}
           />
 
           <FormTextField

@@ -1,5 +1,5 @@
-import MSV_IMAGE from "@assets/images/msv.png";
-import { Box, Typography } from "@mui/material";
+import MSV_IMAGE from "@assets/images/misc/msv.png";
+import { Box, Container, Typography } from "@mui/material";
 import msvMarkdown from "@utils/msvMarkdown";
 import React from "react";
 import ReactMarkdown from "react-markdown";
@@ -35,7 +35,7 @@ function ParagraphRenderer(props) {
 
 const MissionVisionStrategy = () => {
   return (
-    <Box sx={{ mt: -2 }}>
+    <Container maxWidth='lg' sx={{ mt: -2 }}>
       <ReactMarkdown
         components={{
           h1: HeadingRenderer,
@@ -49,7 +49,7 @@ const MissionVisionStrategy = () => {
       >
         {msvMarkdown}
       </ReactMarkdown>
-    </Box>
+    </Container>
   );
 };
 

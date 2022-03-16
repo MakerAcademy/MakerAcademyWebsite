@@ -81,6 +81,7 @@ export const lightTheme = createTheme({
       ...colors,
       default: "#000",
       primary: "#000",
+      grey1: grey[700],
     },
   },
   components: {
