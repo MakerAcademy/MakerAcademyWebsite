@@ -1,6 +1,6 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormFieldArray from "@components/formComponents/FormFieldArray";
-import FormTextField from "@components/formComponents/FormTextField";
+import FormFieldArray from "@components/FormComponents/FormFieldArray";
+import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,

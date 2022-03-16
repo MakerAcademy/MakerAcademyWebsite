@@ -1,5 +1,5 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormTextField from "@components/formComponents/FormTextField";
+import FormTextField from "@components/FormComponents/FormTextField";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
