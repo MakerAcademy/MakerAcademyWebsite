@@ -45,7 +45,7 @@ export function withProtectedUser(gssp, options = {}) {
     if (!data) {
       return {
         redirect: {
-          destination: "/sign-in",
+          destination: "/sign-up?show=true",
         },
       };
     }

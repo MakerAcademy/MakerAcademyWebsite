@@ -1,18 +1,40 @@
-import { Box, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Link,
+  Divider,
+} from "@mui/material";
+import statusUpdates from "@utils/statusUpdates";
+import moment from "moment";
 import React from "react";
-import TableTabsLayout from "src/containers/TableTabLayout";
-import { columns, rows } from "./dummyData";
+
+const updates = [...statusUpdates].reverse();
 
 const StatusUpdates = () => {
-  return <div>Coming Soon</div>;
   return (
-    <Stack alignItems="center" spacing={4}>
-      <Typography sx={{ fontWeight: 600 }}>Status Updates</Typography>
-
-      <Box sx={{ width: "100%" }}>
-        <TableTabsLayout rows={rows} columns={columns} />
-      </Box>
-    </Stack>
+    <Box>
+      <List>
+        {updates.map((update, i) => (
+          <Link
+            key={i}
+            target="_blank"
+            href={update.file}
+            rel="noreferrer"
+            underline="none"
+          >
+            <ListItem button>
+              <ListItemText
+                primary={update.title}
+                secondary={moment(update.date).format("ll")}
+              />
+            </ListItem>
+            <Divider />
+          </Link>
+        ))}
+      </List>
+    </Box>
   );
 };
 

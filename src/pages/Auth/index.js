@@ -27,7 +27,7 @@ const AuthForm = ({ appConfig, providers }) => {
     <CloseIcon
       onClick={() => Router.push("/")}
       sx={{
-        zIndex: 999999,
+        zIndex: 1,
         fontSize: 55,
         color: theme.palette.text.disabled,
         cursor: "pointer",

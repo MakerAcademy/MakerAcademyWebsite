@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import ReactPlayer from "react-player/lazy";
 import CloseIcon from "@mui/icons-material/Close";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 const Section1 = () => {
   const theme = useTheme();
@@ -55,13 +56,28 @@ const Section1 = () => {
               {t("source_for_education")}
             </Typography>
 
-            <RoundedButton
-              sx={{ px: 4, py: 1.5 }}
-              icon={<PlayArrowIcon fontSize="small" />}
-              onClick={() => setDialogOpen(true)}
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={2}
+              alignItems="center"
             >
-              {t("play_video")}
-            </RoundedButton>
+              <RoundedButton
+                sx={{ px: 4, py: 1.5 }}
+                icon={<HowToRegIcon fontSize="small" />}
+                href="/sign-up?show=true"
+              >
+                Sign Up
+              </RoundedButton>
+
+              <RoundedButton
+                sx={{ px: 4, py: 1.5 }}
+                icon={<PlayArrowIcon fontSize="small" />}
+                onClick={() => setDialogOpen(true)}
+                variant="outlined"
+              >
+                {t("play_video")}
+              </RoundedButton>
+            </Stack>
           </Stack>
         </Container>
       </Stack>

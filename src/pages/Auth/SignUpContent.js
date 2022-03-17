@@ -1,10 +1,65 @@
 import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
-import { Stack, useTheme } from "@mui/material";
-import React from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  Stack,
+  useTheme,
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Button,
+  Slide,
+  DialogContent,
+} from "@mui/material";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const SignUpDialog = ({ open, handleClose }) => (
+  <Dialog
+    fullScreen
+    open={open}
+    onClose={handleClose}
+    TransitionComponent={Transition}
+  >
+    <AppBar sx={{ position: "relative" }}>
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={handleClose}
+          aria-label="close"
+        >
+          <CloseIcon />
+        </IconButton>
+        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+          Sign Up for an account
+        </Typography>
+        <Button autoFocus color="inherit" onClick={handleClose}>
+          Sign Up
+        </Button>
+      </Toolbar>
+    </AppBar>
+    <DialogContent>Reasons to sign up here with video</DialogContent>
+  </Dialog>
+);
 
 const SignUpContent = ({ handleSignIn }) => {
   const theme = useTheme();
+  const { query } = useRouter();
+  const [dialogOpen, setDialogOpen] = useState(!!query.show);
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  if (dialogOpen)
+    return <SignUpDialog open={dialogOpen} handleClose={handleDialogClose} />;
 
   return (
     <Stack
