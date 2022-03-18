@@ -64,7 +64,17 @@ const ExpertOverviewPage = ({ content, tags }) => {
         by beginner.
       </Typography>
 
-      <ContentPage content={content} tags={tags} hideHeader />
+      <ContentPage
+        content={content}
+        tags={tags}
+        hideHeader
+        filterProps={{
+          hideFilterMenu: true,
+          defaultFilters: {
+            level: ["expert"],
+          },
+        }}
+      />
     </Container>
   );
 };

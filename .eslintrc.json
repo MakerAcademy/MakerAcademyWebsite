@@ -3,6 +3,7 @@
   "rules": {
     "react/no-unescaped-entities": "off",
     "react/jsx-no-duplicate-props": "off",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }

@@ -3,12 +3,12 @@ import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
-import { Box, Container, Grid, Stack } from "@mui/material";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import clientPromise from "lib/db/connect";
 import { getContent } from "lib/db/content";
 import _ from "lodash";
 import useTranslation from "next-translate/useTranslation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const searchData = (data, term) => {
   const searchedArr = data.filter((item) => {
@@ -69,7 +69,7 @@ const filterData = (data, filters) => {
   return result;
 };
 
-const ContentPage = ({ content, tags, hideHeader }) => {
+const ContentPage = ({ content, tags, hideHeader, filterProps = {} }) => {
   const initialContent = sortData(content, "newest");
   const [data, setData] = useState(initialContent);
   const [filteredData, setFilteredData] = useState(initialContent);
@@ -84,8 +84,8 @@ const ContentPage = ({ content, tags, hideHeader }) => {
   const handleAll = (term, sortType, filters) => {
     let newData = data;
 
-    if (filters) {
-      newData = filterData(newData, filters);
+    if (filters || filterProps.defaultFilters) {
+      newData = filterData(newData, filters || filterProps.defaultFilters);
     }
 
     if (term) {
@@ -98,6 +98,10 @@ const ContentPage = ({ content, tags, hideHeader }) => {
 
     setFilteredData(newData);
   };
+
+  useEffect(() => {
+    handleAll();
+  }, []);
 
   return (
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
@@ -114,14 +118,13 @@ const ContentPage = ({ content, tags, hideHeader }) => {
         <SearchFilterBar
           tags={tags}
           searchCallback={handleSearch}
-          // filtersCallback={handleFilter}
           withSort
           sortItems={CONTENT_SORT_ITEMS}
-          // sortCallback={handleSort}
           translateCategories
           dontTranslateSubCategoriesOf={["ALL"]}
           inputPlaceholder={t("search_bar")}
           changeCallback={handleAll}
+          {...filterProps}
         />
 
         {/* Content */}
@@ -139,6 +142,16 @@ const ContentPage = ({ content, tags, hideHeader }) => {
                 <ContentCard {...item} />
               </Grid>
             ))}
+
+            {!filteredData.length && (
+              <Typography
+                variant="h6"
+                sx={{ textAlign: "center", width: "100%" }}
+              >
+                No Content Found
+              </Typography>
+            )}
+
             {/* {filteredData.length > 0
               ? filteredData.map((item, i) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
