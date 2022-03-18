@@ -22,6 +22,8 @@ import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FormSelectField from "@components/FormComponents/FormSelectField";
+import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
 
 const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -57,7 +59,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   };
 
   const handleListItemClick = (doc) => {
-    setValue("documents", [..._documents, { _id: doc._id, title: doc.title }]);
+    setValue("documents", [..._documents, { _id: doc.published, title: doc.title }]);
   };
 
   const RenderListItem = ({ title, _id, remove, index }) => {
@@ -99,12 +101,21 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
           />
 
           <Stack direction="row" spacing={2}>
-            <FormTextField
+            {/* <FormTextField
               name="level"
               label="Level"
               control={control}
               fullWidth
               disabled={disabled}
+            /> */}
+
+            <FormSelectField
+              name="level"
+              label="Level"
+              control={control}
+              fullWidth
+              disabled={disabled}
+              options={CONTENT_DIFFICULTY_LEVELS}
             />
 
             <FormTextField
@@ -165,7 +176,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
         <DialogContent>
           <List sx={{ pt: 0 }}>
             {documents?.map((doc, i) => {
-              const selected = _documents?.find?.((i) => i._id === doc._id);
+              const selected = _documents?.find?.((i) => i._id === doc.published);
 
               return (
                 <React.Fragment key={i}>
