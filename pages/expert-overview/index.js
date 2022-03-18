@@ -1,9 +1,11 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
-import OverviewCarousel from "@components/carousels/OverviewCarousel";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
+import clientPromise from "lib/db/connect";
+import { getContent } from "lib/db/content";
 import React from "react";
+import ContentPage from "../content";
 
 const Section = ({ title, description }) => (
   <Box sx={{ mb: { xs: 3, md: 5 } }}>
@@ -18,7 +20,7 @@ const Section = ({ title, description }) => (
   </Box>
 );
 
-const ExpertOverviewPage = ({ content = [] }) => {
+const ExpertOverviewPage = ({ content, tags }) => {
   return (
     <Container sx={{ py: 7 }} maxWidth="xl">
       <BreadcrumbsSection
@@ -62,55 +64,20 @@ const ExpertOverviewPage = ({ content = [] }) => {
         by beginner.
       </Typography>
 
-      <Stack sx={{ my: 5 }} spacing={3}>
-        <Paper sx={{ p: 2 }}>
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
-            Beginner Content
-          </Typography>
-          <OverviewCarousel contents={content} />
-        </Paper>
-        <Paper sx={{ p: 2 }}>
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
-            Intermediate Content
-          </Typography>
-          <OverviewCarousel contents={content} />
-        </Paper>
-        <Paper sx={{ p: 2 }}>
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
-            Advanced Content
-          </Typography>
-          <OverviewCarousel contents={content} />
-        </Paper>
-      </Stack>
+      <ContentPage content={content} tags={tags} hideHeader />
     </Container>
   );
 };
 
 export async function getServerSideProps(context) {
-  // Add fetch to utils or api once backend complete
-  const data = [
-    ...Array(5)
-      .fill()
-      .map((o) => ({
-        title: "Facilitator Onboarding Program",
-        subtitle:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat elit in nulla porttitor tempus. Donec suscipit velit sit amet purus cursus dictum. ",
-        courses: [
-          ...Array(12)
-            .fill()
-            .map((i) => ({
-              title: "Lorem Ipsum is simply dummy text",
-              tags: ["Maker", "DeFi"],
-              timestamp: "Jan 27 2020",
-              content_type: "beginner",
-              duration: 8,
-            })),
-        ],
-      })),
-  ];
-
+  const client = await clientPromise;
+  const db = client.db();
+  const data = await getContent(db);
   return {
-    props: { content: data },
+    props: {
+      content: data[0],
+      tags: data[1],
+    },
   };
 }
 

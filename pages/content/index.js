@@ -69,7 +69,7 @@ const filterData = (data, filters) => {
   return result;
 };
 
-const ContentPage = ({ content, tags }) => {
+const ContentPage = ({ content, tags, hideHeader }) => {
   const initialContent = sortData(content, "newest");
   const [data, setData] = useState(initialContent);
   const [filteredData, setFilteredData] = useState(initialContent);
@@ -103,11 +103,13 @@ const ContentPage = ({ content, tags }) => {
     <Container sx={{ pt: 6, pb: 10 }} maxWidth="xl">
       <Stack justifyContent="center" alignItems="center" spacing={3}>
         {/* Breadcrumbs */}
-        <BreadcrumbsSection
-          title={t("content")}
-          subtitle={t("content_caption")}
-          sx={{ mb: 3 }}
-        />
+        {!hideHeader && (
+          <BreadcrumbsSection
+            title={t("content")}
+            subtitle={t("content_caption")}
+            sx={{ mb: 3 }}
+          />
+        )}
         {/* Search */}
         <SearchFilterBar
           tags={tags}

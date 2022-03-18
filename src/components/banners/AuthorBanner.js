@@ -12,22 +12,24 @@ import React, { useState } from "react";
 import { AuthorBgDark, AuthorBgLight } from "@utils/images";
 import ResponsiveText from "@components/ResponsiveText";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import RoundedButton from "@components/Buttons/RoundedButton";
+import RoundedButton from "@components/buttons/RoundedButton";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import TikTokIcon from "@mui/icons-material/Audiotrack";
 import EmailIcon from "@mui/icons-material/Email";
 import { grey } from "@mui/material/colors";
+import LanguageIcon from "@mui/icons-material/Language";
 
 const dummyTabs = ["all", "content", "programs"];
 
 const AuthorBanner = ({
   image,
-  name,
-  description,
-  socials,
+  firstName,
+  lastName,
+  bio,
+  socials = {},
   profile_link,
-  email,
+  walletAddress,
   sx = {},
 }) => {
   const theme = useTheme();
@@ -91,11 +93,11 @@ const AuthorBanner = ({
         minWidth: 0,
         borderRadius: "8px",
         backgroundColor: theme.palette.background.white,
-        borderColor: theme.palette.background.white,
+        border: `1px solid ${theme.palette.background.white}`,
         color: theme.palette.primary.black,
         "&:hover": {
-          backgroundColor: theme.palette.background.purple,
-          borderColor: theme.palette.background.purple,
+          backgroundColor: "transparent",
+          border: `1px solid ${theme.palette.background.main}`,
           color: theme.palette.primary.white,
         },
       }}
@@ -140,8 +142,11 @@ const AuthorBanner = ({
             }}
           >
             <img
-              src={image}
-              alt={name}
+              src={
+                image ||
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              }
+              alt={`${firstName} ${lastName}`}
               style={{
                 borderRadius: "20px",
                 height: 260,
@@ -162,12 +167,12 @@ const AuthorBanner = ({
                 User Profile
               </Typography>
               <ResponsiveText variant="h4" sx={{ fontWeight: 600, mb: 1.5 }}>
-                {name}
+                {firstName} {lastName}
               </ResponsiveText>
               <Typography variant="body2" sx={{ mb: 3, fontWeight: 300 }}>
-                {description}
+                {bio}
               </Typography>
-              <AddressBox address={profile_link} />
+              <AddressBox address={walletAddress || profile_link} />
             </Stack>
 
             {/* Social Links */}
@@ -189,9 +194,9 @@ const AuthorBanner = ({
                   </SocialLink>
                 )}
 
-                {socials.tiktok && (
+                {socials.otherLink && (
                   <SocialLink>
-                    <TikTokIcon />
+                    <LanguageIcon />
                   </SocialLink>
                 )}
 
@@ -202,9 +207,9 @@ const AuthorBanner = ({
                 )}
               </Stack>
 
-              <RoundedButton variant="white" sx={{ height: 40, width: "100%" }}>
+              {/* <RoundedButton variant="white" sx={{ height: 40, width: "100%" }}>
                 Follow
-              </RoundedButton>
+              </RoundedButton> */}
             </Stack>
           </Stack>
         </Stack>

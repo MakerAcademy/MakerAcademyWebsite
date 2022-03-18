@@ -1,6 +1,8 @@
 import AuthorBanner from "@components/banners/AuthorBanner";
 import ContentCard from "@components/cards/ContentCard";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
+import clientPromise from "lib/db/connect";
+import { getUserProfileById } from "lib/db/user";
 import React from "react";
 
 export const dummyUser = {
@@ -14,21 +16,22 @@ export const dummyUser = {
   walletAddress: "",
   content: [],
   username: "salmanfazal01",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum obcaecati dignissimos quae quo ad iste ipsum officiis deleniti asperiores sit.",
+  bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum obcaecati dignissimos quae quo ad iste ipsum officiis deleniti asperiores sit.",
   profile_link: "http://localhost:3000/profile/123",
   socials: { twitter: "#", telegram: "#", tiktok: "#", email: "#" },
   verified: true,
 };
 
-const Profile = () => {
+const Profile = ({ user }) => {
   return (
     <Container maxWidth="xl" sx={{ py: 8 }}>
       {/* TODO - replace with real user */}
-      <AuthorBanner {...dummyUser} sx={{ mb: { xs: 5, md: 8 } }} />
+      <AuthorBanner {...user} sx={{ mb: { xs: 5, md: 8 } }} />
+
+      <Typography>Coming Soon</Typography>
 
       {/* TODO - replace with real users published content */}
-      <Grid container spacing={5}>
+      {/* <Grid container spacing={5}>
         {Array(10)
           .fill()
           .map((_, i) => (
@@ -36,9 +39,23 @@ const Profile = () => {
               <ContentCard />
             </Grid>
           ))}
-      </Grid>
+      </Grid> */}
     </Container>
   );
 };
 
 export default Profile;
+
+export async function getServerSideProps(context) {
+  const uid = context.params.uid;
+
+  const client = await clientPromise;
+  const db = client.db();
+  const data = await getUserProfileById(db, uid);
+
+  return {
+    props: {
+      user: data,
+    },
+  };
+}

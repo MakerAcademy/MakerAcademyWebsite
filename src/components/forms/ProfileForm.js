@@ -80,11 +80,20 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 <SectionTitle disableMargin>Account Info</SectionTitle>
 
                 <Box>
-                  <FieldLabel>Display name</FieldLabel>
+                  <FieldLabel>First Name</FieldLabel>
                   <FormTextField
-                    name="name"
+                    name="firstName"
                     control={control}
-                    placeholder="Colby Anderson"
+                    placeholder="Colby"
+                  />
+                </Box>
+
+                <Box>
+                  <FieldLabel>Last Name</FieldLabel>
+                  <FormTextField
+                    name="lastName"
+                    control={control}
+                    placeholder="Anderson"
                   />
                 </Box>
 
@@ -98,12 +107,11 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 </Box>
 
                 <Box>
-                  <FieldLabel>Email</FieldLabel>
+                  <FieldLabel>Wallet Address</FieldLabel>
                   <FormTextField
-                    disabled
-                    name="email"
+                    name="walletAddress"
                     control={control}
-                    placeholder="abc@gmail.com"
+                    placeholder="0x012df34dd554rg6e78905t"
                   />
                 </Box>
 
@@ -125,9 +133,18 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 <SectionTitle disableMargin>Your Social Media</SectionTitle>
 
                 <Box>
+                  <FieldLabel>Email</FieldLabel>
+                  <FormTextField
+                    name="socials.email"
+                    control={control}
+                    placeholder="abc@gmail.com"
+                  />
+                </Box>
+
+                <Box>
                   <FieldLabel>Facebook</FieldLabel>
                   <FormTextField
-                    name="facebook"
+                    name="socials.facebook"
                     control={control}
                     placeholder="@colby_anderson"
                   />
@@ -136,16 +153,16 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 <Box>
                   <FieldLabel>Twitter</FieldLabel>
                   <FormTextField
-                    name="url"
+                    name="socials.twitter"
                     control={control}
                     placeholder="@colby_anderson"
                   />
                 </Box>
 
                 <Box>
-                  <FieldLabel>Discord</FieldLabel>
+                  <FieldLabel>Telegram</FieldLabel>
                   <FormTextField
-                    name="discord"
+                    name="socials.telegram"
                     control={control}
                     placeholder="Discord Link"
                   />
@@ -154,7 +171,7 @@ const ProfileForm = ({ values, handleSubmit: propsHandleSubmit }) => {
                 <Box>
                   <FieldLabel>Other</FieldLabel>
                   <FormTextField
-                    name="other_link"
+                    name="socials.otherLink"
                     control={control}
                     placeholder="Any other link you have"
                   />

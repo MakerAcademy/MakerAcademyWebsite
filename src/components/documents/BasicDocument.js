@@ -94,9 +94,10 @@ const BasicDocument = ({ data = {}, user }) => {
     )
       .then((response) => {
         if (response.ok) return response.json();
+        throw new Error("Something's wrong");
       })
       .then((data) => {
-        data.success && Router.reload();
+        setDocument((old) => ({ ...old, likes: data.message.value.likes }));
       });
   };
 

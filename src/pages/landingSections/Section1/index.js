@@ -2,6 +2,7 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
 import {
   Box,
+  Button,
   Container,
   Dialog,
   Divider,
@@ -24,7 +25,15 @@ const Section1 = () => {
   const { t } = useTranslation("home");
 
   return (
-    <Box>
+    <Box
+      sx={{
+        [theme.breakpoints.up("md")]: {
+          backgroundImage: `url(${HomeBg})`,
+          // backgroundPosition: "center center",
+          backgroundSize: "cover",
+        },
+      }}
+    >
       <Stack
         alignItems="center"
         justifyContent="center"
@@ -33,9 +42,6 @@ const Section1 = () => {
           pt: 8,
           [theme.breakpoints.up("md")]: {
             minHeight: "50vh",
-            backgroundImage: `url(${HomeBg})`,
-            // backgroundPosition: "center center",
-            backgroundSize: "cover",
           },
           [theme.breakpoints.up("lg")]: {
             minHeight: "60vh",
@@ -66,21 +72,22 @@ const Section1 = () => {
                 icon={<HowToRegIcon fontSize="small" />}
                 href="/sign-up?show=true"
               >
-                Sign Up
-              </RoundedButton>
-
-              <RoundedButton
-                sx={{ px: 4, py: 1.5 }}
-                icon={<PlayArrowIcon fontSize="small" />}
-                onClick={() => setDialogOpen(true)}
-                variant="outlined"
-              >
-                {t("play_video")}
+                {t("sign_up")}
               </RoundedButton>
             </Stack>
           </Stack>
         </Container>
       </Stack>
+
+      <Stack alignItems="flex-end" sx={{ width: "100%" }}>
+        <Button sx={{ px: 4, py: 1.5 }} onClick={() => setDialogOpen(true)}>
+          <Stack direction="row" alignItems="center">
+            <PlayArrowIcon fontSize="small" sx={{ mr: 0.5 }} />
+            <Typography>{t("demo_video")}</Typography>
+          </Stack>
+        </Button>
+      </Stack>
+
       <Divider />
 
       <Dialog
