@@ -9,6 +9,7 @@ const RoundedButton = ({
   variant,
   size,
   href,
+  shallow,
   onClick,
   ...props
 }) => {
@@ -78,7 +79,11 @@ const RoundedButton = ({
         ...getStyles(),
         ...sx,
       }}
-      onClick={() => (href ? router.push(href) : onClick?.())}
+      onClick={() =>
+        href
+          ? router.push(href, undefined, { shallow: !!shallow })
+          : onClick?.()
+      }
       {...props}
     >
       {icon ? (

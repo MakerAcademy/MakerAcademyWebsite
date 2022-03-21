@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-const SignInContent = ({ handleSignUp }) => {
+const SignInContent = ({}) => {
   const theme = useTheme();
   const [termsDialog, setTermsDialog] = useState(false);
   const [policyDialog, setPolicyDialog] = useState(false);
@@ -53,7 +53,8 @@ const SignInContent = ({ handleSignUp }) => {
           variant="white"
           fullWidth
           sx={{ maxWidth: 250 }}
-          onClick={handleSignUp}
+          href="/sign-up"
+          shallow
         >
           Sign Up
         </RoundedButton>

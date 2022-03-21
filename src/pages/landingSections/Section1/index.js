@@ -18,9 +18,11 @@ import ReactPlayer from "react-player/lazy";
 import CloseIcon from "@mui/icons-material/Close";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 
-const Section1 = () => {
+const Section1 = ({ user }) => {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const isLoggedIn = !!user.authenticated;
 
   const { t } = useTranslation("home");
 
@@ -67,26 +69,38 @@ const Section1 = () => {
               spacing={2}
               alignItems="center"
             >
-              <RoundedButton
-                sx={{ px: 4, py: 1.5 }}
-                icon={<HowToRegIcon fontSize="small" />}
-                href="/sign-up?show=true"
-              >
-                {t("sign_up")}
-              </RoundedButton>
+              {isLoggedIn ? (
+                <RoundedButton
+                  sx={{ px: 4, py: 1.5 }}
+                  icon={<PlayArrowIcon fontSize="small" />}
+                  onClick={() => setDialogOpen(true)}
+                >
+                  {t("demo_video")}
+                </RoundedButton>
+              ) : (
+                <RoundedButton
+                  sx={{ px: 4, py: 1.5 }}
+                  icon={<HowToRegIcon fontSize="small" />}
+                  href="/sign-up"
+                >
+                  {t("sign_up")}
+                </RoundedButton>
+              )}
             </Stack>
           </Stack>
         </Container>
       </Stack>
 
-      <Stack alignItems="flex-end" sx={{ width: "100%" }}>
-        <Button sx={{ px: 4, py: 1.5 }} onClick={() => setDialogOpen(true)}>
-          <Stack direction="row" alignItems="center">
-            <PlayArrowIcon fontSize="small" sx={{ mr: 0.5 }} />
-            <Typography>{t("demo_video")}</Typography>
-          </Stack>
-        </Button>
-      </Stack>
+      {!isLoggedIn && (
+        <Stack alignItems="flex-end" sx={{ width: "100%" }}>
+          <Button sx={{ px: 4, py: 1.5 }} onClick={() => setDialogOpen(true)}>
+            <Stack direction="row" alignItems="center">
+              <PlayArrowIcon fontSize="small" sx={{ mr: 0.5 }} />
+              <Typography>{t("demo_video")}</Typography>
+            </Stack>
+          </Button>
+        </Stack>
+      )}
 
       <Divider />
 

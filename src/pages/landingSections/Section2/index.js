@@ -1,3 +1,4 @@
+import { CommonContext } from "@context/commonContext";
 import {
   Box,
   Button,
@@ -10,8 +11,8 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext } from "react";
 
 const contributors = [
   {
@@ -39,16 +40,21 @@ const educators = [
     title: "add_your_content",
     buttonText: "creator_studio",
     link: "/studio",
+    showSignUpDialog: true,
   },
 ];
 
-const Section2 = () => {
+const Section2 = ({ user }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const router = useRouter();
+
+  const { setCommonValues } = useContext(CommonContext);
+
   const { t } = useTranslation("home");
 
-  const CustomCard = ({ title, buttonText, link }) => (
+  const CustomCard = ({ title, buttonText, link, showSignUpDialog }) => (
     <Card elevation={0}>
       <Box sx={{ py: 3, p: 2.2 }}>
         <Stack
@@ -59,21 +65,24 @@ const Section2 = () => {
         >
           <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
 
-          <Link href={link} passHref>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderWidth: "2px",
+              fontWeight: 500,
+              "&:hover": {
                 borderWidth: "2px",
-                fontWeight: 500,
-                "&:hover": {
-                  borderWidth: "2px",
-                },
-              }}
-            >
-              {t(buttonText)}
-            </Button>
-          </Link>
+              },
+            }}
+            onClick={() =>
+              showSignUpDialog && !user?.authenticated
+                ? setCommonValues({ signUpDialogOpen: true })
+                : router.push(link)
+            }
+          >
+            {t(buttonText)}
+          </Button>
         </Stack>
       </Box>
     </Card>

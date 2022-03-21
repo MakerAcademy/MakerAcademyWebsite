@@ -26,6 +26,7 @@ const commonProps = (Component, options = {}) => {
     return (
       <Component
         user={{
+          authenticated: !!session?.profile?._id,
           ...(session?.session?.user || {}),
           ...(session?.profile || {}),
         }}
