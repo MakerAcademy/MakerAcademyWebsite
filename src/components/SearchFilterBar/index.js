@@ -42,7 +42,7 @@ const parseFilters = (filters) => {
   );
 
   if (!_filters || !Object.keys(_filters).length) return null;
-  
+
   return _filters;
 };
 
@@ -402,7 +402,7 @@ const SearchFilterBar = ({
             <Select
               labelId="sort-label"
               value={sortBy}
-              label="Sort By"
+              label={t("sort_by")}
               onChange={(e) => setSortBy(e.target.value)}
             >
               {sortItems.map((name) => (
