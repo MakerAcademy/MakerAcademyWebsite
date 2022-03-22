@@ -75,7 +75,7 @@ const LandingFooter = ({ appConfig }) => {
                   key={i}
                   color="inherit"
                   underline="hover"
-                  sx={{ [theme.breakpoints.up("md")]: { pb: 2 } }}
+                  sx={{ [theme.breakpoints.up("md")]: { pb: 2, pr: 2 } }}
                 >
                   <Typography
                     sx={{

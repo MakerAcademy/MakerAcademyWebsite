@@ -24,11 +24,14 @@ import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FormSelectField from "@components/FormComponents/FormSelectField";
 import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
+import useTranslation from "next-translate/useTranslation";
 
 const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [documents, setDocuments] = useState([]);
+
+  const { t } = useTranslation("creator-studio");
 
   useEffect(() => {
     fetchPublishedDocs(setDocuments);
@@ -59,7 +62,10 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   };
 
   const handleListItemClick = (doc) => {
-    setValue("documents", [..._documents, { _id: doc.published, title: doc.title }]);
+    setValue("documents", [
+      ..._documents,
+      { _id: doc.published, title: doc.title },
+    ]);
   };
 
   const RenderListItem = ({ title, _id, remove, index }) => {
@@ -143,7 +149,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
             RenderHeader={
               <Stack direction={{ xs: "column", md: "row" }}>
                 <Typography variant="h6" sx={{ flex: 1 }}>
-                  Documents
+                  {t("documents")}
                 </Typography>
 
                 <Button
@@ -151,7 +157,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
                     setDialogOpen(true);
                   }}
                 >
-                  Add Document
+                  {t("add_document")}
                 </Button>
               </Stack>
             }
@@ -159,7 +165,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
 
           <Stack alignItems="flex-end">
             <RoundedButton type="submit" disabled={disabled}>
-              {edit ? "Edit Course" : "Create New Course"}
+              {edit ? t("edit_course") : t("create_new_course")}
             </RoundedButton>
           </Stack>
         </Stack>
@@ -171,12 +177,14 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
         fullWidth
         maxWidth="md"
       >
-        <DialogTitle>Select Document</DialogTitle>
+        <DialogTitle>{t("select_document")}</DialogTitle>
 
         <DialogContent>
           <List sx={{ pt: 0 }}>
             {documents?.map((doc, i) => {
-              const selected = _documents?.find?.((i) => i._id === doc.published);
+              const selected = _documents?.find?.(
+                (i) => i._id === doc.published
+              );
 
               return (
                 <React.Fragment key={i}>
@@ -199,7 +207,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Close</Button>
+          <Button onClick={() => setDialogOpen(false)}>{t("close")}</Button>
         </DialogActions>
       </Dialog>
     </>
