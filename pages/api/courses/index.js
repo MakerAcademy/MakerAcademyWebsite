@@ -3,11 +3,12 @@ import { addToContentDraft } from "lib/db/content";
 import { addToContent, createCourse, getOneCourse } from "lib/db/course";
 import validateJSON from "lib/db/utils";
 import { ObjectId } from "mongodb";
+import sanitize from "mongo-sanitize";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db();
-  const _id = req.query._id;
+  const _id = sanitize(req.query._id);
 
   switch (req.method) {
     case "GET":
@@ -35,7 +36,8 @@ async function fetchOneCourse(req, res, db, _id) {
 }
 
 async function createOneCourse(req, res, db, _id) {
-  const body = req.body;
+  const body = sanitize(req.body);
+
   const expectedFields = [];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
@@ -44,7 +46,7 @@ async function createOneCourse(req, res, db, _id) {
   body.author = ObjectId(body.author);
   body.documents = body.documents?.map((i) => ({ ...i, _id: ObjectId(i._id) }));
 
-  const isNewCourse = req.body.status === "published";
+  const isNewCourse = body.status === "published";
 
   try {
     const documentStatus = await createCourse(db, body);

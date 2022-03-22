@@ -2,9 +2,12 @@ import { Button, Hidden, IconButton } from "@mui/material";
 import React from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 const BackButton = ({ sx = {} }) => {
   const router = useRouter();
+
+  const { t } = useTranslation("common");
 
   const goBack = () => {
     router.back();
@@ -20,7 +23,7 @@ const BackButton = ({ sx = {} }) => {
 
       <Hidden smDown>
         <Button size="small" onClick={goBack} sx={{ ...sx }}>
-          <ArrowBackIosIcon sx={{ fontSize: 16 }} /> Back
+          <ArrowBackIosIcon sx={{ fontSize: 16 }} /> {t("back")}
         </Button>
       </Hidden>
     </>

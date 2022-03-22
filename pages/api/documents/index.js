@@ -17,10 +17,11 @@ import {
   getUserDocuments,
 } from "../../../lib/db/document";
 import validateJSON from "../../../lib/db/utils";
+import sanitize from "mongo-sanitize";
 
 export default async function handler(req, res) {
-  const _id = req.query._id;
-  const uid = req.query.uid;
+  const _id = sanitize(req.query._id);
+  const uid = sanitize(req.query.uid);
   const like = req.query.like;
   const getPublishedDocs = req.query.getPublishedDocs === "true";
   const getPendingDocs = req.query.getPendingDocs === "true";
@@ -122,7 +123,8 @@ async function fetchOneDoc(req, res, db, _id) {
 }
 
 async function createOneDoc(req, res, db, _id) {
-  const body = req.body;
+  const body = sanitize(req.body);
+
   const expectedFields = [];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
@@ -130,7 +132,7 @@ async function createOneDoc(req, res, db, _id) {
 
   body.author = ObjectId(body.author);
 
-  const isNewDoc = req.body.status === "published";
+  const isNewDoc = body.status === "published";
 
   try {
     const documentStatus = await createDocument(db, body);
@@ -195,7 +197,8 @@ async function unlikeDocument(req, res, db, _id, uid) {
 }
 
 async function acceptEditRequest(req, res, db) {
-  const body = req.body;
+  const body = sanitize(req.body);
+
   const { publishedId, draftId } = body;
 
   console.log("IN", body);
@@ -219,7 +222,8 @@ async function acceptEditRequest(req, res, db) {
 }
 
 async function rejectEditRequest(req, res, db) {
-  const body = req.body;
+  const body = sanitize(req.body);
+
   const { publishedId, draftId } = body;
 
   if (!publishedId || !draftId) {

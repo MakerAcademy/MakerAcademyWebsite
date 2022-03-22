@@ -6,12 +6,13 @@ import {
 import validateJSON from "lib/db/utils";
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../lib/db/connect";
+import sanitize from "mongo-sanitize";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db();
 
-  const _id = req.query._id;
+  const _id = sanitize(req.query._id);
   const getUsers = req.query.getAllUsers === "true";
 
   const updateProfile = req.query.updateProfile === "true";
@@ -59,7 +60,8 @@ async function fetchUserProfileById(req, res, db, _id) {
 }
 
 async function updateAUserProfile(req, res, db, _id) {
-  const body = req.body;
+  const body = sanitize(req.body);
+
   const expectedFields = [];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();
