@@ -10,14 +10,17 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const CreatorStudioNewDocument = ({ user }) => {
+const CreatorStudioNew = ({ user }) => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(null);
   const [type, setType] = useState("document");
+
+  const { t } = useTranslation("creator-studio");
 
   if (typeof window === "undefined")
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
@@ -119,7 +122,7 @@ const CreatorStudioNewDocument = ({ user }) => {
     <Container sx={{ py: 5 }} maxWidth="xl">
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <BackButton />
-        <Typography variant="h6">Create New Content</Typography>
+        <Typography variant="h6">{t("create_new_content")}</Typography>
       </Stack>
 
       <ToggleButtonGroup
@@ -130,8 +133,8 @@ const CreatorStudioNewDocument = ({ user }) => {
         fullWidth
         sx={{ maxWidth: 450, mb: 3 }}
       >
-        <ToggleButton value="document">Document</ToggleButton>
-        <ToggleButton value="course">Course</ToggleButton>
+        <ToggleButton value="document">{t("document")}</ToggleButton>
+        <ToggleButton value="course">{t("course")}</ToggleButton>
       </ToggleButtonGroup>
 
       {/* Form */}
@@ -159,4 +162,4 @@ const CreatorStudioNewDocument = ({ user }) => {
 
 export const getServerSideProps = withProtectedUser();
 
-export default CreatorStudioNewDocument;
+export default CreatorStudioNew;

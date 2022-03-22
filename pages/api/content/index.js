@@ -2,12 +2,13 @@ import { getUserContent, getUserEditSubmissions } from "lib/db/content";
 import clientPromise from "../../../lib/db/connect";
 import { getContent } from "../../../lib/db/content";
 import validateJSON from "../../../lib/db/utils";
+import sanitize from "mongo-sanitize";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db();
 
-  const uid = req.query.uid;
+  const uid = sanitize(req.query.uid);
   const getSubmissions = req.query.getSubmissions === "true";
 
   switch (req.method) {
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
 }
 
 async function fetchMoreContent(req, res, db) {
-  const body = req.body;
+  const body = sanitize(req.body);
   const expectedFields = ["filters", "lastItemTime"];
   if (!validateJSON(body, expectedFields)) {
     return res.status(400).end();

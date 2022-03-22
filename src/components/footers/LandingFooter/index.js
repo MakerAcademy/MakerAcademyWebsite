@@ -4,6 +4,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Box, Stack, Typography, useTheme, Link } from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
 import { aboutRoutes } from "pages/about-us";
 import React from "react";
 
@@ -33,11 +34,13 @@ const LandingFooter = ({ appConfig }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const { t } = useTranslation("common");
+
   return (
     <Box sx={{ py: 6, px: 4 }}>
       <Stack alignItems="center" justifyContent="center" spacing={2}>
         <Typography variant="h5" sx={{ pb: 4 }}>
-          Appendix
+          {t("appendix")}
         </Typography>
 
         <Stack
@@ -52,7 +55,7 @@ const LandingFooter = ({ appConfig }) => {
               underline="none"
             >
               <Typography variant="h6" sx={{ cursor: "pointer", mb: 2 }}>
-                About Us
+                {t("about_us")}
               </Typography>
             </Link>
 
@@ -72,7 +75,7 @@ const LandingFooter = ({ appConfig }) => {
                   key={i}
                   color="inherit"
                   underline="hover"
-                  sx={{ [theme.breakpoints.up("md")]: { pb: 2 } }}
+                  sx={{ [theme.breakpoints.up("md")]: { pb: 2, pr: 2 } }}
                 >
                   <Typography
                     sx={{
@@ -80,7 +83,7 @@ const LandingFooter = ({ appConfig }) => {
                       "&:hover": { textDecoration: "underline" },
                     }}
                   >
-                    {route.label}
+                    {t(route.label)}
                   </Typography>
                 </Link>
               ))}
@@ -90,7 +93,7 @@ const LandingFooter = ({ appConfig }) => {
           {/* Socials */}
           <Box>
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Socials
+              {t("socials")}
             </Typography>
 
             <Stack

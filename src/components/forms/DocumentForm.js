@@ -5,6 +5,7 @@ import FormTextField from "@components/FormComponents/FormTextField";
 import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -15,6 +16,8 @@ const DocumentForm = ({
   values = {},
 }) => {
   const [disabled, setDisabled] = useState(false);
+
+  const { t } = useTranslation("creator-studio");
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -108,7 +111,7 @@ const DocumentForm = ({
 
         <Stack alignItems="flex-end">
           <RoundedButton type="submit" disabled={disabled}>
-            {edit ? "Edit Document" : "Create New Document"}
+            {edit ? t("edit_document") : t("create_new_document")}
           </RoundedButton>
         </Stack>
       </Stack>

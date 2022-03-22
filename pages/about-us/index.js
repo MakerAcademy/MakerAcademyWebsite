@@ -11,21 +11,22 @@ import {
   useTheme,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 export const aboutRoutes = [
   {
-    label: "Mission, Vision, Strategy",
+    label: "mission_vision_strategy",
     value: "/about-us/mission-vision-strategy",
   },
-  { label: "Budget", value: "/about-us/budget" },
-  { label: "Improvement Proposals", value: "/about-us/imrovement-proposals" },
-  { label: "Status Updates", value: "/about-us/status-updates" },
-  { label: "Team", value: "/about-us/team" },
-  { label: "Privacy Policy", value: "/about-us/privacy-policy" },
-  { label: "Terms of Service", value: "/about-us/terms-of-service" },
+  { label: "budget", value: "/about-us/budget" },
+  { label: "improvement_proposals", value: "/about-us/imrovement-proposals" },
+  { label: "status_updates", value: "/about-us/status-updates" },
+  { label: "team", value: "/about-us/team" },
+  { label: "privacy_policy", value: "/about-us/privacy-policy" },
+  { label: "terms_of_service", value: "/about-us/terms-of-service" },
 ];
 
 const PageRenderer = ({ type, ...other }) => {
@@ -63,6 +64,8 @@ const AboutUsPage = () => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const { t } = useTranslation("about-us");
+
   useEffect(() => {
     router.push(page, undefined, { shallow: true });
   }, [page]);
@@ -77,7 +80,7 @@ const AboutUsPage = () => {
               page={page}
               setPage={setPage}
               // t={t}
-              title={"About Us"}
+              title={t("about_us")}
             />
           </Hidden>
 
@@ -92,7 +95,7 @@ const AboutUsPage = () => {
               },
             }}
           >
-            About Us
+            {t("about_us")}
           </Typography>
         </Stack>
 
@@ -106,7 +109,8 @@ const AboutUsPage = () => {
             {aboutRoutes.map((item, i) => (
               <Tab
                 key={i}
-                {...item}
+                value={item.value}
+                label={t(item.label)}
                 sx={{
                   textTransform: "inherit",
                   color: isDark ? grey[300] : grey[500],
@@ -119,7 +123,7 @@ const AboutUsPage = () => {
         <Divider />
 
         <Box sx={{ minHeight: "50vh" }}>
-          <PageRenderer type={page} />
+          <PageRenderer type={page} t={t} />
         </Box>
       </Stack>
     </Container>

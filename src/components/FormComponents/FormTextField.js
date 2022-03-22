@@ -10,6 +10,7 @@ const FormTextField = ({
   multiline,
   sx = {},
   variant = "outlined",
+  label,
   ...props
 }) => {
   const theme = useTheme();
@@ -26,14 +27,17 @@ const FormTextField = ({
           error={!!error}
           fullWidth
           variant={variant}
+          label={label}
           multiline={multiline}
           InputProps={{
             sx: {
               borderRadius: "8px",
-              fontSize: 14,
-              fontWeight: 300,
               py: multiline ? 1.5 : 0.5,
               px: multiline ? 2.5 : 1,
+              ".MuiInputBase-input": {
+                fontSize: 14,
+                fontWeight: 300,
+              },
             },
           }}
           sx={{
