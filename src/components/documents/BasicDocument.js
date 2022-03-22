@@ -20,7 +20,7 @@ import {
   parseDepths,
 } from "@utils/markdown";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -28,6 +28,9 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import commonProps from "@hoc/commonProps";
 import RoundedButton from "@components/buttons/RoundedButton";
 import EditIcon from "@mui/icons-material/Edit";
+import Router, { useRouter } from "next/router";
+import Link from "next/link";
+import { CommonContext } from "@context/commonContext";
 
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
@@ -39,7 +42,8 @@ function HeadingRenderer(props) {
 const BasicDocument = ({ data = {}, user }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
-  const [liked, setLiked] = useState(false);
+  const router = useRouter();
+  const { setCommonValues } = useContext(CommonContext);
 
   const uid = user?._id;
 
@@ -52,12 +56,13 @@ const BasicDocument = ({ data = {}, user }) => {
     contributors,
     views,
     likes,
-    likes_count = 0,
     author,
   } = document || {};
 
+  const liked = !!likes?.includes?.(uid);
+
   // Edit Button condition here
-  const isLoggedIn = !!user?.email; //&& user?._id === author;
+  const isLoggedIn = !!user?.authenticated; //&& user?._id === author;
 
   // Generate all Ids from markdown headings
   useEffect(() => {
@@ -77,13 +82,8 @@ const BasicDocument = ({ data = {}, user }) => {
     }
   }, [body]);
 
-  useEffect(() => {
-    const _liked = !!likes?.includes?.(uid);
-    setLiked(_liked);
-  }, [likes, uid]);
-
   const triggerLike = async () => {
-    if (!isLoggedIn) return null;
+    if (!isLoggedIn) return setCommonValues({ signUpDialogOpen: true });
 
     const res = await fetch(
       `/api/documents?_id=${_id}&uid=${uid}&like=${!liked}`,
@@ -96,9 +96,10 @@ const BasicDocument = ({ data = {}, user }) => {
     )
       .then((response) => {
         if (response.ok) return response.json();
+        throw new Error("Something's wrong");
       })
       .then((data) => {
-        setLiked(!liked);
+        setDocument((old) => ({ ...old, likes: data.message.value.likes }));
       });
   };
 
@@ -143,7 +144,11 @@ const BasicDocument = ({ data = {}, user }) => {
               <Stack direction="row" spacing={1}>
                 <Brightness1Icon sx={{ fontSize: 18, mt: 0.1 }} />
                 <Stack>
-                  <Typography>Author: {username}</Typography>
+                  <Link href={`/profile/123`} passHref>
+                    <Typography sx={{ cursor: "pointer" }}>
+                      Author: {username}
+                    </Typography>
+                  </Link>
                   <Typography>
                     Contributors:{" "}
                     {contributors &&
@@ -179,7 +184,6 @@ const BasicDocument = ({ data = {}, user }) => {
                 <Button
                   size="small"
                   onClick={triggerLike}
-                  disabled={!isLoggedIn}
                   sx={(theme) => ({ color: theme.palette.primary.inverse })}
                 >
                   {liked ? (
@@ -187,7 +191,7 @@ const BasicDocument = ({ data = {}, user }) => {
                   ) : (
                     <FavoriteBorderIcon fontSize="small" sx={{ mr: 0.7 }} />
                   )}
-                  Likes: {likes_count}
+                  Likes: {likes?.length || 0}
                 </Button>
               </Stack>
             </Stack>

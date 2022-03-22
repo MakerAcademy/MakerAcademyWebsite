@@ -1,5 +1,18 @@
 import { COMMON_CONTEXT_STORAGE } from "@constants";
+import { Dialog, DialogContent } from "@mui/material";
+import SignUpContent from "@pages/Auth/SignUpContent";
+import { useRouter } from "next/router";
 import React, { createContext, useEffect, useMemo, useState } from "react";
+
+const SignUpDialog = ({ open, handleClose }) => {
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent>
+        <SignUpContent inheritColor showSignUpButton />
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 // Create Context Object
 export const CommonContext = createContext({});
@@ -8,6 +21,8 @@ export const CommonContext = createContext({});
 export const CommonContextProvider = ({ children }) => {
   const [state, setState] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter();
 
   useMemo(() => {
     if (typeof window !== "undefined") {
@@ -25,6 +40,10 @@ export const CommonContextProvider = ({ children }) => {
     }
   }, [state, isLoading]);
 
+  useEffect(() => {
+    setCommonValues({ signUpDialogOpen: false });
+  }, [router.asPath]);
+
   const setCommonValues = (data = {}) => {
     setState((old) => ({
       ...old,
@@ -41,6 +60,11 @@ export const CommonContextProvider = ({ children }) => {
       value={{ commonState: state, setCommonValues, handleDrawerToggle }}
     >
       {children}
+
+      <SignUpDialog
+        open={!!state.signUpDialogOpen}
+        handleClose={() => setCommonValues({ signUpDialogOpen: false })}
+      />
     </CommonContext.Provider>
   );
 };

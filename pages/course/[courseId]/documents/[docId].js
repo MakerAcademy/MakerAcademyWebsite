@@ -1,10 +1,10 @@
-import CourseDocument from "@components/documents/CourseDocument";
 import React from "react";
 import clientPromise from "../../../../lib/db/connect";
-import { getOneDocument } from "../../../../lib/db/document";
 import BasicDocument from "@components/documents/BasicDocument";
+import { getOneCourse } from "lib/db/course";
 
 const DocumentPage = ({ doc }) => {
+  console.log(doc);
   return (
     <div>
       <BasicDocument data={doc} />
@@ -13,22 +13,26 @@ const DocumentPage = ({ doc }) => {
 };
 
 export async function getServerSideProps(context) {
-  const id = context.params.docId;
+  const id = context.params.courseId;
+  const docId = context.params.docId;
 
   if (!id) {
     return {
       props: {
-        doc: [],
+        doc: {},
       },
     };
   }
 
   const client = await clientPromise;
   const db = client.db();
-  const doc = await getOneDocument(db, id);
+  const course = await getOneCourse(db, id);
+
+  const doc = course?.docs?.find?.((i) => i._id === docId) || {};
+
   return {
     props: {
-      doc: doc,
+      doc,
     },
   };
 }

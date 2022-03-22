@@ -15,7 +15,6 @@ import {
   Collapse,
   Divider,
   FormControl,
-  IconButton,
   InputBase,
   InputLabel,
   List,
@@ -33,11 +32,18 @@ import {
 import React, { useEffect, useState } from "react";
 
 const parseFilters = (filters) => {
-  return filters.reduce((acc, { value: { category, subcategory } }) => {
-    if (typeof acc[category] === "undefined") acc[category] = [];
-    acc[category].push(subcategory);
-    return acc;
-  }, {});
+  const _filters = filters.reduce(
+    (acc, { value: { category, subcategory } }) => {
+      if (typeof acc[category] === "undefined") acc[category] = [];
+      acc[category].push(subcategory);
+      return acc;
+    },
+    {}
+  );
+
+  if (!_filters || !Object.keys(_filters).length) return null;
+  
+  return _filters;
 };
 
 const SearchFilterBar = ({
@@ -49,6 +55,7 @@ const SearchFilterBar = ({
   translateSubCategories,
   dontTranslateSubCategoriesOf = [],
   theme,
+  hideFilterMenu,
   t,
   changeCallback,
   inputPlaceholder = "Search Content",
@@ -304,56 +311,58 @@ const SearchFilterBar = ({
         }}
         onSubmit={triggerSearch}
       >
-        <Box
-          sx={{
-            backgroundColor: theme.palette.background.grey1,
-            borderTopLeftRadius: "10px",
-            borderBottomLeftRadius: "10px",
-          }}
-        >
-          <ClickAwayListener onClickAway={handleFilterClose}>
-            <Box sx={{ height: "100%" }}>
-              <Button
-                sx={{
-                  py: "10px",
-                  px: { xs: 2, md: 3, lg: 4 },
-                  textTransform: "inherit",
-                  height: "100%",
-                  color: theme.palette.primary.black,
-                }}
-                onClick={handleFilterOpen}
-              >
-                <Badge
-                  badgeContent={selectedFilters?.length}
-                  color="primary"
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
+        {!hideFilterMenu && (
+          <Box
+            sx={{
+              backgroundColor: theme.palette.background.grey1,
+              borderTopLeftRadius: "10px",
+              borderBottomLeftRadius: "10px",
+            }}
+          >
+            <ClickAwayListener onClickAway={handleFilterClose}>
+              <Box sx={{ height: "100%" }}>
+                <Button
                   sx={{
-                    "& .MuiBadge-badge": {
-                      left: -8,
-                      top: 5,
-                      border: `1px solid ${theme.palette.background.paper}`,
-                      padding: "0 4px",
-                      color: theme.palette.primary.white,
-                    },
+                    py: "10px",
+                    px: { xs: 2, md: 3, lg: 4 },
+                    textTransform: "inherit",
+                    height: "100%",
+                    color: theme.palette.primary.black,
                   }}
+                  onClick={handleFilterOpen}
                 >
-                  {t("filter")}
-                </Badge>
+                  <Badge
+                    badgeContent={selectedFilters?.length}
+                    color="primary"
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        left: -8,
+                        top: 5,
+                        border: `1px solid ${theme.palette.background.paper}`,
+                        padding: "0 4px",
+                        color: theme.palette.primary.white,
+                      },
+                    }}
+                  >
+                    {t("filter")}
+                  </Badge>
 
-                {!filterOpen ? (
-                  <ArrowDropDownIcon fontSize="small" sx={{ ml: 0.5 }} />
-                ) : (
-                  <ArrowDropUpIcon fontSize="small" sx={{ ml: 0.5 }} />
-                )}
-              </Button>
+                  {!filterOpen ? (
+                    <ArrowDropDownIcon fontSize="small" sx={{ ml: 0.5 }} />
+                  ) : (
+                    <ArrowDropUpIcon fontSize="small" sx={{ ml: 0.5 }} />
+                  )}
+                </Button>
 
-              {FilterMenuList()}
-            </Box>
-          </ClickAwayListener>
-        </Box>
+                {FilterMenuList()}
+              </Box>
+            </ClickAwayListener>
+          </Box>
+        )}
 
         <InputBase
           sx={{ ml: { xs: 1, md: 2 }, flex: 1 }}

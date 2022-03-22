@@ -80,6 +80,7 @@ export const darkTheme = createTheme({
       ...colors,
       default: "#fff",
       primary: "#fff",
+      grey1: grey[100],
     },
   },
   components: {

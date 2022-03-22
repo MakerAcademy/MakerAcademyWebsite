@@ -1,18 +1,7 @@
 import LoginForm from "@components/forms/SignInForm";
 import ResponsiveText from "@components/ResponsiveText";
-import GoogleIcon from "@mui/icons-material/Google";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import {
-  Box,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Stack, useTheme } from "@mui/material";
 import React from "react";
-import { signIn } from "next-auth/react";
 
 const SignInForm = ({ providers }) => {
   const theme = useTheme();

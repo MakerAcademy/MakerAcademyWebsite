@@ -27,3 +27,5 @@ export const TRUST_LEVELS = {
   2: "internal",
   3: "admin",
 };
+
+export const CONTENT_DIFFICULTY_LEVELS = ["beginner", "intermediate", "expert"];

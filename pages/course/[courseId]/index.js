@@ -26,12 +26,11 @@ const CoursePage = ({
   topic,
   subtopic,
   title,
-  likes = 0,
+  likes = [],
   liked = false,
 }) => {
   const { query } = useRouter();
-  const documents = course.documents;
-  const [c, setC] = useState(course.documents);
+  const documents = course.docs;
   const { courseId, programId } = query;
 
   if (!course) {
@@ -58,14 +57,10 @@ const CoursePage = ({
     return `/course/${courseId}/documents/${_id}`;
   };
 
-  const DocumentCard = ({
-    _id,
-    thumbnail_url,
-    title,
-    description,
-    author_id,
-    duration,
-  }) => {
+  const DocumentCard = (cardProps) => {
+    const { _id, thumbnail, title, description, topic, subtopic, duration } =
+      cardProps;
+
     return (
       <Link href={buildRedirect(_id)} passHref>
         <Card elevation={3} sx={{ cursor: "pointer" }}>
@@ -73,7 +68,7 @@ const CoursePage = ({
             <Grid container spacing={{ xs: 2, md: 3 }}>
               <Grid item xs={12} sm={4} md={3} lg={2}>
                 <img
-                  src={thumbnail_url}
+                  src={thumbnail}
                   alt={title}
                   style={{
                     maxHeight: 200,
@@ -91,8 +86,9 @@ const CoursePage = ({
                   </Typography>
 
                   <Stack direction="row" alignItems="center" spacing={1}>
-                    <Brightness1Icon sx={{ fontSize: 18 }} />
-                    <Typography>{author_id}</Typography>
+                    <Typography>
+                      {topic} • {subtopic}
+                    </Typography>
                   </Stack>
 
                   <Typography>{description}</Typography>
@@ -161,9 +157,9 @@ const CoursePage = ({
         </Stack>
 
         <Stack sx={{ pb: { xs: 3, md: 5 } }} spacing={3}>
-          {c.length > 0
-            ? c.map((doc, i) => <DocumentCard key={i} {...doc} />)
-            : documents.map((doc, i) => <DocumentCard key={i} {...doc} />)}
+          {documents.map((doc, i) => (
+            <DocumentCard key={i} {...doc} />
+          ))}
         </Stack>
       </Paper>
     </Container>

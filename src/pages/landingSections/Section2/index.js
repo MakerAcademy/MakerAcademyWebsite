@@ -1,3 +1,4 @@
+import { CommonContext } from "@context/commonContext";
 import {
   Box,
   Button,
@@ -10,19 +11,22 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext } from "react";
+
+const contributors = [
+  {
+    title: "acquire_skills",
+    buttonText: "contributor_overview",
+    link: "/contribute",
+  },
+];
 
 const learners = [
   {
     title: "new_to_maker",
     buttonText: "maker_overview",
     link: "/maker-overview",
-  },
-  {
-    title: "acquire_skills",
-    buttonText: "contributor_overview",
-    link: "/contribute",
   },
   {
     title: "in_depth_knowledge",
@@ -36,43 +40,52 @@ const educators = [
     title: "add_your_content",
     buttonText: "creator_studio",
     link: "/studio",
+    showSignUpDialog: true,
   },
 ];
 
-const Section2 = () => {
+const Section2 = ({ user }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const router = useRouter();
+
+  const { setCommonValues } = useContext(CommonContext);
+
   const { t } = useTranslation("home");
 
-  const CustomCard = ({ title, buttonText, link }) => (
-    <Link href={link}>
-      <Card elevation={0}>
-        <Box sx={{ py: 3, p: 2.2 }}>
-          <Stack
-            spacing={2}
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{
+  const CustomCard = ({ title, buttonText, link, showSignUpDialog }) => (
+    <Card elevation={0}>
+      <Box sx={{ py: 3, p: 2.2 }}>
+        <Stack
+          spacing={2}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography sx={{ fontWeight: 500 }}>{t(title)}</Typography>
+
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderWidth: "2px",
+              fontWeight: 500,
+              "&:hover": {
                 borderWidth: "2px",
-                fontWeight: 500,
-                "&:hover": {
-                  borderWidth: "2px",
-                },
-              }}
-            >
-              {t(buttonText)}
-            </Button>
-          </Stack>
-        </Box>
-      </Card>
-    </Link>
+              },
+            }}
+            onClick={() =>
+              showSignUpDialog && !user?.authenticated
+                ? setCommonValues({ signUpDialogOpen: true })
+                : router.push(link)
+            }
+          >
+            {t(buttonText)}
+          </Button>
+        </Stack>
+      </Box>
+    </Card>
   );
 
   return (
@@ -85,6 +98,7 @@ const Section2 = () => {
       <Container maxWidth="xl">
         <Grid container spacing={{ xs: 3, md: 6, lg: 10 }}>
           <Grid item xs={12} md={6}>
+            {/* Learners */}
             <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
               {t("for_learners")}
             </Typography>
@@ -96,12 +110,24 @@ const Section2 = () => {
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
+            {/* Educators */}
             <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
               {t("for_educators")}
             </Typography>
 
-            <Stack spacing={3}>
+            <Stack spacing={3} sx={{ mb: 3 }}>
               {educators.map((item, i) => (
+                <CustomCard {...item} key={i} />
+              ))}
+            </Stack>
+
+            {/* Contributors */}
+            <Typography variant="h6" sx={{ mb: 3, textAlign: "center" }}>
+              {t("for_contributors")}
+            </Typography>
+
+            <Stack spacing={3}>
+              {contributors.map((item, i) => (
                 <CustomCard {...item} key={i} />
               ))}
             </Stack>

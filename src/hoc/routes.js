@@ -29,7 +29,7 @@ export function withUser(gssp, options = {}) {
     return {
       props: {
         ...gsspData.props,
-        user: userData,
+        user: { authenticated: !!userData._id, ...userData },
       },
     };
   };
@@ -45,7 +45,7 @@ export function withProtectedUser(gssp, options = {}) {
     if (!data) {
       return {
         redirect: {
-          destination: "/sign-in",
+          destination: "/sign-up",
         },
       };
     }
@@ -72,7 +72,7 @@ export function withProtectedUser(gssp, options = {}) {
     return {
       props: {
         ...gsspData.props,
-        user: userData,
+        user: { authenticated: !!userData._id, ...userData },
       },
     };
   };

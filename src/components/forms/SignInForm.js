@@ -2,11 +2,11 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
-import React, { useEffect } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { getProviders, signIn } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const SignInForm = () => {
   // form validation rules

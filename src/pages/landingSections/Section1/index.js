@@ -2,6 +2,7 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
 import {
   Box,
+  Button,
   Container,
   Dialog,
   Divider,
@@ -15,15 +16,26 @@ import React, { useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import ReactPlayer from "react-player/lazy";
 import CloseIcon from "@mui/icons-material/Close";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
-const Section1 = () => {
+const Section1 = ({ user }) => {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const isLoggedIn = !!user.authenticated;
 
   const { t } = useTranslation("home");
 
   return (
-    <Box>
+    <Box
+      sx={{
+        [theme.breakpoints.up("md")]: {
+          backgroundImage: `url(${HomeBg})`,
+          // backgroundPosition: "center center",
+          backgroundSize: "cover",
+        },
+      }}
+    >
       <Stack
         alignItems="center"
         justifyContent="center"
@@ -32,9 +44,6 @@ const Section1 = () => {
           pt: 8,
           [theme.breakpoints.up("md")]: {
             minHeight: "50vh",
-            backgroundImage: `url(${HomeBg})`,
-            // backgroundPosition: "center center",
-            backgroundSize: "cover",
           },
           [theme.breakpoints.up("lg")]: {
             minHeight: "60vh",
@@ -55,16 +64,44 @@ const Section1 = () => {
               {t("source_for_education")}
             </Typography>
 
-            <RoundedButton
-              sx={{ px: 4, py: 1.5 }}
-              icon={<PlayArrowIcon fontSize="small" />}
-              onClick={() => setDialogOpen(true)}
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={2}
+              alignItems="center"
             >
-              {t("play_video")}
-            </RoundedButton>
+              {isLoggedIn ? (
+                <RoundedButton
+                  sx={{ px: 4, py: 1.5 }}
+                  icon={<PlayArrowIcon fontSize="small" />}
+                  onClick={() => setDialogOpen(true)}
+                >
+                  {t("demo_video")}
+                </RoundedButton>
+              ) : (
+                <RoundedButton
+                  sx={{ px: 4, py: 1.5 }}
+                  icon={<HowToRegIcon fontSize="small" />}
+                  href="/sign-up"
+                >
+                  {t("sign_up")}
+                </RoundedButton>
+              )}
+            </Stack>
           </Stack>
         </Container>
       </Stack>
+
+      {!isLoggedIn && (
+        <Stack alignItems="flex-end" sx={{ width: "100%" }}>
+          <Button sx={{ px: 4, py: 1.5 }} onClick={() => setDialogOpen(true)}>
+            <Stack direction="row" alignItems="center">
+              <PlayArrowIcon fontSize="small" sx={{ mr: 0.5 }} />
+              <Typography>{t("demo_video")}</Typography>
+            </Stack>
+          </Button>
+        </Stack>
+      )}
+
       <Divider />
 
       <Dialog

@@ -3,7 +3,7 @@ import ResponsiveText from "@components/ResponsiveText";
 import { Stack, useTheme } from "@mui/material";
 import React from "react";
 
-const SignUpContent = ({ handleSignIn }) => {
+const SignUpContent = ({ inheritColor, showSignUpButton }) => {
   const theme = useTheme();
 
   return (
@@ -14,7 +14,7 @@ const SignUpContent = ({ handleSignIn }) => {
       sx={{
         py: { xs: 3, md: 5 },
         height: "100%",
-        color: theme.palette.primary.white,
+        color: inheritColor ? "inherit" : theme.palette.primary.white,
         textAlign: "center",
       }}
     >
@@ -58,14 +58,27 @@ const SignUpContent = ({ handleSignIn }) => {
         </ResponsiveText>
       </Stack>
 
-      <RoundedButton
-        variant="white"
-        fullWidth
-        sx={{ maxWidth: 250 }}
-        onClick={handleSignIn}
-      >
-        Sign In
-      </RoundedButton>
+      {showSignUpButton ? (
+        <RoundedButton
+          variant="outlined"
+          fullWidth
+          sx={{ maxWidth: 250 }}
+          href="/sign-up"
+          shallow
+        >
+          Sign Up
+        </RoundedButton>
+      ) : (
+        <RoundedButton
+          variant="white"
+          fullWidth
+          sx={{ maxWidth: 250 }}
+          href="/sign-in"
+          shallow
+        >
+          Sign In
+        </RoundedButton>
+      )}
     </Stack>
   );
 };

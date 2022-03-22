@@ -15,19 +15,15 @@ const AuthForm = ({ appConfig, providers }) => {
   const theme = useTheme();
   const { pathname } = useRouter();
 
-  const [mode, setMode] = useState(pathname === SIGNIN ? SIGNIN : SIGNUP);
+  const mode = pathname === SIGNIN ? SIGNIN : SIGNUP;
 
   const { logoDark, projectName } = appConfig;
-
-  const triggerMode = () => {
-    setMode((old) => (old === SIGNUP ? SIGNIN : SIGNUP));
-  };
 
   const CloseButton = () => (
     <CloseIcon
       onClick={() => Router.push("/")}
       sx={{
-        zIndex: 999999,
+        zIndex: 1,
         fontSize: 55,
         color: theme.palette.text.disabled,
         cursor: "pointer",
@@ -57,7 +53,7 @@ const AuthForm = ({ appConfig, providers }) => {
             spacing={2}
             sx={{ p: 3 }}
           >
-            <Link href="/">
+            <Link href="/" passHref>
               <img
                 src={logoDark}
                 alt={projectName}
@@ -88,11 +84,7 @@ const AuthForm = ({ appConfig, providers }) => {
               }}
               maxWidth="xs"
             >
-              {mode === SIGNIN ? (
-                <SignInContent handleSignUp={triggerMode} />
-              ) : (
-                <SignUpContent handleSignIn={triggerMode} />
-              )}
+              {mode === SIGNIN ? <SignInContent /> : <SignUpContent />}
             </Container>
           </Box>
         </Stack>

@@ -5,16 +5,18 @@ import { useWatch } from "react-hook-form";
 const PreviewProfileCard = ({ control }) => {
   const theme = useTheme();
 
-  const name = useWatch({ control, name: "name" }) || "Colby Anderson";
-  const title = useWatch({ control, name: "title" }) || "Educator";
-  const bio =
-    useWatch({ control, name: "bio" }) ||
-    "Lorem ipsum dolor sit amet,consectetur adipisicing elit. Quis non, fugit totam vel laboriosam vitae.";
-  const email =
-    useWatch({ control, name: "email" }) || "colby@makeracademy.com";
-  const _image =
-    useWatch({ control, name: "image" }) ||
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  const firstName = useWatch({ control, name: "firstName" });
+  const lastName = useWatch({ control, name: "lastName" });
+  const bio = useWatch({ control, name: "bio" });
+  const title = useWatch({ control, name: "title" });
+  const email = useWatch({ control, name: "email" });
+  const _image = useWatch({
+    control,
+    name: "email",
+    defaultValue:
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+  });
+
   const image =
     typeof _image === "object" ? URL.createObjectURL(_image) : _image;
 
@@ -34,7 +36,9 @@ const PreviewProfileCard = ({ control }) => {
           }}
         />
 
-        <Typography variant="h6">{name}</Typography>
+        <Typography variant="h6">
+          {firstName} {lastName}
+        </Typography>
 
         <Typography sx={{ fontWeight: 500 }}>{title}</Typography>
 
