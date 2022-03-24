@@ -9,7 +9,7 @@ module.exports = withPlugins([withImages, nextTranslate], {
   },
   webpack: (config, options) => {
     config.module.rules.push({
-      test: /\.pdf/,
+      test: /\.tex|\.pdf/,
       type: "asset/resource",
       generator: {
         filename: "static/[hash][ext]",
