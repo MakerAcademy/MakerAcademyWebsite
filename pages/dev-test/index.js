@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-css-tags */
+import AssessmentForm from "@components/forms/AssessmentForm";
 import PdfViewer from "@components/PdfViewer";
 import { withProtectedUser } from "@hoc/routes";
-import { Container, Typography } from "@mui/material";
+import { Container, Divider, Typography } from "@mui/material";
 import Head from "next/head";
 import React from "react";
 import Latex from "react-latex";
@@ -26,9 +27,17 @@ const DevTest = () => {
         sx={{ height: 750 }}
       />
 
+      <Divider sx={{ my: 3 }} />
+
       {/* Latex */}
-      <Typography sx={{ mt: 3 }}>Latex Example 1</Typography>
+      <Typography>Latex Example 1</Typography>
       <Latex>{LaTeX}</Latex>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Quiz Form */}
+      <Typography>Assessment Form</Typography>
+      <AssessmentForm />
     </Container>
   );
 };

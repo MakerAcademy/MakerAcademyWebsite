@@ -1,41 +1,34 @@
 import RoundedButton from "@components/buttons/RoundedButton";
+import FormAssessment from "@components/FormComponents/FormAssessment";
 import FormFieldArray from "@components/FormComponents/FormFieldArray";
+import FormSelectField from "@components/FormComponents/FormSelectField";
 import FormTextField from "@components/FormComponents/FormTextField";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  Box,
+  ASSESSMENT_QUESTION_TYPES,
+  CONTENT_DIFFICULTY_LEVELS,
+} from "@constants/";
+import { yupResolver } from "@hookform/resolvers/yup";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
+  Paper,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
-import { fetchPublishedDocs } from "@pages/Admin/helperFunctions";
+import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FormSelectField from "@components/FormComponents/FormSelectField";
-import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
-import useTranslation from "next-translate/useTranslation";
 
 const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
-  const [dialogOpen, setDialogOpen] = useState(null);
   const [disabled, setDisabled] = useState(false);
-  const [documents, setDocuments] = useState([]);
+  const theme = useTheme();
 
   const { t } = useTranslation("creator-studio");
 
-  useEffect(() => {
-    fetchPublishedDocs(setDocuments);
-  }, []);
+  useEffect(() => {}, []);
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -54,32 +47,71 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const { handleSubmit, reset, control, getValues, setValue } =
     useForm(formOptions);
 
-  const _documents = useWatch({ control, name: "documents" }) || [];
+  const _questions = useWatch({ control, name: "questions" }) || [];
 
   const onSubmit = (data, e) => {
     setDisabled(true);
     propsHandleSubmit({ ...data });
   };
 
-  const handleListItemClick = (doc) => {
-    setValue("documents", [
-      ..._documents,
-      { _id: doc.published, title: doc.title },
-    ]);
+  const RenderListItem = (_props) => {
+    const { remove, index } = _props;
+
+    return (
+      <Paper
+        elevation={0}
+        sx={{
+          backgroundColor: theme.palette.background.grey1,
+          width: "100%",
+          p: 2,
+        }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ width: "100%" }}
+          spacing={4}
+          alignItems="flex-start"
+        >
+          <Stack spacing={2} sx={{ width: "100%" }}>
+            <FormTextField
+              name={`questions[${index}].title`}
+              label="Question"
+              control={control}
+              fullWidth
+              disabled={disabled}
+            />
+
+            <FormSelectField
+              name={`questions[${index}].type`}
+              label="Question Type"
+              control={control}
+              fullWidth
+              disabled={disabled}
+              options={ASSESSMENT_QUESTION_TYPES}
+            />
+
+            <FormAssessment control={control} type={_questions[index]?.type} />
+          </Stack>
+
+          <IconButton onClick={() => remove(index)} size="small">
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
+      </Paper>
+    );
   };
 
-  const RenderListItem = ({ title, _id, remove, index }) => {
+  const RenderHeader = ({ append }) => {
     return (
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        sx={{ width: "100%" }}
-      >
-        <ListItemText primary={title} secondary={_id} />
+      <Stack direction={{ xs: "column", md: "row" }}>
+        <Typography variant="h6" sx={{ flex: 1 }}>
+          {t("questions")}
+        </Typography>
 
-        <IconButton onClick={() => remove(index)} size="small">
-          <DeleteIcon />
-        </IconButton>
+        <Button onClick={() => append({ type: "boolean" })}>
+          {t("add_question")}
+        </Button>
       </Stack>
     );
   };
@@ -144,24 +176,10 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
           <FormFieldArray
             list
             enableDragAndDrop
-            control={control}
-            name="documents"
             RenderListItem={RenderListItem}
-            RenderHeader={
-              <Stack direction={{ xs: "column", md: "row" }}>
-                <Typography variant="h6" sx={{ flex: 1 }}>
-                  {t("documents")}
-                </Typography>
-
-                <Button
-                  onClick={() => {
-                    setDialogOpen(true);
-                  }}
-                >
-                  {t("add_document")}
-                </Button>
-              </Stack>
-            }
+            control={control}
+            name="questions"
+            RenderHeader={RenderHeader}
           />
 
           <Stack alignItems="flex-end">
@@ -171,46 +189,6 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
           </Stack>
         </Stack>
       </form>
-
-      <Dialog
-        onClose={() => setDialogOpen(false)}
-        open={!!dialogOpen}
-        fullWidth
-        maxWidth="md"
-      >
-        <DialogTitle>{t("select_document")}</DialogTitle>
-
-        <DialogContent>
-          <List sx={{ pt: 0 }}>
-            {documents?.map((doc, i) => {
-              const selected = _documents?.find?.(
-                (i) => i._id === doc.published
-              );
-
-              return (
-                <React.Fragment key={i}>
-                  <ListItem
-                    button
-                    disabled={!!selected}
-                    onClick={() => !selected && handleListItemClick(doc)}
-                  >
-                    <ListItemText
-                      primary={doc.title}
-                      secondary={doc.username}
-                    />
-                  </ListItem>
-
-                  <Divider />
-                </React.Fragment>
-              );
-            })}
-          </List>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>{t("close")}</Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

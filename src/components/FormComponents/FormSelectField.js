@@ -31,6 +31,7 @@ const FormSelectField = ({
           sx={{
             height: "auto",
             ".MuiInputBase-root": {
+              minHeight: 45,
               height: "100%",
               borderRadius: "8px",
               fontSize: 14,
