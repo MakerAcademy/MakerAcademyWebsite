@@ -1,5 +1,5 @@
+import AssessmentBuilder from "@components/AssessmentBuilder";
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormAssessment from "@components/FormComponents/FormAssessment";
 import FormFieldArray from "@components/FormComponents/FormFieldArray";
 import FormSelectField from "@components/FormComponents/FormSelectField";
 import FormTextField from "@components/FormComponents/FormTextField";
@@ -91,7 +91,11 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
               options={ASSESSMENT_QUESTION_TYPES}
             />
 
-            <FormAssessment control={control} type={_questions[index]?.type} />
+            <AssessmentBuilder
+              control={control}
+              type={_questions[index]?.type}
+              name={`questions[${index}].question`}
+            />
           </Stack>
 
           <IconButton onClick={() => remove(index)} size="small">
@@ -174,9 +178,9 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
           </Stack>
 
           <FormFieldArray
-            list
-            enableDragAndDrop
-            RenderListItem={RenderListItem}
+            // list
+            // enableDragAndDrop
+            Elements={RenderListItem}
             control={control}
             name="questions"
             RenderHeader={RenderHeader}

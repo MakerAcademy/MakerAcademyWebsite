@@ -21,19 +21,19 @@ const DevTest = () => {
       </Head>
 
       {/* PDF */}
-      <Typography>PDF Example</Typography>
+      {/* <Typography>PDF Example</Typography>
       <PdfViewer
         url="https://www.orimi.com/pdf-test.pdf"
         sx={{ height: 750 }}
       />
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3 }} /> */}
 
       {/* Latex */}
-      <Typography>Latex Example 1</Typography>
+      {/* <Typography>Latex Example 1</Typography>
       <Latex>{LaTeX}</Latex>
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3 }} /> */}
 
       {/* Quiz Form */}
       <Typography>Assessment Form</Typography>
