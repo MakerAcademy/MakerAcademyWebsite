@@ -32,11 +32,11 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
 
   // form validation rules
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required("Required"),
-    description: Yup.string().required("Required"),
-    level: Yup.string().required("Required"),
-    topic: Yup.string().required("Required"),
-    subtopic: Yup.string().required("Required"),
+    // title: Yup.string().required("Required"),
+    // description: Yup.string().required("Required"),
+    // level: Yup.string().required("Required"),
+    // topic: Yup.string().required("Required"),
+    // subtopic: Yup.string().required("Required"),
   });
 
   const formOptions = {
@@ -50,8 +50,9 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const _questions = useWatch({ control, name: "questions" }) || [];
 
   const onSubmit = (data, e) => {
-    setDisabled(true);
-    propsHandleSubmit({ ...data });
+    // setDisabled(true);
+    console.log(data);
+    propsHandleSubmit?.({ ...data });
   };
 
   const RenderListItem = (_props) => {
@@ -125,8 +126,8 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <FormTextField
-            name="title"
-            label="Title"
+            name="question"
+            label="Question"
             control={control}
             fullWidth
             disabled={disabled}
@@ -188,7 +189,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
 
           <Stack alignItems="flex-end">
             <RoundedButton type="submit" disabled={disabled}>
-              {edit ? t("edit_course") : t("create_new_course")}
+              {edit ? t("edit_assessment") : t("create_new_assessment")}
             </RoundedButton>
           </Stack>
         </Stack>

@@ -1,4 +1,5 @@
 import React from "react";
+import CheckboxOptions from "./Checkbox";
 import File from "./File";
 import MultipleChoice from "./MultipleChoice";
 import Text from "./Text";
@@ -8,6 +9,9 @@ const AssessmentBuilder = ({ type, ...props }) => {
     case "multiple_choice":
       return <MultipleChoice {...props} />;
 
+    case "checkbox":
+      return <CheckboxOptions {...props} />;
+
     case "text":
       return <Text {...props} />;
 
@@ -15,7 +19,7 @@ const AssessmentBuilder = ({ type, ...props }) => {
       return <File {...props} />;
 
     default:
-      return <>Type</>;
+      return <></>;
   }
 };
 

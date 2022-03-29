@@ -3,7 +3,7 @@ import FormTextField from "@components/FormComponents/FormTextField";
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MultipleChoice = ({ control, name, ...other }) => {
+const CheckboxOptions = ({ control, name, ...other }) => {
   const RenderHeader = ({ append }) => {
     return (
       <Stack direction={{ xs: "column", md: "row" }}>
@@ -11,9 +11,7 @@ const MultipleChoice = ({ control, name, ...other }) => {
           Options
         </Typography>
 
-        <Button onClick={() => append()}>
-          Add Option
-        </Button>
+        <Button onClick={() => append()}>Add Option</Button>
       </Stack>
     );
   };
@@ -37,4 +35,4 @@ const MultipleChoice = ({ control, name, ...other }) => {
   );
 };
 
-export default MultipleChoice;
+export default CheckboxOptions;

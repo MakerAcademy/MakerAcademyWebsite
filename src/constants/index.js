@@ -34,6 +34,5 @@ export const ASSESSMENT_QUESTION_TYPES = [
   "multiple_choice",
   "checkbox",
   "text",
-  "boolean",
   "file",
 ];

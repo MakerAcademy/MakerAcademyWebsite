@@ -44,7 +44,7 @@ const FormSelectField = ({
           <InputLabel id="select-field">{label}</InputLabel>
           <Select
             id="select-field"
-            helperText={error ? error.message : null}
+            // helperText={error ? error.message : null}
             error={!!error}
             label={label}
             {...props}

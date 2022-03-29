@@ -40,7 +40,7 @@ const FormRadioGroup = ({
           <FormLabel id="radio-id">{label}</FormLabel>
           <RadioGroup
             aria-labelledby="radio-id"
-            helperText={error ? error.message : null}
+            // helperText={error ? error.message : null}
             label={label}
             {...props}
             {...field}
