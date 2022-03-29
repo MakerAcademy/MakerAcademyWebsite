@@ -95,7 +95,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
             <AssessmentBuilder
               control={control}
               type={_questions[index]?.type}
-              name={`questions[${index}].question`}
+              name={`questions[${index}].options`}
             />
           </Stack>
 
@@ -126,8 +126,8 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <FormTextField
-            name="question"
-            label="Question"
+            name="title"
+            label="Title"
             control={control}
             fullWidth
             disabled={disabled}
