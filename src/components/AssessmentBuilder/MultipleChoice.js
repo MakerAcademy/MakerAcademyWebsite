@@ -11,29 +11,33 @@ const MultipleChoice = ({ control, name, ...other }) => {
           Options
         </Typography>
 
-        <Button onClick={() => append()}>
-          Add Option
-        </Button>
+        <Button onClick={() => append()}>Add Option</Button>
       </Stack>
     );
   };
 
   return (
-    <div>
+    <Stack spacing={2}>
+      <FormTextField
+        control={control}
+        name={`${name}.answer`}
+        label="Correct Answer"
+      />
+
       <FormFieldArray
-        name={name}
+        name={`${name}.options`}
         RenderHeader={RenderHeader}
         Elements={({ remove, index }) => (
           <FormTextField
             control={control}
-            name={`${name}.${index}`}
+            name={`${name}.options.${index}`}
             placeholder={`Option ${index + 1}`}
           />
         )}
         control={control}
         {...other}
       />
-    </div>
+    </Stack>
   );
 };
 

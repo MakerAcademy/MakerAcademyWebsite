@@ -68,6 +68,22 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
     ]);
   };
 
+  const RenderHeader = () => (
+    <Stack direction={{ xs: "column", md: "row" }}>
+      <Typography variant="h6" sx={{ flex: 1 }}>
+        {t("documents")}
+      </Typography>
+
+      <Button
+        onClick={() => {
+          setDialogOpen(true);
+        }}
+      >
+        {t("add_document")}
+      </Button>
+    </Stack>
+  );
+
   const RenderListItem = ({ title, _id, remove, index }) => {
     return (
       <Stack
@@ -147,21 +163,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
             control={control}
             name="documents"
             RenderListItem={RenderListItem}
-            RenderHeader={
-              <Stack direction={{ xs: "column", md: "row" }}>
-                <Typography variant="h6" sx={{ flex: 1 }}>
-                  {t("documents")}
-                </Typography>
-
-                <Button
-                  onClick={() => {
-                    setDialogOpen(true);
-                  }}
-                >
-                  {t("add_document")}
-                </Button>
-              </Stack>
-            }
+            RenderHeader={RenderHeader}
           />
 
           <Stack alignItems="flex-end">

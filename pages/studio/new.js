@@ -1,4 +1,5 @@
 import BackButton from "@components/buttons/BackButton";
+import AssessmentBuilderForm from "@components/forms/AssessmentBuilderForm";
 import CourseForm from "@components/forms/CourseForm";
 import { withProtectedUser } from "@hoc/routes";
 import {
@@ -101,8 +102,12 @@ const CreatorStudioNew = ({ user }) => {
       });
   };
 
-  const handleTypeChange = () => {
-    setType((old) => (old === "document" ? "course" : "document"));
+  const handleAssessmentSubmit = async (data) => {
+    console.log(data);
+  };
+
+  const handleTypeChange = (v) => {
+    setType(v);
   };
 
   const handleSnackbarClose = () => {
@@ -129,12 +134,13 @@ const CreatorStudioNew = ({ user }) => {
         color="primary"
         value={type}
         exclusive
-        onChange={handleTypeChange}
+        onChange={(_, v) => handleTypeChange(v)}
         fullWidth
         sx={{ maxWidth: 450, mb: 3 }}
       >
         <ToggleButton value="document">{t("document")}</ToggleButton>
         <ToggleButton value="course">{t("course")}</ToggleButton>
+        <ToggleButton value="assessment">{t("assessment")}</ToggleButton>
       </ToggleButtonGroup>
 
       {/* Form */}
@@ -143,6 +149,10 @@ const CreatorStudioNew = ({ user }) => {
       )}
 
       {type === "course" && <CourseForm handleSubmit={handleCourseSubmit} />}
+
+      {type === "assessment" && (
+        <AssessmentBuilderForm handleSubmit={handleAssessmentSubmit} />
+      )}
 
       {/* Submitted alert */}
       {submitted && (

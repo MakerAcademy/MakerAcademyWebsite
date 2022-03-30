@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-css-tags */
-import AssessmentForm from "@components/forms/AssessmentForm";
+import AssessmentBuilderForm from "@components/forms/AssessmentBuilderForm";
 import PdfViewer from "@components/PdfViewer";
 import { withProtectedUser } from "@hoc/routes";
 import { Container, Divider, Typography } from "@mui/material";
@@ -25,9 +25,9 @@ const DevTest = () => {
       <PdfViewer
         url="https://www.orimi.com/pdf-test.pdf"
         sx={{ height: 750 }}
-      />
+      /> */}
 
-      <Divider sx={{ my: 3 }} /> */}
+      <Divider sx={{ my: 3 }} />
 
       {/* Latex */}
       {/* <Typography>Latex Example 1</Typography>
@@ -37,11 +37,11 @@ const DevTest = () => {
 
       {/* Quiz Form */}
       <Typography>Assessment Form</Typography>
-      <AssessmentForm />
+      <AssessmentBuilderForm />
     </Container>
   );
 };
 
-export const getServerSideProps = withProtectedUser(null, { trustLevel: 1 });
+// export const getServerSideProps = withProtectedUser(null, { trustLevel: 1 });
 
 export default DevTest;

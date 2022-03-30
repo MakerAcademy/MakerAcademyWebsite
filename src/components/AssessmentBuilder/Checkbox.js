@@ -4,6 +4,8 @@ import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
 const CheckboxOptions = ({ control, name, ...other }) => {
+  console.log(name);
+
   const RenderHeader = ({ append }) => {
     return (
       <Stack direction={{ xs: "column", md: "row" }}>
@@ -17,21 +19,27 @@ const CheckboxOptions = ({ control, name, ...other }) => {
   };
 
   return (
-    <div>
+    <Stack spacing={2}>
+      <FormTextField
+        control={control}
+        name={`${name}.answer`}
+        label="Correct Answer"
+      />
+
       <FormFieldArray
-        name={name}
+        name={`${name}.options`}
         RenderHeader={RenderHeader}
         Elements={({ remove, index }) => (
           <FormTextField
             control={control}
-            name={`${name}.${index}`}
+            name={`${name}.options.${index}`}
             placeholder={`Option ${index + 1}`}
           />
         )}
         control={control}
         {...other}
       />
-    </div>
+    </Stack>
   );
 };
 
