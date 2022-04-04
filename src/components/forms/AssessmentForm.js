@@ -54,7 +54,7 @@ const AssessmentForm = ({
           switch (qn.type) {
             case "text":
               return (
-                <>
+                <React.Fragment key={i}>
                   <Question />
                   <FormTextField
                     name={`answers.${i}`}
@@ -62,12 +62,12 @@ const AssessmentForm = ({
                     fullWidth
                     disabled={disabled}
                   />
-                </>
+                </React.Fragment>
               );
 
             case "multiple_choice":
               return (
-                <>
+                <React.Fragment key={i}>
                   <Question />
                   <FormRadioGroup
                     name={`answers.${i}`}
@@ -75,12 +75,12 @@ const AssessmentForm = ({
                     control={control}
                     disabled={disabled}
                   />
-                </>
+                </React.Fragment>
               );
 
             case "checkbox":
               return (
-                <>
+                <React.Fragment key={i}>
                   <Question />
                   <FormCheckbox
                     name={`answers.${i}`}
@@ -88,7 +88,7 @@ const AssessmentForm = ({
                     control={control}
                     disabled={disabled}
                   />
-                </>
+                </React.Fragment>
               );
 
             default:
@@ -98,7 +98,7 @@ const AssessmentForm = ({
 
         <Stack alignItems="flex-end">
           <RoundedButton type="submit" disabled={disabled}>
-            {edit ? t("edit_document") : t("create_new_document")}
+            {edit ? t("edit_assessment") : t("submit_assessment")}
           </RoundedButton>
         </Stack>
       </Stack>

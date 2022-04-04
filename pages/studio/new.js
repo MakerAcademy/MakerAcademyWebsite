@@ -58,7 +58,7 @@ const CreatorStudioNew = ({ user }) => {
         setSubmitted({
           type: "success",
           message:
-            "Successfully created document. Redirecting to document page...",
+            "Successfully created document. Redirecting to your studio...",
           _id,
         });
       });
@@ -96,14 +96,48 @@ const CreatorStudioNew = ({ user }) => {
         setSubmitted({
           type: "success",
           message:
-            "Successfully created course. Redirecting to document page...",
+            "Successfully created course. Redirecting to your studio...",
           _id,
         });
       });
   };
 
   const handleAssessmentSubmit = async (data) => {
-    console.log(data);
+    const { title, description, level, topic, subtopic, questions = [] } = data;
+
+    return await fetch("/api/assessments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        questions,
+        contentType: "assessments",
+        duration: 30,
+        author: user?._id,
+        thumbnail:
+          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "published",
+      }),
+    })
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((response) => {
+        const { _id } = response;
+
+        setSubmitted({
+          type: "success",
+          message:
+            "Successfully created assessment. Redirecting to your studio ...",
+          _id,
+        });
+      });
   };
 
   const handleTypeChange = (v) => {
