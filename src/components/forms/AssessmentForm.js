@@ -19,6 +19,8 @@ const AssessmentForm = ({
 
   const { t } = useTranslation("creator-studio");
 
+  console.log(questions)
+
   // form validation rules
   const validationSchema = Yup.object().shape({
     // title: Yup.string().required("Required"),
@@ -65,7 +67,7 @@ const AssessmentForm = ({
                 </React.Fragment>
               );
 
-            case "multiple_choice":
+            case "radio":
               return (
                 <React.Fragment key={i}>
                   <Question />

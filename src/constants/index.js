@@ -31,7 +31,7 @@ export const TRUST_LEVELS = {
 export const CONTENT_DIFFICULTY_LEVELS = ["beginner", "intermediate", "expert"];
 
 export const ASSESSMENT_QUESTION_TYPES = [
-  "multiple_choice",
+  "radio",
   "checkbox",
   "text",
   // "file",

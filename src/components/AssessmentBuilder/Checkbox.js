@@ -1,10 +1,21 @@
 import FormFieldArray from "@components/FormComponents/FormFieldArray";
 import FormTextField from "@components/FormComponents/FormTextField";
-import { Button, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Button, Drawer, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 
 const CheckboxOptions = ({ control, name, ...other }) => {
-  console.log(name);
+  const [propsDrawer, setPropsDrawer] = useState(null);
+
+  const toggleDrawer = (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setPropsDrawer(true);
+  };
 
   const RenderHeader = ({ append }) => {
     return (
@@ -20,11 +31,15 @@ const CheckboxOptions = ({ control, name, ...other }) => {
 
   return (
     <Stack spacing={2}>
-      <FormTextField
-        control={control}
-        name={`${name}.answer`}
-        label="Correct Answer"
-      />
+      <Stack direction="row" spacing={1}>
+        <FormTextField
+          control={control}
+          name={`${name}.answer`}
+          label="Correct Answer"
+        />
+
+        <Button onClick={toggleDrawer}>Props</Button>
+      </Stack>
 
       <FormFieldArray
         name={`${name}.options`}
@@ -39,6 +54,17 @@ const CheckboxOptions = ({ control, name, ...other }) => {
         control={control}
         {...other}
       />
+
+      <Drawer
+        anchor={"right"}
+        open={propsDrawer}
+        onClose={() => setPropsDrawer(null)}
+        sx={{ minWidth: 300 }}
+      >
+        <Stack spacing={2} sx={{ p: 2 }}>
+          <Typography>Props</Typography>
+        </Stack>
+      </Drawer>
     </Stack>
   );
 };

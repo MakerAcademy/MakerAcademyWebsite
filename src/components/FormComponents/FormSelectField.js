@@ -34,7 +34,7 @@ const FormSelectField = ({
               minHeight: 45,
               height: "100%",
               borderRadius: "8px",
-              fontSize: 14,
+              // fontSize: 14,
               fontWeight: 300,
             },
             ...sx,

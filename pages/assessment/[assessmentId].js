@@ -9,8 +9,6 @@ import React, { useState } from "react";
 const Assessment = ({ assessment, user }) => {
   const [data, setData] = useState(assessment);
 
-  console.log(assessment)
-
   const { query } = useRouter();
 
   const assessmentId = query.assessmentId;

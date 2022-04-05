@@ -6,7 +6,7 @@ import Text from "./Text";
 
 const AssessmentBuilder = ({ type, ...props }) => {
   switch (type) {
-    case "multiple_choice":
+    case "radio":
       return <MultipleChoice {...props} />;
 
     case "checkbox":
