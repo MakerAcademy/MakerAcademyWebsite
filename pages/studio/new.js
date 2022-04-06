@@ -95,8 +95,7 @@ const CreatorStudioNew = ({ user }) => {
 
         setSubmitted({
           type: "success",
-          message:
-            "Successfully created course. Redirecting to your studio...",
+          message: "Successfully created course. Redirecting to your studio...",
           _id,
         });
       });
@@ -104,6 +103,9 @@ const CreatorStudioNew = ({ user }) => {
 
   const handleAssessmentSubmit = async (data) => {
     const { title, description, level, topic, subtopic, questions = [] } = data;
+
+    const _questions = questions?.map(({ answer, ...i }) => ({ ...i }));
+    const answers = questions?.map(({ answer }) => answer || false);
 
     return await fetch("/api/assessments", {
       method: "POST",
@@ -116,7 +118,8 @@ const CreatorStudioNew = ({ user }) => {
         level,
         topic,
         subtopic,
-        questions,
+        questions: _questions,
+        answers,
         contentType: "assessments",
         duration: 30,
         author: user?._id,
