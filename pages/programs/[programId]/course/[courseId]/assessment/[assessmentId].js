@@ -1,5 +1,4 @@
 import { withProtectedUser } from "@hoc/routes";
-import { Box } from "@mui/material";
 import { getOneAssessment } from "lib/db/assessment";
 import clientPromise from "lib/db/connect";
 import Assessment from "pages/assessment/[assessmentId]";

@@ -107,6 +107,8 @@ const CreatorStudioNew = ({ user }) => {
     const _questions = questions?.map(({ answer, ...i }) => ({ ...i }));
     const answers = questions?.map(({ answer }) => answer || false);
 
+    // console.log(_questions, answers);
+
     return await fetch("/api/assessments", {
       method: "POST",
       headers: {

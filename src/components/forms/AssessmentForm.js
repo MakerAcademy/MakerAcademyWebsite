@@ -19,8 +19,6 @@ const AssessmentForm = ({
 
   const { t } = useTranslation("creator-studio");
 
-  console.log(questions)
-
   // form validation rules
   const validationSchema = Yup.object().shape({
     // title: Yup.string().required("Required"),
@@ -48,8 +46,8 @@ const AssessmentForm = ({
       <Stack spacing={3}>
         {questions.map((qn, i) => {
           const Question = () => (
-            <Typography sx={{ mb: 1 }} variant="h6">
-              {qn.question}
+            <Typography sx={{ fontWeight: 500 }}>
+              {i + 1}. {qn.question}
             </Typography>
           );
 

@@ -54,7 +54,7 @@ const AssessmentBuilderForm = ({
   const _questions = useWatch({ control, name: "questions" }) || [];
 
   const onSubmit = (data, e) => {
-    setDisabled(true);
+    // setDisabled(true);
     propsHandleSubmit?.({ ...data });
   };
 
@@ -157,7 +157,7 @@ const AssessmentBuilderForm = ({
 
             <FormSelectField
               name="level"
-              label="Level Level Level"
+              label="Level"
               control={control}
               fullWidth
               disabled={disabled}

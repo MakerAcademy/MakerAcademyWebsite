@@ -1,13 +1,15 @@
+import NextPreviousButton from "@components/buttons/NextPreviousButton";
 import AssessmentForm from "@components/forms/AssessmentForm";
 import { withProtectedUser } from "@hoc/routes";
-import { Container } from "@mui/material";
+import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { getOneAssessment } from "lib/db/assessment";
 import clientPromise from "lib/db/connect";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const Assessment = ({ assessment, user }) => {
+const Assessment = ({ assessment, user, next = {}, previous = {} }) => {
   const [data, setData] = useState(assessment);
+  const { title, description, questions } = data || {};
 
   const { query } = useRouter();
 
@@ -38,7 +40,19 @@ const Assessment = ({ assessment, user }) => {
 
   return (
     <Container sx={{ py: 5 }}>
-      <AssessmentForm questions={data?.questions} handleSubmit={handleSubmit} />
+      <Stack spacing={3}>
+        <Typography variant="h6">{title}</Typography>
+
+        <Typography>{description}</Typography>
+
+        <Divider />
+
+        <Box sx={{ minHeight: "50vh" }}>
+          <AssessmentForm questions={questions} handleSubmit={handleSubmit} />
+        </Box>
+
+        <NextPreviousButton {...next} {...previous} />
+      </Stack>
     </Container>
   );
 };

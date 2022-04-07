@@ -64,7 +64,7 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const handleListItemClick = (doc) => {
     setValue("documents", [
       ..._documents,
-      { _id: doc.published, title: doc.title },
+      { _id: doc._id, contentType: doc.contentType, title: doc.title },
     ]);
   };
 

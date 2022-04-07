@@ -2,7 +2,7 @@ import FormTextField from "@components/FormComponents/FormTextField";
 import { Button, Drawer, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-const Text = ({ control, ...other }) => {
+const Text = ({ control, name, ...other }) => {
   const [propsDrawer, setPropsDrawer] = useState(null);
 
   const toggleDrawer = (event) => {
