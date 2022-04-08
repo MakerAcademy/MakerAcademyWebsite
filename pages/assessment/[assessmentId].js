@@ -9,33 +9,31 @@ import React, { useState } from "react";
 
 const Assessment = ({ assessment, user, next = {}, previous = {} }) => {
   const [data, setData] = useState(assessment);
+  const [response, setResponse] = useState(null);
   const { title, description, questions } = data || {};
 
   const { query } = useRouter();
 
   const assessmentId = query.assessmentId;
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (_data) => {
     const res = await fetch(`/api/assessments?submitAssessment=true`, {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
       },
       body: JSON.stringify({
-        ...data,
+        ..._data,
         author: user._id,
         assessment: assessmentId,
       }),
-    }).then((response) => {
-      console.log("Client: ", response);
-      return response;
-    });
-    // .then(() => {
-    //   setSubmitted({
-    //     type: "success",
-    //     message: "Successfully submitted edit! Redirecting to studio...",
-    //   });
-    // });
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((_data) => {
+        setResponse({});
+      });
   };
 
   return (
@@ -50,6 +48,8 @@ const Assessment = ({ assessment, user, next = {}, previous = {} }) => {
         <Box sx={{ minHeight: "50vh" }}>
           <AssessmentForm questions={questions} handleSubmit={handleSubmit} />
         </Box>
+
+        {response && JSON.stringify(response)}
 
         <NextPreviousButton {...next} {...previous} />
       </Stack>

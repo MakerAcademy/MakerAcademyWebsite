@@ -54,7 +54,13 @@ const AssessmentBuilderForm = ({
   const _questions = useWatch({ control, name: "questions" }) || [];
 
   const onSubmit = (data, e) => {
-    // setDisabled(true);
+    // Change checkbox answers from string to array
+    data.questions?.map((qn) => {
+      if (qn.type === "checkbox" && !!qn.answer)
+        qn.answer = qn.answer.replaceAll(", ", ",").split(",");
+    });
+
+    setDisabled(true);
     propsHandleSubmit?.({ ...data });
   };
 

@@ -4,6 +4,7 @@ import {
   addToContent,
   createAssessment,
   getOneAssessment,
+  getOneAssessmentAnswers,
   submitAssessment,
 } from "lib/db/assessment";
 import validateJSON from "lib/db/utils";
@@ -58,12 +59,29 @@ async function submitOneAssessment(req, res, db) {
   body.author = ObjectId(body.author);
   body.assessment = ObjectId(body.assessment);
 
+  const { questions, answers } = await getOneAssessmentAnswers(
+    db,
+    body.assessment
+  );
+
+  const grades = gradeAnswers(questions, answers, body.answers);
+  const _correct = grades.filter((i) => i > 0)?.length;
+  const mark = Math.round((_correct / questions.length) * 100);
+
+  const _data = {
+    ...body,
+    grades,
+    mark,
+  };
+
   try {
-    const documentStatus = await submitAssessment(db, body);
+    const documentStatus = await submitAssessment(db, _data);
 
     return res.status(200).json({
       _id: documentStatus.insertedId,
       success: true,
+      grades,
+      mark,
     });
   } catch (err) {
     console.log(err);
@@ -110,3 +128,31 @@ async function createOneAssessment(req, res, db, _id) {
     return res.status(500).end();
   }
 }
+
+const gradeAnswers = (questions, answers, submission) => {
+  console.log("questions", questions);
+  console.log("answers", answers);
+  console.log("submission", submission);
+
+  const correctAnswers = answers.map((an, i) => {
+    if (typeof an === "string") {
+      return submission[i] === an ? 1 : 0;
+    } else if (typeof an === "object") {
+      return areEqual(an, submission[i]) ? 1 : 0;
+    }
+  });
+
+  return correctAnswers;
+};
+
+const areEqual = (array1, array2) => {
+  if (array1.length === array2.length) {
+    return array1.every((element) => {
+      if (array2.includes(element)) {
+        return true;
+      }
+      return false;
+    });
+  }
+  return false;
+};

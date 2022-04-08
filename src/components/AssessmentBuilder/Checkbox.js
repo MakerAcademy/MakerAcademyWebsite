@@ -36,6 +36,7 @@ const CheckboxOptions = ({ control, name, ...other }) => {
           control={control}
           name={`${name}.answer`}
           label="Correct Answer"
+          placeholder="Comma separated answers (maker, blockchain)"
         />
 
         <Button onClick={toggleDrawer}>Props</Button>

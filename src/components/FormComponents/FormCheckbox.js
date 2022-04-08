@@ -22,6 +22,52 @@ const FormCheckbox = ({
   const isDark = theme.palette.mode === "dark";
 
   return (
+    <FormControl
+      fullWidth
+      size="small"
+      sx={{
+        ...sx,
+      }}
+      variant={variant}
+    >
+      <FormLabel>{label}</FormLabel>
+      <FormGroup>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <>
+              {options?.map((item, i) => (
+                <FormControlLabel
+                  key={i}
+                  control={<Checkbox />}
+                  label={item}
+                  {...field}
+                  value={item}
+                  onChange={(event, checked) => {
+                    if (checked) {
+                      field.onChange([
+                        ...(field.value || []),
+                        event.target.value,
+                      ]);
+                    } else {
+                      field.onChange(
+                        field.value.filter(
+                          (value) => value !== event.target.value
+                        )
+                      );
+                    }
+                  }}
+                />
+              ))}
+            </>
+          )}
+        ></Controller>
+      </FormGroup>
+    </FormControl>
+  );
+
+  return (
     <Controller
       name={name}
       control={control}
@@ -35,7 +81,7 @@ const FormCheckbox = ({
           variant={variant}
         >
           <FormLabel component="legend">{label}</FormLabel>
-          <FormGroup {...props} {...field}>
+          <FormGroup onChange={(e) => console.log(e.target.value)}>
             {options?.map((item, i) => (
               <FormControlLabel key={i} control={<Checkbox />} label={item} />
             ))}
