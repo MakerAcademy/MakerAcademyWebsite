@@ -1,13 +1,10 @@
 import {
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
-  InputLabel,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
-  useTheme,
 } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
@@ -17,13 +14,11 @@ const FormRadioGroup = ({
   control,
   sx = {},
   options = [],
-  variant = "outlined",
+  variant = "standard",
   label,
+  disabled,
   ...props
 }) => {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
-
   return (
     <Controller
       name={name}
@@ -36,6 +31,7 @@ const FormRadioGroup = ({
             ...sx,
           }}
           variant={variant}
+          disabled={disabled}
         >
           <FormLabel id="radio-id">{label}</FormLabel>
           <RadioGroup
@@ -49,11 +45,15 @@ const FormRadioGroup = ({
               <FormControlLabel
                 key={i}
                 value={item}
-                control={<Radio />}
+                control={<Radio error={true} helperText="Hello" />}
                 label={item}
               />
             ))}
           </RadioGroup>
+
+          <FormHelperText error={props.helperText || error.message}>
+            {props.helperText || error.message}
+          </FormHelperText>
         </FormControl>
       )}
     />

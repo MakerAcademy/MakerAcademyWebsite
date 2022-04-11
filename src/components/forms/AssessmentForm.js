@@ -11,8 +11,9 @@ import * as Yup from "yup";
 
 const AssessmentForm = ({
   handleSubmit: propsHandleSubmit,
-  edit,
+  submitted,
   values = {},
+  correctAnswers,
   questions = [],
 }) => {
   const [disabled, setDisabled] = useState(false);
@@ -37,7 +38,7 @@ const AssessmentForm = ({
     useForm(formOptions);
 
   const onSubmit = (data, e) => {
-    // setDisabled(true);
+    setDisabled(true);
     propsHandleSubmit?.({ ...data });
   };
 
@@ -51,6 +52,13 @@ const AssessmentForm = ({
             </Typography>
           );
 
+          const _submittedAns = submitted && values?.answers?.[i];
+          const _correctAns = submitted && correctAnswers?.[i];
+
+          const _correction = _submittedAns !== _correctAns && _correctAns;
+
+          console.log(_correction);
+
           switch (qn.type) {
             case "text":
               return (
@@ -60,7 +68,9 @@ const AssessmentForm = ({
                     name={`answers.${i}`}
                     control={control}
                     fullWidth
-                    disabled={disabled}
+                    disabled={disabled || submitted}
+                    error={_correction}
+                    helperText={submitted ? _correction || "Correct" : null}
                   />
                 </React.Fragment>
               );
@@ -73,7 +83,9 @@ const AssessmentForm = ({
                     name={`answers.${i}`}
                     options={qn.options}
                     control={control}
-                    disabled={disabled}
+                    disabled={disabled || submitted}
+                    error={_correction}
+                    helperText={submitted ? _correction || "Correct" : null}
                   />
                 </React.Fragment>
               );
@@ -86,7 +98,11 @@ const AssessmentForm = ({
                     name={`answers.${i}`}
                     options={qn.options}
                     control={control}
-                    disabled={disabled}
+                    disabled={disabled || submitted}
+                    error={_correction}
+                    helperText={
+                      submitted ? _correction?.join?.(", ") || "Correct" : null
+                    }
                   />
                 </React.Fragment>
               );
@@ -96,11 +112,13 @@ const AssessmentForm = ({
           }
         })}
 
-        <Stack alignItems="flex-end">
-          <RoundedButton type="submit" disabled={disabled}>
-            {edit ? t("edit_assessment") : t("submit_assessment")}
-          </RoundedButton>
-        </Stack>
+        {!submitted && (
+          <Stack alignItems="flex-end">
+            <RoundedButton type="submit" disabled={disabled}>
+              t("submit_assessment")
+            </RoundedButton>
+          </Stack>
+        )}
       </Stack>
     </form>
   );

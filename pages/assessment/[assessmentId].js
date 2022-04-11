@@ -7,9 +7,15 @@ import clientPromise from "lib/db/connect";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const Assessment = ({ assessment, user, next = {}, previous = {} }) => {
+const Assessment = ({
+  assessment,
+  submission,
+  user,
+  next = {},
+  previous = {},
+}) => {
   const [data, setData] = useState(assessment);
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState(submission);
   const { title, description, questions } = data || {};
 
   const { query } = useRouter();
@@ -46,10 +52,20 @@ const Assessment = ({ assessment, user, next = {}, previous = {} }) => {
         <Divider />
 
         <Box sx={{ minHeight: "50vh" }}>
-          <AssessmentForm questions={questions} handleSubmit={handleSubmit} />
+          <AssessmentForm
+            submitted={!!submission}
+            values={response && response}
+            correctAnswers={data?.answers}
+            questions={questions}
+            handleSubmit={handleSubmit}
+          />
         </Box>
 
-        {response && JSON.stringify(response)}
+        {response && (
+          <Stack>
+            <Typography variant="h6">Total Mark: {response.mark}%</Typography>
+          </Stack>
+        )}
 
         <NextPreviousButton {...next} {...previous} />
       </Stack>
