@@ -49,8 +49,10 @@ const CoursePage = ({
   liked = false,
 }) => {
   const { query } = useRouter();
-  const documents = course.documents; //course.docs
+  const documents = course.docs; //course.docs
   const { courseId, programId } = query;
+
+  console.log(course);
 
   if (!course) {
     return (
