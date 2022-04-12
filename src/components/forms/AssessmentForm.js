@@ -9,6 +9,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
+// import { object, string } from "yup";
+
 const AssessmentForm = ({
   handleSubmit: propsHandleSubmit,
   submitted,
@@ -21,13 +23,17 @@ const AssessmentForm = ({
   const { t } = useTranslation("creator-studio");
 
   // form validation rules
-  const validationSchema = Yup.object().shape({
-    // title: Yup.string().required("Required"),
-    // description: Yup.string().required("Required"),
-    // level: Yup.string().required("Required"),
-    // topic: Yup.string().required("Required"),
-    // subtopic: Yup.string().required("Required"),
-  });
+
+  // const validationSchema = Yup.object().shape({});
+  const _validation = questions?.reduce?.((acc, item, i) => {
+    acc[`answer${i}`] =
+      item.type === "checkbox"
+        ? Yup.array().required("Required")
+        : Yup.string().required("Required");
+    return acc;
+  }, {});
+
+  const validationSchema = Yup.object().shape({ ..._validation });
 
   const formOptions = {
     resolver: yupResolver(validationSchema),
@@ -38,8 +44,9 @@ const AssessmentForm = ({
     useForm(formOptions);
 
   const onSubmit = (data, e) => {
+    const _data = Object.values(data);
     setDisabled(true);
-    propsHandleSubmit?.({ ...data });
+    propsHandleSubmit?.(_data);
   };
 
   return (
@@ -57,20 +64,19 @@ const AssessmentForm = ({
 
           const _correction = _submittedAns !== _correctAns && _correctAns;
 
-          console.log(_correction);
-
           switch (qn.type) {
             case "text":
               return (
                 <React.Fragment key={i}>
                   <Question />
                   <FormTextField
-                    name={`answers.${i}`}
+                    name={`answer${i}`}
                     control={control}
                     fullWidth
                     disabled={disabled || submitted}
                     error={_correction}
                     helperText={submitted ? _correction || "Correct" : null}
+                    required
                   />
                 </React.Fragment>
               );
@@ -80,12 +86,13 @@ const AssessmentForm = ({
                 <React.Fragment key={i}>
                   <Question />
                   <FormRadioGroup
-                    name={`answers.${i}`}
+                    name={`answer${i}`}
                     options={qn.options}
                     control={control}
                     disabled={disabled || submitted}
                     error={_correction}
                     helperText={submitted ? _correction || "Correct" : null}
+                    required
                   />
                 </React.Fragment>
               );
@@ -95,7 +102,7 @@ const AssessmentForm = ({
                 <React.Fragment key={i}>
                   <Question />
                   <FormCheckbox
-                    name={`answers.${i}`}
+                    name={`answer${i}`}
                     options={qn.options}
                     control={control}
                     disabled={disabled || submitted}
@@ -103,6 +110,7 @@ const AssessmentForm = ({
                     helperText={
                       submitted ? _correction?.join?.(", ") || "Correct" : null
                     }
+                    required
                   />
                 </React.Fragment>
               );
@@ -115,7 +123,7 @@ const AssessmentForm = ({
         {!submitted && (
           <Stack alignItems="flex-end">
             <RoundedButton type="submit" disabled={disabled}>
-              t("submit_assessment")
+              {t("submit_assessment")}
             </RoundedButton>
           </Stack>
         )}

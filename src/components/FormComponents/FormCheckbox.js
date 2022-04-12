@@ -17,6 +17,7 @@ const FormCheckbox = ({
   variant = "outlined",
   label,
   disabled,
+  required,
   ...props
 }) => {
   return (
@@ -34,12 +35,12 @@ const FormCheckbox = ({
         <Controller
           name={name}
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <>
               {options?.map((item, i) => (
                 <FormControlLabel
                   key={i}
-                  control={<Checkbox />}
+                  control={<Checkbox required={required && !field.value} />}
                   label={item}
                   {...field}
                   value={item}
@@ -51,15 +52,17 @@ const FormCheckbox = ({
                         event.target.value,
                       ]);
                     } else {
-                      field.onChange(
-                        field.value.filter(
-                          (value) => value !== event.target.value
-                        )
+                      const filtered = field.value.filter(
+                        (value) => value !== event.target.value
                       );
+
+                      field.onChange(filtered?.length ? filtered : null);
                     }
                   }}
                 />
               ))}
+
+              {error && <FormHelperText error>{error.message}</FormHelperText>}
             </>
           )}
         />

@@ -17,13 +17,14 @@ const FormRadioGroup = ({
   variant = "standard",
   label,
   disabled,
+  required,
   ...props
 }) => {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { ...field }, fieldState: { error }, formState }) => (
+      render={({ field, fieldState: { error } }) => (
         <FormControl
           fullWidth
           size="small"
@@ -40,19 +41,23 @@ const FormRadioGroup = ({
             label={label}
             {...props}
             {...field}
+            onChange={(e, v) => {
+              field.onChange(v);
+            }}
+            required
           >
             {options?.map((item, i) => (
               <FormControlLabel
                 key={i}
                 value={item}
-                control={<Radio error={true} helperText="Hello" />}
+                control={<Radio required={required} />}
                 label={item}
               />
             ))}
           </RadioGroup>
 
-          <FormHelperText error={props.helperText || error.message}>
-            {props.helperText || error.message}
+          <FormHelperText error={props?.helperText || error?.message}>
+            {props?.helperText || error?.message}
           </FormHelperText>
         </FormControl>
       )}

@@ -51,7 +51,7 @@ export const getServerSideProps = withProtectedUser(async (context, user) => {
     props: {
       user,
       assessment,
-      submission,
+      submission: submission._id ? submission : null,
       documents: course.documents,
     },
   };

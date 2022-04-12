@@ -18,6 +18,9 @@ const Assessment = ({
   const [response, setResponse] = useState(submission);
   const { title, description, questions } = data || {};
 
+  console.log(data);
+  console.log(response);
+
   const { query } = useRouter();
 
   const assessmentId = query.assessmentId;
@@ -29,7 +32,7 @@ const Assessment = ({
         "Content-Type": "Application/json",
       },
       body: JSON.stringify({
-        ..._data,
+        answers: _data,
         author: user._id,
         assessment: assessmentId,
       }),
@@ -37,8 +40,9 @@ const Assessment = ({
       .then((response) => {
         return response.json();
       })
-      .then((_data) => {
-        setResponse({});
+      .then(({ grades, mark }) => {
+        // console.log("res data", _data);
+        setResponse({ answers: data.answers, grades, mark });
       });
   };
 
