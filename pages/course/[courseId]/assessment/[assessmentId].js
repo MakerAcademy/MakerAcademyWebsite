@@ -1,5 +1,9 @@
 import { withProtectedUser } from "@hoc/routes";
-import { getOneAssessment, getSubmittedAssessment } from "lib/db/assessment";
+import {
+  getOneAssessment,
+  getOneAssessmentAnswers,
+  getSubmittedAssessment,
+} from "lib/db/assessment";
 import clientPromise from "lib/db/connect";
 import { getOneCourse } from "lib/db/course";
 import { useRouter } from "next/router";
@@ -43,7 +47,9 @@ export const getServerSideProps = withProtectedUser(async (context, user) => {
     ? await getSubmittedAssessment(db, assessmentId, user._id)
     : null;
 
-  //   const assessment = course?.docs?.find?.((i) => i._id === docId) || {};
+  let answers = null;
+
+  if (submission) answers = await getOneAssessmentAnswers(db, assessmentId);
 
   if (!assessment) return { props: {} };
 
@@ -52,6 +58,7 @@ export const getServerSideProps = withProtectedUser(async (context, user) => {
       user,
       assessment,
       submission: submission._id ? submission : null,
+      correctAnswers: answers?.answers,
       documents: course.documents,
     },
   };

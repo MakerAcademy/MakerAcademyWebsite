@@ -15,3 +15,17 @@ export const flattenChildren = (text, child) => {
     ? text + child
     : React.Children.toArray(child.props.children).reduce(flatten, text);
 };
+
+export const isArrayEqual = (array1, array2) => {
+  if (typeof array1 !== "object" || typeof array2 !== "object") return false;
+
+  if (array1.length === array2.length) {
+    return array1.every((element) => {
+      if (array2.includes(element)) {
+        return true;
+      }
+      return false;
+    });
+  }
+  return false;
+};

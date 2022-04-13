@@ -4,6 +4,7 @@ import FormRadioGroup from "@components/FormComponents/FormRadioGroup";
 import FormTextField from "@components/FormComponents/FormTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography } from "@mui/material";
+import { isArrayEqual } from "@utils/helperFunctions";
 import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,7 +15,7 @@ import * as Yup from "yup";
 const AssessmentForm = ({
   handleSubmit: propsHandleSubmit,
   submitted,
-  values = {},
+  values,
   correctAnswers,
   questions = [],
 }) => {
@@ -35,9 +36,14 @@ const AssessmentForm = ({
 
   const validationSchema = Yup.object().shape({ ..._validation });
 
+  const _values = values?.reduce?.((acc, item, i) => {
+    acc[`answer${i}`] = item;
+    return acc;
+  }, {});
+
   const formOptions = {
     resolver: yupResolver(validationSchema),
-    defaultValues: values,
+    defaultValues: _values,
   };
 
   const { handleSubmit, reset, control, getValues, setValue } =
@@ -59,10 +65,13 @@ const AssessmentForm = ({
             </Typography>
           );
 
-          const _submittedAns = submitted && values?.answers?.[i];
+          const _submittedAns = submitted && values?.[i];
           const _correctAns = submitted && correctAnswers?.[i];
 
-          const _correction = _submittedAns !== _correctAns && _correctAns;
+          const _correction =
+            typeof _correctAns === "object"
+              ? !isArrayEqual(_submittedAns, _correctAns) && _correctAns
+              : _submittedAns !== _correctAns && _correctAns;
 
           switch (qn.type) {
             case "text":

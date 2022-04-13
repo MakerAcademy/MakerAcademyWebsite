@@ -10,6 +10,7 @@ import React, { useState } from "react";
 const Assessment = ({
   assessment,
   submission,
+  correctAnswers,
   user,
   next = {},
   previous = {},
@@ -17,9 +18,6 @@ const Assessment = ({
   const [data, setData] = useState(assessment);
   const [response, setResponse] = useState(submission);
   const { title, description, questions } = data || {};
-
-  console.log(data);
-  console.log(response);
 
   const { query } = useRouter();
 
@@ -40,9 +38,9 @@ const Assessment = ({
       .then((response) => {
         return response.json();
       })
-      .then(({ grades, mark }) => {
+      .then(({ grades, mark, correctAnswers, answers }) => {
         // console.log("res data", _data);
-        setResponse({ answers: data.answers, grades, mark });
+        setResponse({ correctAnswers, answers, grades, mark });
       });
   };
 
@@ -57,9 +55,9 @@ const Assessment = ({
 
         <Box sx={{ minHeight: "50vh" }}>
           <AssessmentForm
-            submitted={!!submission}
-            values={response && response}
-            correctAnswers={data?.answers}
+            submitted={!!submission || !!response?.grades}
+            values={response && response?.answers}
+            correctAnswers={response?.correctAnswers || correctAnswers}
             questions={questions}
             handleSubmit={handleSubmit}
           />

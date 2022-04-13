@@ -1,5 +1,4 @@
-import clientPromise from "lib/db/connect";
-import { addToContentDraft } from "lib/db/content";
+import { isArrayEqual } from "@utils/helperFunctions";
 import {
   addToContent,
   createAssessment,
@@ -7,9 +6,11 @@ import {
   getOneAssessmentAnswers,
   submitAssessment,
 } from "lib/db/assessment";
+import clientPromise from "lib/db/connect";
+import { addToContentDraft } from "lib/db/content";
 import validateJSON from "lib/db/utils";
-import { ObjectId } from "mongodb";
 import sanitize from "mongo-sanitize";
+import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
@@ -82,6 +83,8 @@ async function submitOneAssessment(req, res, db) {
       success: true,
       grades,
       mark,
+      answers: body.answers,
+      correctAnswers: answers,
     });
   } catch (err) {
     console.log(err);
@@ -130,29 +133,13 @@ async function createOneAssessment(req, res, db, _id) {
 }
 
 const gradeAnswers = (questions, answers, submission) => {
-  console.log("questions", questions);
-  console.log("answers", answers);
-  console.log("submission", submission);
-
   const correctAnswers = answers.map((an, i) => {
     if (typeof an === "string") {
       return submission[i] === an ? 1 : 0;
     } else if (typeof an === "object") {
-      return areEqual(an, submission[i]) ? 1 : 0;
+      return isArrayEqual(an, submission[i]) ? 1 : 0;
     }
   });
 
   return correctAnswers;
-};
-
-const areEqual = (array1, array2) => {
-  if (array1.length === array2.length) {
-    return array1.every((element) => {
-      if (array2.includes(element)) {
-        return true;
-      }
-      return false;
-    });
-  }
-  return false;
 };
