@@ -25,10 +25,11 @@ const Text = ({ control, name, ...other }) => {
           label="Correct Answer"
         />
 
-        <Button onClick={toggleDrawer}>Props</Button>
+        {/* TODO - Props */}
+        {/* <Button onClick={toggleDrawer}>Props</Button> */}
       </Stack>
 
-      <TextField placeholder="User Input" />
+      {/* <TextField placeholder="User Input" /> */}
 
       <Drawer
         anchor={"right"}

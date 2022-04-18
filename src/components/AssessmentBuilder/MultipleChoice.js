@@ -38,7 +38,8 @@ const MultipleChoice = ({ control, name, ...other }) => {
           label="Correct Answer"
         />
 
-        <Button onClick={toggleDrawer}>Props</Button>
+        {/* TODO - Props */}
+        {/* <Button onClick={toggleDrawer}>Props</Button> */}
       </Stack>
 
       <FormFieldArray

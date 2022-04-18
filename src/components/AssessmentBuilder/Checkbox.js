@@ -38,8 +38,8 @@ const CheckboxOptions = ({ control, name, ...other }) => {
           label="Correct Answer"
           placeholder="Comma separated answers (maker, blockchain)"
         />
-
-        <Button onClick={toggleDrawer}>Props</Button>
+        {/* TODO - Props */}
+        {/* <Button onClick={toggleDrawer}>Props</Button> */}
       </Stack>
 
       <FormFieldArray
