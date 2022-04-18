@@ -18,15 +18,16 @@ const FormFieldArray = ({
   Elements,
   append: propsAppend,
   list,
+  enableDragAndDrop,
   RenderListItem,
   RenderHeader,
 }) => {
-  const { append, prepend, remove, swap, move, insert, fields } = useFieldArray(
-    {
-      control,
-      name,
-    }
-  );
+  const fieldArray = useFieldArray({
+    control,
+    name,
+  });
+
+  const { append, prepend, remove, swap, move, insert, fields } = fieldArray;
 
   const handleOnDragEnd = (result) => {
     const from = result?.source?.index;
@@ -40,7 +41,7 @@ const FormFieldArray = ({
   return (
     <Box>
       {RenderHeader ? (
-        RenderHeader
+        <RenderHeader {...fieldArray} />
       ) : (
         <Stack direction={{ xs: "column", md: "row" }}>
           <Typography variant="h6" sx={{ flex: 1 }}>
@@ -64,7 +65,8 @@ const FormFieldArray = ({
           {fields.map((item, i) => {
             return (
               <React.Fragment key={i}>
-                <Elements index={i} remove={remove} {...item} />
+                {Elements({ index: i, remove, ...item })}
+                {/* <Elements index={i} remove={remove} {...item} /> */}
                 <Divider />
               </React.Fragment>
             );
@@ -87,10 +89,15 @@ const FormFieldArray = ({
                       {(innerProvided) => (
                         <ListItem
                           ref={innerProvided.innerRef}
-                          {...innerProvided.draggableProps}
-                          {...innerProvided.dragHandleProps}
+                          {...(enableDragAndDrop
+                            ? innerProvided.draggableProps
+                            : {})}
+                          {...(enableDragAndDrop
+                            ? innerProvided.dragHandleProps
+                            : {})}
                         >
-                          <RenderListItem remove={remove} index={i} {...item} />
+                          {RenderListItem({ index: i, remove, ...item })}
+                          {/* <RenderListItem remove={remove} index={i} {...item} /> */}
                         </ListItem>
                       )}
                     </Draggable>

@@ -31,9 +31,10 @@ const FormSelectField = ({
           sx={{
             height: "auto",
             ".MuiInputBase-root": {
+              minHeight: 45,
               height: "100%",
               borderRadius: "8px",
-              fontSize: 14,
+              // fontSize: 14,
               fontWeight: 300,
             },
             ...sx,
@@ -43,7 +44,7 @@ const FormSelectField = ({
           <InputLabel id="select-field">{label}</InputLabel>
           <Select
             id="select-field"
-            helperText={error ? error.message : null}
+            // helperText={error ? error.message : null}
             error={!!error}
             label={label}
             {...props}

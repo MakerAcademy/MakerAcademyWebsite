@@ -1,4 +1,5 @@
 import BackButton from "@components/buttons/BackButton";
+import AssessmentBuilderForm from "@components/forms/AssessmentBuilderForm";
 import CourseForm from "@components/forms/CourseForm";
 import { withProtectedUser } from "@hoc/routes";
 import {
@@ -57,7 +58,7 @@ const CreatorStudioNew = ({ user }) => {
         setSubmitted({
           type: "success",
           message:
-            "Successfully created document. Redirecting to document page...",
+            "Successfully created document. Redirecting to your studio...",
           _id,
         });
       });
@@ -94,15 +95,58 @@ const CreatorStudioNew = ({ user }) => {
 
         setSubmitted({
           type: "success",
-          message:
-            "Successfully created course. Redirecting to document page...",
+          message: "Successfully created course. Redirecting to your studio...",
           _id,
         });
       });
   };
 
-  const handleTypeChange = () => {
-    setType((old) => (old === "document" ? "course" : "document"));
+  const handleAssessmentSubmit = async (data) => {
+    const { title, description, level, topic, subtopic, questions = [] } = data;
+
+    const _questions = questions?.map(({ answer, ...i }) => ({ ...i }));
+    const answers = questions?.map(({ answer }) => answer || false);
+
+    // console.log(_questions, answers);
+
+    return await fetch("/api/assessments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        questions: _questions,
+        answers,
+        contentType: "assessments",
+        duration: 30,
+        author: user?._id,
+        thumbnail:
+          "https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.png",
+        status: "published",
+      }),
+    })
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((response) => {
+        const { _id } = response;
+
+        setSubmitted({
+          type: "success",
+          message:
+            "Successfully created assessment. Redirecting to your studio ...",
+          _id,
+        });
+      });
+  };
+
+  const handleTypeChange = (v) => {
+    setType(v);
   };
 
   const handleSnackbarClose = () => {
@@ -129,12 +173,13 @@ const CreatorStudioNew = ({ user }) => {
         color="primary"
         value={type}
         exclusive
-        onChange={handleTypeChange}
+        onChange={(_, v) => handleTypeChange(v)}
         fullWidth
         sx={{ maxWidth: 450, mb: 3 }}
       >
         <ToggleButton value="document">{t("document")}</ToggleButton>
         <ToggleButton value="course">{t("course")}</ToggleButton>
+        <ToggleButton value="assessment">{t("assessment")}</ToggleButton>
       </ToggleButtonGroup>
 
       {/* Form */}
@@ -143,6 +188,10 @@ const CreatorStudioNew = ({ user }) => {
       )}
 
       {type === "course" && <CourseForm handleSubmit={handleCourseSubmit} />}
+
+      {type === "assessment" && (
+        <AssessmentBuilderForm handleSubmit={handleAssessmentSubmit} />
+      )}
 
       {/* Submitted alert */}
       {submitted && (

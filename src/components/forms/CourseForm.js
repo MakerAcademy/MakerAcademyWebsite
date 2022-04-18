@@ -64,9 +64,25 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const handleListItemClick = (doc) => {
     setValue("documents", [
       ..._documents,
-      { _id: doc.published, title: doc.title },
+      { _id: doc._id, contentType: doc.contentType, title: doc.title },
     ]);
   };
+
+  const RenderHeader = () => (
+    <Stack direction={{ xs: "column", md: "row" }}>
+      <Typography variant="h6" sx={{ flex: 1 }}>
+        {t("documents")}
+      </Typography>
+
+      <Button
+        onClick={() => {
+          setDialogOpen(true);
+        }}
+      >
+        {t("add_document")}
+      </Button>
+    </Stack>
+  );
 
   const RenderListItem = ({ title, _id, remove, index }) => {
     return (
@@ -143,24 +159,11 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
 
           <FormFieldArray
             list
+            enableDragAndDrop
             control={control}
             name="documents"
             RenderListItem={RenderListItem}
-            RenderHeader={
-              <Stack direction={{ xs: "column", md: "row" }}>
-                <Typography variant="h6" sx={{ flex: 1 }}>
-                  {t("documents")}
-                </Typography>
-
-                <Button
-                  onClick={() => {
-                    setDialogOpen(true);
-                  }}
-                >
-                  {t("add_document")}
-                </Button>
-              </Stack>
-            }
+            RenderHeader={RenderHeader}
           />
 
           <Stack alignItems="flex-end">

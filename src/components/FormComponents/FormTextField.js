@@ -22,7 +22,7 @@ const FormTextField = ({
       control={control}
       render={({ field: { ...field }, fieldState: { error }, formState }) => (
         <TextField
-          helperText={error ? error.message : null}
+          // helperText={error ? error.message : null}
           size="small"
           error={!!error}
           fullWidth

@@ -49,7 +49,7 @@ const CoursePage = ({ course, topic, subtopic, title }) => {
     };
 
     return (
-      <Link href={buildRedirect(query)}>
+      <Link href={buildRedirect(query)} passHref>
         <Card elevation={3} sx={{ cursor: "pointer" }}>
           <Box sx={{ p: 2 }}>
             <Grid container spacing={{ xs: 2, md: 3 }}>

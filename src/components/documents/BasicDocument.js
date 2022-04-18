@@ -31,6 +31,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { CommonContext } from "@context/commonContext";
+import NextPreviousButton from "@components/buttons/NextPreviousButton";
 
 function HeadingRenderer(props) {
   var children = React.Children.toArray(props.children);
@@ -39,7 +40,7 @@ function HeadingRenderer(props) {
   return React.createElement("h" + props.level, { id: slug }, props.children);
 }
 
-const BasicDocument = ({ data = {}, user }) => {
+const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
   const [document, setDocument] = useState(data);
   const [ids, setIds] = useState([]);
   const router = useRouter();
@@ -212,6 +213,8 @@ const BasicDocument = ({ data = {}, user }) => {
                 {body}
               </ReactMarkdown>
             </Box>
+
+            <NextPreviousButton {...next} {...previous} />
           </Stack>
         </Container>
       </Stack>
