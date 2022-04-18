@@ -29,3 +29,12 @@ export const isArrayEqual = (array1, array2) => {
   }
   return false;
 };
+
+// buildGithubPdfLink("tpn", "pdfs", "master", "AMD - CPUID.pdf")
+export const buildGithubPdfLink = (user, repo, branch, pathToFile) => {
+  const _path = encodeURI(pathToFile);
+  const baseGithubLink = `https://github.com/${user}/${repo}/raw/${branch}/${_path}`;
+  const docsLink = `https://docs.google.com/viewer?url=${baseGithubLink}&embedded=true`;
+
+  return docsLink;
+};

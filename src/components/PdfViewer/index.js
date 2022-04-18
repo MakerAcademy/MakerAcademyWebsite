@@ -4,7 +4,7 @@ import React from "react";
 const PdfViewer = ({ url, sx = {} }) => {
   return (
     <Box sx={{ ...sx }}>
-      <embed
+      <iframe
         style={{
           width: "100%",
           height: "100%",
