@@ -12,7 +12,6 @@ async function handler(req, res) {
   const data = sanitize(req.body);
 
   const { email, password, role } = data;
-  return console.log(data);
 
   if (
     !email ||

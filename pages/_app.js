@@ -1,3 +1,4 @@
+import ErrorBoundary from "@components/errors/ErrorBoundry";
 import PageProvider from "@components/PageProvider/PageProvider";
 import createEmotionCache from "@config/theme/createEmotionCache";
 import { CommonContextProvider } from "@context/commonContext";
@@ -29,12 +30,14 @@ function MyApp({
         <Provider store={store}>
           <PageProvider emotionCache={emotionCache}>
             <SessionProvider session={pageProps.session} refetchInterval={0}>
-              <CommonContextProvider>
-                <CssBaseline />
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </CommonContextProvider>
+              <ErrorBoundary>
+                <CommonContextProvider>
+                  <CssBaseline />
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </CommonContextProvider>
+              </ErrorBoundary>
             </SessionProvider>
           </PageProvider>
         </Provider>

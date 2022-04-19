@@ -171,15 +171,21 @@ const ContentPage = ({ content, tags, hideHeader, filterProps = {} }) => {
 };
 
 export async function getServerSideProps(context) {
-  const client = await clientPromise;
-  const db = client.db();
-  const data = await getContent(db);
-  return {
-    props: {
-      content: data[0],
-      tags: data[1],
-    },
-  };
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const data = await getContent(db);
+    return {
+      props: {
+        content: data[0],
+        tags: data[1],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { props: {} };
 }
 
 export default commonProps(ContentPage, {

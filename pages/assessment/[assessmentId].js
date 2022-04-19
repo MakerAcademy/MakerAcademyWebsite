@@ -1,4 +1,5 @@
 import NextPreviousButton from "@components/buttons/NextPreviousButton";
+import PageNotFound from "@components/errors/PageNotFound";
 import AssessmentForm from "@components/forms/AssessmentForm";
 import { withProtectedUser } from "@hoc/routes";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
@@ -15,6 +16,8 @@ const Assessment = ({
   next = {},
   previous = {},
 }) => {
+  if (!assessment) return <PageNotFound title={"assessment"} />;
+
   const [data, setData] = useState(assessment);
   const [response, setResponse] = useState(submission);
   const { title, description, questions } = data || {};
@@ -78,16 +81,24 @@ const Assessment = ({
 export default Assessment;
 
 export const getServerSideProps = withProtectedUser(async (context, user) => {
-  const client = await clientPromise;
-  const db = client.db();
-  const assessment = await getOneAssessment(db, context.params.assessmentId);
+  try {
+    if (!context.params.courseId) return { props: {} };
 
-  if (!assessment) return { props: {} };
+    const client = await clientPromise;
+    const db = client.db();
+    const assessment = await getOneAssessment(db, context.params.assessmentId);
 
-  return {
-    props: {
-      user,
-      assessment: assessment,
-    },
-  };
+    if (!assessment) return { props: {} };
+
+    return {
+      props: {
+        user,
+        assessment: assessment,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { props: {} };
 });
