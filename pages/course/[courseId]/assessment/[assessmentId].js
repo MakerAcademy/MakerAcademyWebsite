@@ -12,7 +12,7 @@ import Assessment from "pages/assessment/[assessmentId]";
 import { generateCourseRoutes } from "..";
 
 const AssessmentPage = ({ documents, ...props }) => {
-  if (!props.assessment || documents)
+  if (!props.assessment || !documents)
     return <PageNotFound title={"assessment"} />;
 
   const router = useRouter();

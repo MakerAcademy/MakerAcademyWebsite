@@ -1,8 +1,7 @@
+import sanitize from "mongo-sanitize";
+import { hashPassword } from "../../../lib/auth/auth";
 import clientPromise from "../../../lib/db/connect";
 import { getUserByEmail } from "../../../lib/db/user";
-import { hashPassword } from "../../../lib/auth/auth";
-import { ObjectId } from "mongodb";
-import sanitize from "mongo-sanitize";
 
 async function handler(req, res) {
   if (req.method !== "POST") {
