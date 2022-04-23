@@ -1,6 +1,7 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
 import ProgramsCoursesCarousel from "@components/carousels/ProgramsCoursesCarousel";
+import PageNotFound from "@components/errors/PageNotFound";
 import ResponsiveText from "@components/ResponsiveText";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
@@ -25,6 +26,8 @@ import {
 } from "../../lib/db/program";
 
 const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
+  if (!programs) return <PageNotFound title={"program"} />;
+
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -131,20 +134,26 @@ const ProgramsPage = ({ programs, tags, count, likes = 0, views = 0 }) => {
 };
 
 export async function getServerSideProps(context) {
-  // Add fetch to utils or api once backend complete
-  const client = await clientPromise;
-  const db = client.db();
-  const programs = await getPrograms(db, {}, null);
-  const tags = await getProgramSearchTags(db, TAGS);
-  const count = await getCountEstimate(db, "programs");
+  try {
+    // Add fetch to utils or api once backend complete
+    const client = await clientPromise;
+    const db = client.db();
+    const programs = await getPrograms(db, {}, null);
+    const tags = await getProgramSearchTags(db, TAGS);
+    const count = await getCountEstimate(db, "programs");
 
-  return {
-    props: {
-      programs: programs,
-      tags: tags,
-      count: count,
-    },
-  };
+    return {
+      props: {
+        programs: programs,
+        tags: tags,
+        count: count,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { props: {} };
 }
 
 export default ProgramsPage;

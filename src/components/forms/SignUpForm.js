@@ -43,10 +43,15 @@ const SignUpForm = () => {
 
   const router = useRouter();
 
+  console.log(1);
+
   const onSubmit = async (data, e) => {
+    console.log(2);
     const { email, password } = data;
     try {
+      console.log(3);
       const result = await createUser(email, password, type);
+      console.log(4);
       console.log(result);
       const login = await signIn("credentials", {
         email: email,

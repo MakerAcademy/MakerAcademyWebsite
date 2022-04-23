@@ -1,10 +1,13 @@
 import BasicDocument from "@components/documents/BasicDocument";
+import PageNotFound from "@components/errors/PageNotFound";
 import React from "react";
 import clientPromise from "../../lib/db/connect";
 import { getOneDocument, incrementDocViews } from "../../lib/db/document";
 
 const DocumentPage = (props) => {
   const { doc = {} } = props;
+
+  if (!doc) return <PageNotFound title={"document"} />;
 
   return (
     <div>
@@ -14,26 +17,24 @@ const DocumentPage = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  const id = context.params.docId;
+  try {
+    const id = context.params.docId;
 
-  if (!id) {
+    const client = await clientPromise;
+    const db = client.db();
+    const doc = await getOneDocument(db, id);
+    const result = await incrementDocViews(db, id);
+
     return {
       props: {
-        doc: [],
+        doc: doc,
       },
     };
+  } catch (error) {
+    console.log(error);
   }
 
-  const client = await clientPromise;
-  const db = client.db();
-  const doc = await getOneDocument(db, id);
-  const result = await incrementDocViews(db, id);
-
-  return {
-    props: {
-      doc: doc,
-    },
-  };
+  return { props: {} };
 }
 
 export default DocumentPage;

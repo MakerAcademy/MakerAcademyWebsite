@@ -10,16 +10,22 @@ const AssessmentPage = (props) => {
 export default AssessmentPage;
 
 export const getServerSideProps = withProtectedUser(async (context, user) => {
-  const client = await clientPromise;
-  const db = client.db();
-  const assessment = await getOneAssessment(db, context.params.assessmentId);
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const assessment = await getOneAssessment(db, context.params.assessmentId);
 
-  if (!assessment) return { props: {} };
+    if (!assessment) return { props: {} };
 
-  return {
-    props: {
-      user,
-      assessment: assessment,
-    },
-  };
+    return {
+      props: {
+        user,
+        assessment: assessment,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { props: {} };
 });

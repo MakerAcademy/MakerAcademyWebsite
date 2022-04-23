@@ -1,5 +1,6 @@
 import BreadcrumbsSection from "@components/BreadcrumbsSection";
 import RoundedButton from "@components/buttons/RoundedButton";
+import PageNotFound from "@components/errors/PageNotFound";
 import ResponsiveText from "@components/ResponsiveText";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -49,18 +50,10 @@ const CoursePage = ({
   liked = false,
 }) => {
   const { query } = useRouter();
-  const documents = course.docs; //course.docs
+  const documents = course?.docs; //course.docs
   const { courseId, programId } = query;
 
-  console.log(course);
-
-  if (!course) {
-    return (
-      <Container maxWidth="xl" sx={{ py: 8 }}>
-        Course Not Found
-      </Container>
-    );
-  }
+  if (!course) return <PageNotFound title={"course"} />;
 
   const firstDocId = course?.documents?.[0]?._id;
 
@@ -198,20 +191,24 @@ const CoursePage = ({
 };
 
 export async function getServerSideProps(context) {
-  const client = await clientPromise;
-  const db = client.db();
-  const course = await getOneCourse(db, context.params.courseId);
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const course = await getOneCourse(db, context.params.courseId);
 
-  if (!course) return { props: {} };
+    return {
+      props: {
+        course: course,
+        topic: course?.topic,
+        subtopic: course?.subtopic,
+        title: course?.title,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 
-  return {
-    props: {
-      course: course,
-      topic: course.topic,
-      subtopic: course.subtopic,
-      title: course.title,
-    },
-  };
+  return { props: {} };
 }
 
 export default CoursePage;
