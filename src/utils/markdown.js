@@ -100,11 +100,13 @@ export const createTitle = (string, stringLimit) => {
 
 // Create a slug from text
 export const createSlug = (text) => {
+  // console.log(text)
   const _text = text
-    .toLowerCase()
+    ?.toLowerCase?.()
     .replace(/\W/g, "-")
     .replace(/^-+|-+$/g, "");
-  return _text;
+    
+  return _text || text;
 };
 
 export const dummyMarkdown = `

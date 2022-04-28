@@ -30,6 +30,7 @@ const ContentCard = ({
   timestamp,
   published,
   verification,
+  brand,
   views = 0,
   likes,
   likes_count = 0,
@@ -42,11 +43,11 @@ const ContentCard = ({
       label={
         <Stack direction="row" alignItems="center" spacing={1}>
           {Icon && <Icon sx={{ fontSize: 18 }} />}
-          <Typography variant="body2">{text}</Typography>
+          <Typography variant="caption">{text}</Typography>
         </Stack>
       }
       sx={{
-        backgroundColor: "rgba(0,0,0,0.85)",
+        backgroundColor: "rgba(0,0,0,0.75)",
         color: theme.palette.primary.white,
         mb: 0.5,
       }}
@@ -67,17 +68,23 @@ const ContentCard = ({
           />
 
           {/* Tags */}
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={{ position: "absolute", top: 8, left: 8 }}
-            spacing={0.5}
-            flexWrap="wrap"
-          >
-            {tags.map((tag, i) => (
-              <CustomChip text={tag} key={i} />
-            ))}
-          </Stack>
+          {brand && (
+            <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+              <Stack
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                  py: 1,
+                  px: 2,
+                  backgroundColor: "#FFD700",
+                  width: "100%",
+                  borderRadius: 5,
+                }}
+              >
+                <Typography variant="body2">{brand}</Typography>
+              </Stack>
+            </Box>
+          )}
 
           <Box
             sx={{
@@ -100,7 +107,7 @@ const ContentCard = ({
           </Box>
         </Box>
 
-        <CardContent>
+        <CardContent sx={{ pb: "12px !important" }}>
           <Typography variant="caption">
             Posted {moment(timestamp).format("LL")}
           </Typography>
@@ -130,6 +137,19 @@ const ContentCard = ({
               <AccessTimeIcon sx={{ fontSize: 18 }} />
               <Typography>{duration} min</Typography>
             </Stack>
+          </Stack>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            // sx={{ position: "absolute", top: 8, left: 8 }}
+            sx={{ mt: 2 }}
+            spacing={0.5}
+            flexWrap="wrap"
+          >
+            {tags.map((tag, i) => (
+              <CustomChip text={tag} key={i} />
+            ))}
           </Stack>
         </CardContent>
       </Card>

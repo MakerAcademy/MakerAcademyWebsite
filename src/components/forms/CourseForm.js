@@ -25,6 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FormSelectField from "@components/FormComponents/FormSelectField";
 import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
 import useTranslation from "next-translate/useTranslation";
+import { BRAND } from "@constants/";
 
 const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -166,7 +167,22 @@ const CourseForm = ({ handleSubmit: propsHandleSubmit, edit, values = {} }) => {
             RenderHeader={RenderHeader}
           />
 
-          <Stack alignItems="flex-end">
+          <Stack
+            justifyContent="flex-end"
+            alignItems="flex-end"
+            direction="row"
+            spacing={2}
+          >
+            <FormSelectField
+              name="brand"
+              label="Brand"
+              control={control}
+              disabled={disabled}
+              options={BRAND}
+              fullWidth={false}
+              sx={{ minWidth: 200 }}
+            />
+
             <RoundedButton type="submit" disabled={disabled}>
               {edit ? t("edit_course") : t("create_new_course")}
             </RoundedButton>

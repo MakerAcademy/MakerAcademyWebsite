@@ -15,6 +15,7 @@ const FormSelectField = ({
   options = [],
   variant = "outlined",
   label,
+  fullWidth = true,
   ...props
 }) => {
   const theme = useTheme();
@@ -26,7 +27,7 @@ const FormSelectField = ({
       control={control}
       render={({ field: { ...field }, fieldState: { error }, formState }) => (
         <FormControl
-          fullWidth
+          fullWidth={fullWidth}
           size="small"
           sx={{
             height: "auto",

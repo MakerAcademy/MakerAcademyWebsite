@@ -1,7 +1,7 @@
 import MSV_IMAGE from "@assets/images/misc/msv.png";
 import BackButton from "@components/buttons/BackButton";
 import ScrollSpy from "@components/ScrollSpy";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { flattenChildren } from "@utils/helperFunctions";
 import {
   addChapters,
