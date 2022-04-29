@@ -27,7 +27,8 @@ const CreatorStudioNew = ({ user }) => {
     return <Container sx={{ py: 5 }} maxWidth="xl" />;
 
   const handleDocumentSubmit = async (data) => {
-    const { title, description, level, topic, subtopic, markdownValue } = data;
+    const { title, description, level, topic, subtopic, markdownValue, brand } =
+      data;
 
     return await fetch("/api/documents", {
       method: "POST",
@@ -35,11 +36,12 @@ const CreatorStudioNew = ({ user }) => {
         "Content-Type": "Application/json",
       },
       body: JSON.stringify({
-        title: title,
-        description: description,
-        level: level,
-        topic: topic,
-        subtopic: subtopic,
+        title,
+        description,
+        level,
+        topic,
+        subtopic,
+        brand,
         contentType: "documents",
         duration: 30,
         author: user?._id,
@@ -65,7 +67,15 @@ const CreatorStudioNew = ({ user }) => {
   };
 
   const handleCourseSubmit = async (data) => {
-    const { title, description, level, topic, subtopic, documents = [] } = data;
+    const {
+      title,
+      description,
+      level,
+      topic,
+      subtopic,
+      brand,
+      documents = [],
+    } = data;
 
     return await fetch("/api/courses", {
       method: "POST",
@@ -79,6 +89,7 @@ const CreatorStudioNew = ({ user }) => {
         topic,
         subtopic,
         documents,
+        brand,
         contentType: "courses",
         duration: 30,
         author: user?._id,
