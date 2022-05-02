@@ -1,12 +1,20 @@
 import BackButton from "@components/buttons/BackButton";
+import NextPreviousButton from "@components/buttons/NextPreviousButton";
+import RoundedButton from "@components/buttons/RoundedButton";
 import ResponsiveText from "@components/ResponsiveText";
 import ScrollSpy from "@components/ScrollSpy";
+import { CommonContext } from "@context/commonContext";
+import commonProps from "@hoc/commonProps";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
+  Button,
   Container,
   Divider,
-  Button,
   Stack,
   Typography,
 } from "@mui/material";
@@ -20,24 +28,48 @@ import {
   parseDepths,
 } from "@utils/markdown";
 import moment from "moment";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import commonProps from "@hoc/commonProps";
-import RoundedButton from "@components/buttons/RoundedButton";
-import EditIcon from "@mui/icons-material/Edit";
-import Router, { useRouter } from "next/router";
-import Link from "next/link";
-import { CommonContext } from "@context/commonContext";
-import NextPreviousButton from "@components/buttons/NextPreviousButton";
+
+// function HeadingRenderer(props) {
+//   var children = React.Children.toArray(props.children);
+//   var text = children.reduce(flattenChildren, "");
+//   var slug = createSlug(text);
+//   return React.createElement("h" + props.level, { id: slug }, props.children);
+// }
 
 function HeadingRenderer(props) {
+  const level = props.level;
+
   var children = React.Children.toArray(props.children);
   var text = children.reduce(flattenChildren, "");
   var slug = createSlug(text);
-  return React.createElement("h" + props.level, { id: slug }, props.children);
+
+  const isBigText = level <= 5;
+
+  return (
+    <>
+      <Typography
+        variant={`h${level}`}
+        sx={{
+          my: isBigText ? 2 : 1.2,
+          // borderTop: isBigText && "2px solid grey",
+          // borderBottom: isBigText && "2px solid grey",
+          py: isBigText && 0.5,
+          textAlign: isBigText && "center",
+        }}
+        id={slug}
+      >
+        {props.children}
+      </Typography>
+    </>
+  );
+}
+
+function ParagraphRenderer(props) {
+  return <Typography sx={{ pb: 1 }}>{props.children}</Typography>;
 }
 
 const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
@@ -199,7 +231,14 @@ const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
 
             <Divider sx={{ mb: 3 }} />
 
-            <Box sx={{ minHeight: "50vh" }}>
+            <Box
+              sx={{
+                minHeight: "50vh",
+                "& img": {
+                  maxWidth: "100%",
+                },
+              }}
+            >
               <ReactMarkdown
                 components={{
                   h1: HeadingRenderer,
@@ -208,6 +247,7 @@ const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
                   h4: HeadingRenderer,
                   h5: HeadingRenderer,
                   h6: HeadingRenderer,
+                  p: ParagraphRenderer,
                 }}
               >
                 {body}

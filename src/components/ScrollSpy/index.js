@@ -24,12 +24,15 @@ const ScrollSpy = ({ title, data }) => {
         [theme.breakpoints.up("md")]: {
           width: 240,
         },
-        // [theme.breakpoints.up("xl")]: {
-        //   minWidth: 272,
-        // },
       }}
     >
-      <Box sx={{ position: "sticky", top: 10, width: "inherit" }}>
+      <Box
+        sx={{
+          position: "sticky",
+          top: 10,
+          width: "inherit",
+        }}
+      >
         <Hidden mdDown>
           {title && (
             <Typography variant="h5" sx={{ mb: 3 }}>
@@ -45,6 +48,15 @@ const ScrollSpy = ({ title, data }) => {
             "& .isCurrent > div": {
               borderLeft: `3px solid ${theme.palette.primary.main}`,
               color: theme.palette.text.default,
+            },
+            mt: -2,
+            maxHeight: "80vh",
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            [theme.breakpoints.up("md")]: {
+              pb: 5,
             },
           }}
         >

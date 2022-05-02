@@ -1,4 +1,6 @@
+import { flatten } from "lodash";
 import setLanguage from "next-translate/setLanguage";
+import React from "react";
 
 //Change App Language
 export const handleLanguageChange = async (lang, router, pathname) => {
@@ -11,6 +13,9 @@ export const handleLanguageChange = async (lang, router, pathname) => {
 };
 
 export const flattenChildren = (text, child) => {
+  // console.log(typeof child);
+
+  // return child
   return typeof child === "string"
     ? text + child
     : React.Children.toArray(child.props.children).reduce(flatten, text);

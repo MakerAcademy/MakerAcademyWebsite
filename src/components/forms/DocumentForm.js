@@ -2,7 +2,9 @@ import RoundedButton from "@components/buttons/RoundedButton";
 import FormDraftField from "@components/FormComponents/FormDraft";
 import FormSelectField from "@components/FormComponents/FormSelectField";
 import FormTextField from "@components/FormComponents/FormTextField";
+import { BRAND } from "@constants/";
 import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
+import commonProps from "@hoc/commonProps";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
@@ -14,6 +16,7 @@ const DocumentForm = ({
   handleSubmit: propsHandleSubmit,
   edit,
   values = {},
+  user,
 }) => {
   const [disabled, setDisabled] = useState(false);
 
@@ -109,7 +112,22 @@ const DocumentForm = ({
           value={values?.markdown}
         />
 
-        <Stack alignItems="flex-end">
+        <Stack
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          direction="row"
+          spacing={2}
+        >
+          <FormSelectField
+            name="brand"
+            label="Brand"
+            control={control}
+            disabled={disabled}
+            options={BRAND}
+            fullWidth={false}
+            sx={{ minWidth: 200 }}
+          />
+
           <RoundedButton type="submit" disabled={disabled}>
             {edit ? t("edit_document") : t("create_new_document")}
           </RoundedButton>
@@ -119,4 +137,4 @@ const DocumentForm = ({
   );
 };
 
-export default DocumentForm;
+export default commonProps(DocumentForm);

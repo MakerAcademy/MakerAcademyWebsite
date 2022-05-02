@@ -36,3 +36,5 @@ export const ASSESSMENT_QUESTION_TYPES = [
   "text",
   // "file",
 ];
+
+export const BRAND = ["Maker Academy", "Meta Analysis"];
