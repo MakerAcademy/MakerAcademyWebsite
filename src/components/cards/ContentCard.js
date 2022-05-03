@@ -59,7 +59,10 @@ const ContentCard = ({
       href={contentType === "documents" ? `/document/${_id}` : `/course/${_id}`}
       passHref
     >
-      <Card elevation={3} sx={{ width: "100%", cursor: "pointer" }}>
+      <Card
+        elevation={3}
+        sx={{ width: "100%", height: "100%", cursor: "pointer" }}
+      >
         <Box sx={{ position: "relative" }}>
           <img
             src={thumbnail}

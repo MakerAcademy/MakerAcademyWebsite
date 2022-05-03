@@ -22,6 +22,7 @@ const CreatorStudioEdit = (props) => {
     topic,
     subtopic,
     markdownValue,
+    brand,
   }) => {
     const res = await fetch(`/api/documents?_id=${_id}`, {
       method: "POST",
@@ -34,6 +35,7 @@ const CreatorStudioEdit = (props) => {
         level,
         topic,
         subtopic,
+        brand,
         contentType: "documents",
         duration: 30,
         author: user?._id,
@@ -161,7 +163,7 @@ export default CreatorStudioEdit;
 export const getServerSideProps = withProtectedUser(async (context) => {
   const server = context.req.headers.host;
   const docId = context.params.id;
-  const contentType = context.params.contentType;
+  const contentType = context.params.contentType?.toLowerCase();
   const url = `${http}${server}/api/${contentType}?_id=${docId}`;
 
   const res = await fetch(url, {

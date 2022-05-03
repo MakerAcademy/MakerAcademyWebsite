@@ -32,6 +32,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 // function HeadingRenderer(props) {
 //   var children = React.Children.toArray(props.children);
@@ -49,6 +50,15 @@ function HeadingRenderer(props) {
 
   const isBigText = level <= 5;
 
+  const fontSizes = {
+    1: "3.5rem",
+    2: "2.7rem",
+    3: "2.2rem",
+    4: "1.7rem",
+    5: "1.3rem",
+    6: "1.15rem",
+  };
+
   return (
     <>
       <Typography
@@ -59,6 +69,7 @@ function HeadingRenderer(props) {
           // borderBottom: isBigText && "2px solid grey",
           py: isBigText && 0.5,
           textAlign: isBigText && "center",
+          fontSize: fontSizes[level],
         }}
         id={slug}
       >
@@ -161,7 +172,7 @@ const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
               {isLoggedIn && (
                 <RoundedButton
                   icon={<EditIcon fontSize="small" />}
-                  href={`/studio/documents/edit/${_id}`}
+                  href={`/studio/edit/documents/${_id}`}
                 >
                   Edit
                 </RoundedButton>
@@ -235,11 +246,12 @@ const BasicDocument = ({ data = {}, user, next = {}, previous = {} }) => {
               sx={{
                 minHeight: "50vh",
                 "& img": {
-                  maxWidth: "100%",
+                  maxWidth: "90%",
                 },
               }}
             >
               <ReactMarkdown
+                rehypePlugins={[rehypeRaw]}
                 components={{
                   h1: HeadingRenderer,
                   h2: HeadingRenderer,

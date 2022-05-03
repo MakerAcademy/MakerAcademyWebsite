@@ -1,4 +1,4 @@
-import { Paper, Stack, TextField, useTheme } from "@mui/material";
+import { Grid, Paper, Stack, TextField, useTheme } from "@mui/material";
 import { EditorState } from "draft-js";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
@@ -76,59 +76,65 @@ const FormDraftField = ({
 
   return (
     <div style={{ padding: 5 }}>
-      <Stack spacing={3} direction={direction}>
+      <Grid container spacing={3} direction={direction}>
         {!hideEditor && (
-          <Paper
-            sx={{
-              flex: 1.5,
-              backgroundColor: "#fff",
-              color: "#000",
-              "& .rdw-editor-main": { px: 2 },
-            }}
-          >
-            <Editor
-              editorState={editorState}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={handleDraftChange}
-              // plugins={[imagePlugin]}
-            />
-          </Paper>
+          <Grid item xs={12} lg={6}>
+            <Paper
+              sx={{
+                flex: 1.5,
+                backgroundColor: "#fff",
+                color: "#000",
+                "& .rdw-editor-main": { px: 2 },
+              }}
+            >
+              <Editor
+                editorState={editorState}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={handleDraftChange}
+                // plugins={[imagePlugin]}
+              />
+            </Paper>
+          </Grid>
         )}
 
         {!hideMarkdown && (
-          <TextField
-            label="Markdown"
-            fullWidth
-            multiline
-            sx={{
-              flex: 1,
-              height: "inherit",
-              "& textarea": { height: "100% !important" },
-            }}
-            InputProps={{ sx: { height: "100%" } }}
-            value={markdownValue}
-            onChange={(e) => handleMarkdownChange(e.target.value)}
-          />
+          <Grid item xs={12} lg={6}>
+            <TextField
+              label="Markdown"
+              fullWidth
+              multiline
+              sx={{
+                flex: 1,
+                height: "inherit",
+                "& textarea": { height: "100% !important" },
+              }}
+              InputProps={{ sx: { height: "100%" } }}
+              value={markdownValue}
+              onChange={(e) => handleMarkdownChange(e.target.value)}
+            />
+          </Grid>
         )}
 
         {!hideHtml && (
-          <TextField
-            label="HTML"
-            fullWidth
-            multiline
-            sx={{
-              flex: 1,
-              height: "inherit",
-              "& textarea": { height: "100% !important" },
-            }}
-            InputProps={{ sx: { height: "100%" } }}
-            value={htmlValue}
-            onChange={(e) => handleHtmlChange(e.target.value)}
-          />
+          <Grid item xs={12} lg={6}>
+            <TextField
+              label="HTML"
+              fullWidth
+              multiline
+              sx={{
+                flex: 1,
+                height: "inherit",
+                "& textarea": { height: "100% !important" },
+              }}
+              InputProps={{ sx: { height: "100%" } }}
+              value={htmlValue}
+              onChange={(e) => handleHtmlChange(e.target.value)}
+            />
+          </Grid>
         )}
-      </Stack>
+      </Grid>
     </div>
   );
 };

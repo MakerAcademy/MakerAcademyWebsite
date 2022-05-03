@@ -3,7 +3,7 @@ import ContentCard from "@components/cards/ContentCard";
 import SearchFilterBar from "@components/SearchFilterBar";
 import { CONTENT_SORT_ITEMS } from "@constants/";
 import commonProps from "@hoc/commonProps";
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Card, Container, Grid, Stack, Typography } from "@mui/material";
 import clientPromise from "lib/db/connect";
 import { getContent } from "lib/db/content";
 import _ from "lodash";
@@ -133,7 +133,7 @@ const ContentPage = ({ content, tags, hideHeader, filterProps = {} }) => {
             container
             sx={{ pb: 2 }}
             // justifyContent="center"
-            alignItems="center"
+            alignItems="stretch"
             spacing={4}
           >
             {/* Cards */}
