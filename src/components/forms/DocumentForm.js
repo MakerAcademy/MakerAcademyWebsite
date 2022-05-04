@@ -1,15 +1,14 @@
 import RoundedButton from "@components/buttons/RoundedButton";
-import FormDraftField from "@components/FormComponents/FormDraft";
+import FormMarkdown from "@components/FormComponents/FormMarkdown";
 import FormSelectField from "@components/FormComponents/FormSelectField";
 import FormTextField from "@components/FormComponents/FormTextField";
-import { BRAND } from "@constants/";
-import { CONTENT_DIFFICULTY_LEVELS } from "@constants/";
+import { BRAND, CONTENT_DIFFICULTY_LEVELS } from "@constants/";
 import commonProps from "@hoc/commonProps";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
 
 const DocumentForm = ({
@@ -44,9 +43,13 @@ const DocumentForm = ({
     propsHandleSubmit({ ...data });
   };
 
-  const handleDraftChange = ({ editor, markdown, html }) => {
-    setValue("markdownValue", markdown);
-  };
+  // const handleDraftChange = ({ editor, markdown, html }) => {
+  //   setValue("markdownValue", markdown);
+  // };
+
+  const _image = useWatch({ control, name: "markdownValue" });
+
+  // console.log(_image);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,12 +107,18 @@ const DocumentForm = ({
           />
         </Stack>
 
-        <FormDraftField
+        {/* <FormDraftField
           onChange={handleDraftChange}
           handeSubmit={handleSubmit}
           hideHtml
           direction="row"
           value={values?.markdown}
+        /> */}
+
+        <FormMarkdown
+          label="Markdown Body"
+          name="markdownValue"
+          control={control}
         />
 
         <Stack

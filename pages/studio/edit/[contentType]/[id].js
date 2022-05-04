@@ -135,7 +135,7 @@ const CreatorStudioEdit = (props) => {
         <DocumentForm
           handleSubmit={handleDocumentSubmit}
           edit
-          values={{ ...(data || {}), markdown: data?.body }}
+          values={{ ...(data || {}), markdownValue: data?.body }}
         />
       )}
 

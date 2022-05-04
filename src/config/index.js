@@ -26,10 +26,10 @@ const config = ({ mode }) => ({
     authButtons: true,
     menuItems: [
       { name: "content", link: "/content" },
-      {
-        name: "programs",
-        link: "/programs",
-      },
+      // {
+      //   name: "programs",
+      //   link: "/programs",
+      // },
       {
         name: "contribute",
         link: "/contribute",

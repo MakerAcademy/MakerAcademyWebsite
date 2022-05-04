@@ -73,7 +73,7 @@ const DesktopMenuItems = ({
                 setSubMenu(item.nestedItems || null);
               }}
               sx={{
-                px: { md: 3, lg: 4 },
+                px: { md: 3, lg: 3 },
                 textTransform: "inherit",
                 fontSize: 18,
                 fontWeight: 600,
